@@ -1,0 +1,18 @@
+
+
+
+#单次录件数
+input_num = 1
+
+# 推送页面每次查询条数
+query_num = 100
+
+#评价件单次查询条数
+rows = 200
+
+#评价件页数
+page = 1
+
+#用户鉴权
+Authorization ="eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiLlubPmmIzljr_npL7kvJrkv53pmankuovkuJrnrqHnkIblsYAiLCJ1c2VySWQiOiLlubPmmIzljr_npL7kvJrkv53pmankuovkuJrnrqHnkIblsYAiLCJ1c2VyTmFtZSI6IuWQtOaZk-m-mSIsImFyZWFDb2RlIjoiNTExOTIzMDAwMDAwIiwiZGVwdENvZGUiOiI0MTU3NDc5NDA4OTA0NzczNjMyIiwiZGVwdE5hbWUiOiLlubPmmIzljr_npL7kvJrkv53pmankuovkuJrnrqHnkIblsYAiLCJ1c2VyU291cmNlIjoieXhwZyIsImV4cCI6MTY5MzI4NzE1NX0.thDGFV4Aqlljri4vvRT4x0VPL0ZoTD5Ba8rumRPdkKiGJbfgUABKTfkEH220gVLIclS4u_MVVhVL-lWPvdxLC9vnjJCLcMbHXnOKPeyJCf5a2YH1ZG6xf6fXeWq3gWoiNZtxpRiy9ybF_YG76NPz_6UfabIaYoVPWM2pIByTdsw"
+
