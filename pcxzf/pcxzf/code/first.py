@@ -102,6 +102,7 @@ def sendMsgError(tittle,content):
     response = requests.post(url, data=json.dumps(data))
     # 输出响应结果
     print(response.text)
+
 def sendMsg(msg):
     # 定义要发送的消息内容
     x = len(msg)

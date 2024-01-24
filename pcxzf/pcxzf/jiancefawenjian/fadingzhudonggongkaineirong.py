@@ -8,6 +8,9 @@ from openpyxl import load_workbook
 from openpyxl.styles import Font
 import re
 from openpyxl import Workbook
+from threed_record import qm
+
+
 def getAllbumen(prox):
     url = 'http://www.scpc.gov.cn/public/column/6601841?type=4&action=rel'
     res = conf.make_request_get(url)
@@ -28,12 +31,14 @@ def getAllbumen(prox):
     # 输出字典
     print(bumenList)
     return bumenList
-def getMenniu(prox,bumen):
+
+
+def getMenniu(prox, bumen):
     res = conf.make_request_get(bumen)
     # 提取 id 为 fdzd_gknr 的 div 标签下的所有 a 标签
     a_elements = res[1].find('div', {'id': 'fdzd_gknr'}).find_all('a')
     # 输出所有 a 标签的文本内容和链接地址
-    menuList={}
+    menuList = {}
     for a in a_elements:
         # print(f'{a.text}: {a["href"]}')
         if a is not None:
@@ -41,16 +46,19 @@ def getMenniu(prox,bumen):
             href = a["href"]
             menuList[title] = href
     return menuList
-def getTime(prox,menu):
 
+
+def getTime(prox, menu):
     res = conf.make_request_get(menu)
     li_elements = res[1].find_all('li', {'class': 'rq'})
     # print(li_elements)
-    if len(li_elements) ==1:
+    if len(li_elements) == 1:
         return '无'
     second_li_element = li_elements[1]
 
     return second_li_element.text
+
+
 def gettittle(href):
     res = conf.make_request_get(href)
     li_elements = res[1].find_all('li', {'class': 'mc'})
@@ -58,16 +66,17 @@ def gettittle(href):
     if len(li_elements) <= 1:
         return '无'
 
-
-
     return li_elements[1].find('a').text
+
+
 def cacul(href):
     # 这里传进来的其实是字符串2023-11-7
     date = datetime.datetime.strptime(href, '%Y-%m-%d').date()
     delta = datetime.date.today() - date
     return delta.days
 
-def makeMsg(ws,msg):
+
+def makeMsg(ws, msg):
     # 获取当前的最大行数，并加1
     row = ws.max_row if ws.max_row == 1 else ws.max_row + 2
 
@@ -77,7 +86,7 @@ def makeMsg(ws,msg):
     # 设置合并后单元格的字体样式
     ws.cell(row=row, column=1).font = conf.tittle_font
     ws.append(['1.栏目超期情况监测:以下位置栏目已超期，请责任部门更新'])
-    ws.append(['单位名称', '栏目名称', '更新标题','最后更新时间', '超期天数'])
+    ws.append(['单位名称', '栏目名称', '更新标题', '最后更新时间', '超期天数'])
     # 设置新添加的行的字体为加粗
     for row in [ws[row + 1], ws[row + 2]]:
         for cell in row:
@@ -89,22 +98,25 @@ def makeMsg(ws,msg):
             # 计算天数
             days = cacul(tup[0])
             # 将数据添加到工作表
-            ws.append([key, menu, tup[1],tup[0],  days])
+            ws.append([key, menu, tup[1], tup[0], days])
 
-def  make_no_content_list(ws,no_content_list):
+
+def make_no_content_list(ws, no_content_list):
     # 填充该栏目监测的其他问题
     ws.append([''])
     row = ws.max_row if ws.max_row == 1 else ws.max_row + 1
 
     ws.append(['2.死链监测：以下单位对应栏目无内容，请上传内容或审核发布'])
-    ws.append(['单位名称','栏目名称'])
+    ws.append(['单位名称', '栏目名称'])
     for r in [row, row + 1]:
         for cell in ws[r]:
             cell.font = conf.header_font
 
     for dup in no_content_list:
-        ws.append([dup[0],dup[1]])
-def make_tj_miss_year(ws,tj_miss_year_dic):
+        ws.append([dup[0], dup[1]])
+
+
+def make_tj_miss_year(ws, tj_miss_year_dic):
     # 填充该栏目监测的其他问题
     ws.append([''])
     row = ws.max_row if ws.max_row == 1 else ws.max_row + 1
@@ -120,21 +132,24 @@ def make_tj_miss_year(ws,tj_miss_year_dic):
         row_data = [key] + value
         # 添加到工作表中
         ws.append(row_data)
-def makeExcel(msg,no_content_list,tj_miss_year_dic):
+
+
+def makeExcel(msg, no_content_list, tj_miss_year_dic):
     # 加载现有的Excel文件
     wb = load_workbook(conf.xlsx_name)
     # 获取活动工作表
     ws = wb.active
 
-    makeMsg(ws,msg)
-    make_no_content_list(ws,no_content_list)
-    make_tj_miss_year(ws,tj_miss_year_dic)
+    makeMsg(ws, msg)
+    make_no_content_list(ws, no_content_list)
+    make_tj_miss_year(ws, tj_miss_year_dic)
 
     # 保存文件
     wb.save(conf.xlsx_name)
 
+
 # 这个方法不是直接取网页数据了，是取网页中的js方法，以及参数，用它来请求每一页的数据，如果js为空  说明就只有一页数据，那就拿到这一页的日期返回去，如果不为空，就用gettimebypage方法返回所有日期列表
-def getkeywork(prox,menu,time_list):
+def getkeywork(prox, menu, time_list):
     res = conf.make_request_get(menu)
     # 查找所有的<script>标签
     scripts = res[1].find_all('script')
@@ -160,15 +175,16 @@ def getkeywork(prox,menu,time_list):
 
                     page_count = page_count_match.group(1)
 
-                    return  getTimeListByPage(time_list,url,data_str,page_count)
-
+                    return getTimeListByPage(time_list, url, data_str, page_count)
 
     li_elements = res[1].find_all('li', {'class': 'rq'})
     if len(li_elements) == 1:
         return '无'
     time_list.extend(li_elements)
     return time_list
-def getTimeListByPage(time_list,url,data_str,pagecount):
+
+
+def getTimeListByPage(time_list, url, data_str, pagecount):
     # 存储所有页面的数据
     all_pages_data = []
     # 使用正则表达式提取siteId，catId和file
@@ -223,13 +239,17 @@ def getTimeListByPage(time_list,url,data_str,pagecount):
                 print(f"请求失败，状态码：{response.status_code}")
 
     return time_list
-def get_all_tj_time(href,time_list,key,menu,no_content_list):
+
+
+def get_all_tj_time(href, time_list, key, menu, no_content_list):
     upTime = getkeywork(None, href, time_list)
     # print('uptime', upTime)
     # print(len(time_list))
     if upTime == '无':
         no_content_list.append((key, menu))
     return upTime
+
+
 def deal_tj_year(final_dic):
     new_data = {}
 
@@ -254,7 +274,9 @@ def deal_tj_year(final_dic):
     # 打印新字典
 
     return new_data
-def deal_menu_dic(menu_Dic,key,menu,href,no_content_list,final_dic):
+
+
+def deal_menu_dic(menu_Dic, key, menu, href, no_content_list, final_dic):
     upTime = getTime(None, href)
 
     if upTime == '无':
@@ -265,7 +287,7 @@ def deal_menu_dic(menu_Dic,key,menu,href,no_content_list,final_dic):
     # 判断时间差是否超过配置表中规定超期时间
     if days >= conf.up_time_conf[menu]:
         title = gettittle(href)
-        menu_Dic[menu] = upTime,title
+        menu_Dic[menu] = upTime, title
     if menu_Dic:
         final_dic[key] = menu_Dic
 
@@ -286,9 +308,9 @@ def startMain():
                 continue
             if menu == '统计信息':
                 # 收集统计信息的所有发文时间
-                tj_final_dic[key] = get_all_tj_time(href,tj_time_list,key,menu,no_content_list)
+                tj_final_dic[key] = get_all_tj_time(href, tj_time_list, key, menu, no_content_list)
 
-            deal_menu_dic(menu_Dic,key,menu,href,no_content_list,final_dic)
+            deal_menu_dic(menu_Dic, key, menu, href, no_content_list, final_dic)
 
     tj_miss_year_dic = deal_tj_year(tj_final_dic)
 
@@ -304,12 +326,10 @@ def startMain():
     # print(tj_miss_year_dic)
     # print('-----------------------------')
 
+    makeExcel(final_dic, no_content_list, tj_miss_year_dic)
+    qm.add_item({conf.menu_over_update: final_dic})
+    qm.add_item({conf.miss_tj_year: tj_miss_year_dic})
 
-    makeExcel(final_dic,no_content_list,tj_miss_year_dic)
+
 if __name__ == '__main__':
-
     startMain()
-
-
-
-

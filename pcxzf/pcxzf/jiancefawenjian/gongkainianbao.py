@@ -5,6 +5,7 @@ import json
 import datetime
 import conf
 from openpyxl import load_workbook
+from threed_record import qm
 from openpyxl.styles import Font
 # 这个py是用来检测政府信息公开工作年报的，62个部门都有公开
 # 这个文件不能直接运行第三步，要运行第二步找到所有单位所有公开的年份，第三步只是分析年份是否有缺失，以及对应年份链接是否正确，发布时间是否正确
@@ -41,21 +42,15 @@ def getMenniu(prox,bumen):
             href = a["href"]
             menuList[title] = href
     return menuList
-def getTime(prox,menu):
-    res = conf.make_request_get(url)
-    li_elements = res[1].find_all('li', {'class': 'rq'})
 
-    if len(li_elements) ==1:
-        return '无'
-    second_li_element = li_elements[1]
-
-    return second_li_element.text
 
 def cacul(href):
     # 这里传进来的其实是字符串2023-11-7
     date = datetime.datetime.strptime(href, '%Y-%m-%d').date()
     delta = datetime.date.today() - date
     return delta.days
+
+
 def startMain():
     bumenList = conf.bumenList
 
@@ -76,7 +71,7 @@ def startMain():
 
     print(missing_years_dict)
     # missing_years_dict = {'平昌县商务局': ['2018年', '2019年'], '平昌县退役军人事务局': ['2018年', '2019年'], '平昌县信访局': ['2018年', '2019年'], '平昌县医疗保障局': ['2018年', '2019年'], '平昌县金宝街道办事处': ['2018年', '2019年'], '平昌县驷马镇人民政府': ['2020年'], '平昌县江家口镇人民政府': ['2018年', '2019年']}
-
+    qm.add_item({conf.zf_year_report: missing_years_dict})
     makeExcel(missing_years_dict)
 def makeExcel(msg):
     # 加载现有的Excel文件

@@ -7,9 +7,11 @@ import conf
 import requests
 from io import BytesIO
 import jicengzwgk
+from threed_record import qm
+
 def sendMsg():
-    key = conf.key_cs
-    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key="+key
+    key = conf.key_choose
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
 
     # 上传文件
     filename = conf.xlsx_name
@@ -25,7 +27,7 @@ def sendMsg():
     # 准备发送文件
     files = {"file": (filename, output.getvalue())}
     response = requests.post(
-        'https://qyapi.weixin.qq.com/cgi-bin/webhook/upload_media?key='+key+'&type=file',
+        'https://qyapi.weixin.qq.com/cgi-bin/webhook/upload_media?key=' + key + '&type=file',
         files=files)
 
     print(response.text)
@@ -46,6 +48,7 @@ def sendMsg():
         print(response.text)
     else:
         print("No media_id in response")
+
 
 def end_excel():
     wb = load_workbook(conf.xlsx_name)
@@ -74,17 +77,17 @@ def end_excel():
     ws.column_dimensions['H'].width = 20
     ws.column_dimensions['I'].width = 20
 
-
-    ws['H74'] = '基层政务公开栏目检测标准：'
+    ws['H74'] = '基层政务公开栏目检测标准:'
     ws['H74'].font = conf.header_font
     ws['H75'] = '1.每个事项的总内容不少于4条'
     ws['H76'] = '2.最新更新时间不大于90天'
     ws['H77'] = '3.每相邻两条信息之间更新时间不大于90天'
     ws['H78'] = '注意：除办事服务等不易发布的内容外，其余链接形式的内容应尽量粘贴复制而不是直接跳转，否则机器人无法监测'
 
-
     # 保存更改
     wb.save(conf.xlsx_name)
+
+
 def make_excel():
     # 创建一个新的工作簿
     wb = Workbook()
@@ -99,7 +102,10 @@ def make_excel():
 
     # 给表格增加一些注释
     end_excel()
+
+
 if __name__ == '__main__':
     make_excel()
-
+    qm.add_item({conf.finish_score: None})
     sendMsg()
+    qm.stop()

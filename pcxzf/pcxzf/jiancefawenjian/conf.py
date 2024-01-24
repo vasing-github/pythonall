@@ -5,11 +5,12 @@ bumenList = {'平昌县人民政府办公室': '/public/column/6601841?type=4&ac
 xlsx_name = '网站监测反馈v2.4.xlsx'
 # 标题样式
 from openpyxl.styles import Font
+
 tittle_font = Font(size=20, bold=True)
 header_font = Font(size=13, bold=True)
 import requests
 from bs4 import BeautifulSoup
-import time
+
 import datetime
 
 # 测试小群的key
@@ -19,15 +20,15 @@ key_zs = '6c00ba33-68ab-403e-bab2-2b9134a7d7f6'
 
 # 获取当前的星期几（0=星期一，6=星期日）
 current_weekday = datetime.datetime.now().weekday()
+# current_year_mon_day = datetime.datetime.now().date()
 
 # 如果当前是星期一，选择正式群的key，否则选择测试小群的key
 key_choose = key_zs if current_weekday == 0 else key_cs
-
-
+is_record = current_weekday != 0
 
 up_time_conf = {
-    '机关简介':365,
-    '政府工作报告':365,
+    '机关简介': 365,
+    '政府工作报告': 365,
     '规划计划': 365,
     '统计信息': 90,
     '行政权力': 90,
@@ -46,7 +47,7 @@ up_time_conf = {
     '司法监督': 90,
     '价格信息': 90,
     '住房保障': 90,
-    '涉农补贴':90,
+    '涉农补贴': 90,
     '农产品价格监测': 90,
     '应急管理': 90,
     '监测预警': 90,
@@ -59,26 +60,48 @@ up_time_conf = {
     '乡村振兴': 90,
     '行政许可/处罚': 90,
     '医疗保障': 90,
-    '教育科技':90,
-    '公共文化服务':90,
-    '放管服改革':90,
-    '卫生健康':90
+    '教育科技': 90,
+    '公共文化服务': 90,
+    '放管服改革': 90,
+    '卫生健康': 90
 }
 
-#基层政务公开领域和负责单位映射
+# 基层政务公开领域和负责单位映射
 jczwgk_area_comp_dic = {
-    '公共文化服务': '平昌县文化广播电视和旅游局', '就业领域': '平昌县人力资源和社会保障局', '涉农补贴': '平昌县农业农村局', '食品药品': '平昌县市场监督管理局', '社会救助': '平昌县民政局', '卫生健康': '平昌县卫生健康局', '养老服务': '平昌县民政局', '义务教育': '平昌县教育科技和体育局', '公共法律': '平昌县司法局', '税收管理': '国家税务总局平昌县税务局', '广播电视和网络视听': '平昌县文化广播电视和旅游局', '旅游领域': '平昌县文化广播电视和旅游局', '社会保险': '平昌县人力资源和社会保障局', '自然资源': '平昌县自然资源和规划局', '城市综合执法': '平昌县综合行政执法局', '户籍管理': '平昌县公安局', '财政预决算': '平昌县财政局', '市政服务': '平昌县住房和城乡建设局', '农村危房改造': '平昌县住房和城乡建设局', '国有土地上房屋征收与补偿': '平昌县住房和城乡建设局', '保障性住房': '平昌县住房和城乡建设局', '新闻出版版权': '县委宣传部', '生态环境': '巴中市平昌生态环境局', '统计领域': '平昌县统计局', '公共资源交易': '县公共资源交易服务中心', '交通运输': '平昌县交通运输局', '扶贫领域': '平昌县乡村振兴局', '重大建设项目': '平昌县发展和改革局', '安全生产': '平昌县应急管理局', '救灾领域': '平昌县应急管理局'}
+    '公共文化服务': '平昌县文化广播电视和旅游局', '就业领域': '平昌县人力资源和社会保障局', '涉农补贴': '平昌县农业农村局', '食品药品': '平昌县市场监督管理局', '社会救助': '平昌县民政局',
+    '卫生健康': '平昌县卫生健康局', '养老服务': '平昌县民政局', '义务教育': '平昌县教育科技和体育局', '公共法律': '平昌县司法局', '税收管理': '国家税务总局平昌县税务局',
+    '广播电视和网络视听': '平昌县文化广播电视和旅游局', '旅游领域': '平昌县文化广播电视和旅游局', '社会保险': '平昌县人力资源和社会保障局', '自然资源': '平昌县自然资源和规划局',
+    '城市综合执法': '平昌县综合行政执法局', '户籍管理': '平昌县公安局', '财政预决算': '平昌县财政局', '市政服务': '平昌县住房和城乡建设局', '农村危房改造': '平昌县住房和城乡建设局',
+    '国有土地上房屋征收与补偿': '平昌县住房和城乡建设局', '保障性住房': '平昌县住房和城乡建设局', '新闻出版版权': '县委宣传部', '生态环境': '巴中市平昌生态环境局', '统计领域': '平昌县统计局',
+    '公共资源交易': '县公共资源交易服务中心', '交通运输': '平昌县交通运输局', '扶贫领域': '平昌县乡村振兴局', '重大建设项目': '平昌县发展和改革局', '安全生产': '平昌县应急管理局',
+    '救灾领域': '平昌县应急管理局'}
 
+database_cs = {
+    "host": "yuxiaohaishidalao.shop",
+    "user": "root",
+    "password": "vas9624..",
+    "database": "smartpc"
+}
+database = database_cs
+
+menu_over_update = '机器人-栏目超期'
+miss_tj_year = '机器人-统计信息缺失'
+zf_year_report = '机器人-政府信息公开年报缺失'
+finish_score = '统计扣分情况发送'
+
+xlsx_score_name = '本周考核反馈(测试数据)v1.0.xlsx'
 
 proxies = None
-def getproxies(up = False):
+
+
+def getproxies(up=False):
     global proxies  # 在函数内部修改全局变量，需要声明 global
     if up or proxies is None:
         # 提取代理API接口，获取1个代理IP
         api_url = "https://dps.kdlapi.com/api/getdps/?secret_id=o6zqx71jh7hiii663qrt&num=1&signature=ae5jtj55np18yfpsjrra5gagd1ljuymx&pt=1&sep=1&transferip=1"
 
         # 获取API接口返回的代理IP
-        proxy_ip = requests.get(api_url,verify=False).text
+        proxy_ip = requests.get(api_url, verify=False).text
 
         # 用户名密码认证(私密代理/独享代理)
         username = "d4348123377"
@@ -87,30 +110,34 @@ def getproxies(up = False):
             "http": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy_ip},
             "https": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy_ip}
         }
-    print('代理：',proxies)
+    print('代理：', proxies)
     return proxies
-def make_request_get(url,params = None,proxies=None):
+
+
+def make_request_get(url, params=None, proxies=None):
     if not url.startswith('http'):
         url = 'http://www.scpc.gov.cn' + url
     try:
 
-        response = requests.get(url, params=params,proxies = proxies)
+        response = requests.get(url, params=params, proxies=proxies)
 
     except Exception as e:
-        print('网络波动',url)
+        print('网络波动', url)
         try:
             print(url)
-            response = requests.get(url, params=params,proxies = getproxies())
+            response = requests.get(url, params=params, proxies=getproxies())
         except Exception as e:
-            print('代理过期',url)
-            response = requests.get(url, params=params,proxies = getproxies(up= True))
+            print('代理过期', url)
+            response = requests.get(url, params=params, proxies=getproxies(up=True))
 
     response.encoding = 'utf-8'
     soup = BeautifulSoup(response.text, 'html.parser')
-    return response,soup
+    return response, soup
+
 
 if __name__ == '__main__':
-    url_test = 'http://www.ccgp-sichuan.gov.cn/freecms/site/sichuan/ggxx/info/2023/8a69c8b18c0bd8aa018c1dd48e712503.html?noticeType=00102'
-    response = make_request_get(url_test)
-    print(response.status_code)
-    print(response.text)
+    pass
+    # url_test = 'http://www.ccgp-sichuan.gov.cn/freecms/site/sichuan/ggxx/info/2023/8a69c8b18c0bd8aa018c1dd48e712503.html?noticeType=00102'
+    # response = make_request_get(url_test)
+    # print(response.status_code)
+    # print(response.text)
