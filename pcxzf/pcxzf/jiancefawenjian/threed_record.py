@@ -172,7 +172,7 @@ class QueueManager:
         for row in ws[row + 1]:
             row.font = conf.header_font
         for row in res2:
-            ws.append([row[1], row[2], row[3], conf.score_dic[row[4]], row[5], row[6], row[7]])
+            ws.append([row[1], row[2], row[3], row[4], row[5], row[6], row[7]])
 
         ws.column_dimensions['A'].width = 40
         # 设置列A的宽度为50

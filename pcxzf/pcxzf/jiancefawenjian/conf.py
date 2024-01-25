@@ -94,16 +94,16 @@ database_zs_net = {
     "password": "vas9624..",
     "database": "smartpingchangdb"
 }
-database = database_zs_net
+database = database_cs
 
 # 考核类型 17：机器人-栏目超期   18：机器人-统计信息缺失  19：机器人-政府信息公开年报缺失
-menu_over_update = '17'
-miss_tj_year = '18'
-zf_year_report = '19'
+menu_over_update = '机器人-栏目超期'
+miss_tj_year = '机器人-统计信息缺失'
+zf_year_report = '机器人-政府信息公开年报缺失'
 finish_score = '统计扣分情况发送'
 
-# 考核类型映射字典
-score_dic = {menu_over_update: '机器人-栏目超期', miss_tj_year: '机器人-统计信息缺失', zf_year_report: '机器人-政府信息公开年报缺失'}
+# # 考核类型映射字典
+# score_dic = {menu_over_update: '机器人-栏目超期', miss_tj_year: '机器人-统计信息缺失', zf_year_report: '机器人-政府信息公开年报缺失'}
 
 # 按照星期几确定是否考核
 # is_record = current_weekday != 0
