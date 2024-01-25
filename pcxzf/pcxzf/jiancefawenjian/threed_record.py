@@ -138,27 +138,7 @@ class QueueManager:
                 func(value)
 
     def sendMsg(self, res,res2):
-        # x = len(res)
-        # data = {
-        #     "msgtype": "markdown",
-        #     "markdown": {
-        #         "content": f" 本周共<font color=\"warning\">{x}</font>个单位被扣分，扣分统计如下\n\n"
-        #     }
-        # }
-        # for row in res:
-        #     company_name = row[0]
-        #     score = row[1]
-        #     data["markdown"]["content"] += f"## {company_name}\n\n"
-        #     data["markdown"]["content"] += f"- 扣分: {score}\n"
-        #
-        # key = conf.key_cs
-        # url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
-        #
-        # # 发送HTTP POST请求
-        # response = requests.post(url, data=json.dumps(data))
-        #
-        # # 输出响应结果
-        # print(response.text)
+
         # 创建一个新的工作簿
         wb = Workbook()
         # 获取活动工作表
@@ -192,7 +172,7 @@ class QueueManager:
         for row in ws[row + 1]:
             row.font = conf.header_font
         for row in res2:
-            ws.append([row[1], row[2], row[3], row[4], row[5], row[6], row[7]])
+            ws.append([row[1], row[2], row[3], conf.score_dic[row[4]], row[5], row[6], row[7]])
 
         ws.column_dimensions['A'].width = 40
         # 设置列A的宽度为50
@@ -205,7 +185,7 @@ class QueueManager:
 
         # 保存文件
         wb.save(conf.xlsx_score_name)
-        self.send_excel()
+        # self.send_excel()
 
     def send_excel(self):
         key = conf.key_cs

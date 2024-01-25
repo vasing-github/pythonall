@@ -24,7 +24,7 @@ current_weekday = datetime.datetime.now().weekday()
 
 # 如果当前是星期一，选择正式群的key，否则选择测试小群的key
 key_choose = key_zs if current_weekday == 0 else key_cs
-is_record = current_weekday != 0
+
 
 up_time_conf = {
     '机关简介': 365,
@@ -82,12 +82,32 @@ database_cs = {
     "password": "vas9624..",
     "database": "smartpc"
 }
-database = database_cs
+database_zs_nat = {
+    "host": "10.167.39.125",
+    "user": "kfvasing",
+    "password": "vas9624..",
+    "database": "smartpingchangdb"
+}
+database_zs_net = {
+    "host": "222.215.24.208",
+    "user": "kfvasing",
+    "password": "vas9624..",
+    "database": "smartpingchangdb"
+}
+database = database_zs_net
 
-menu_over_update = '机器人-栏目超期'
-miss_tj_year = '机器人-统计信息缺失'
-zf_year_report = '机器人-政府信息公开年报缺失'
+# 考核类型 17：机器人-栏目超期   18：机器人-统计信息缺失  19：机器人-政府信息公开年报缺失
+menu_over_update = '17'
+miss_tj_year = '18'
+zf_year_report = '19'
 finish_score = '统计扣分情况发送'
+
+# 考核类型映射字典
+score_dic = {menu_over_update: '机器人-栏目超期', miss_tj_year: '机器人-统计信息缺失', zf_year_report: '机器人-政府信息公开年报缺失'}
+
+# 按照星期几确定是否考核
+# is_record = current_weekday != 0
+is_record = 0
 
 xlsx_score_name = '本周考核反馈(测试数据)v1.0.xlsx'
 
