@@ -9,9 +9,9 @@ no_content_list = [('平昌县交通运输局', '机关简介'), ('平昌县岳�
 missing_years_dict = {'平昌县商务局': ['2018年', '2019年'], '平昌县退役军人事务局': ['2018年', '2019年'], '平昌县信访局': ['2018年', '2019年'], '平昌县医疗保障局': ['2018年', '2019年'], '平昌县金宝街道办事处': ['2018年', '2019年'], '平昌县驷马镇人民政府': ['2020年'], '平昌县江家口镇人民政府': ['2018年', '2019年']}
 
 
-# qm.add_item({conf.menu_over_update: final_dic})
-# qm.add_item({conf.miss_tj_year: tj_miss_year_dic})
-# qm.add_item({conf.zf_year_report: missing_years_dict})
+qm.add_item({conf.menu_over_update: final_dic})
+qm.add_item({conf.miss_tj_year: tj_miss_year_dic})
+qm.add_item({conf.zf_year_report: missing_years_dict})
 
 qm.add_item({conf.finish_score: None})
 qm.stop()

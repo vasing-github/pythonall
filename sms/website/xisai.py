@@ -60,4 +60,4 @@ def xisai(phoneNum):
 while 1:
     xisai('17882700883')
     time.sleep(61)
-# xisai('19150471195')
+# xisai('18728773736')

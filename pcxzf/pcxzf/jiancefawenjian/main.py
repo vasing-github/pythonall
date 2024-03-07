@@ -88,24 +88,27 @@ def end_excel():
     wb.save(conf.xlsx_name)
 
 
-def make_excel():
+def make_new_excel():
     # 创建一个新的工作簿
     wb = Workbook()
     # 保存文件
     wb.save(conf.xlsx_name)
 
+
+def start_main():
     # 填充法定主动公开内容超期情况
     fadingzhudonggongkaineirong.startMain()
     gongkainianbao.startMain()
     jigouzhineng.startMain()
-    jicengzwgk.startMain()
+    # jicengzwgk.startMain()
 
     # 给表格增加一些注释
     end_excel()
 
 
 if __name__ == '__main__':
-    make_excel()
+    make_new_excel()
+    start_main()
     qm.add_item({conf.finish_score: None})
     sendMsg()
     qm.stop()

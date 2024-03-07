@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from bs4 import BeautifulSoup
 import requests
 import json
@@ -201,6 +203,7 @@ def dealdiv(div):
 
 def dorequest(dic,senddic):
     url = 'https://szpc.pcxzf.cn:8080/system/list'
+    # url = '10.167.39.125:8080/system/list'
     headers = {'Content-Type': 'application/json'}
 
     data = {
@@ -295,7 +298,7 @@ def sendMsg(msg):
     }
     for key, value in msg.items():
         data["markdown"]["content"] += f" ## {switchKey(key)}:"
-        data["markdown"]["content"] += f"- {value}条\n"
+        data["markdown"]["content"] += f" {value}条\n"
 
     # 定义企业微信机器人的webhook地址
     url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=425a53f6-696e-46c1-9d4a-fae8940b136f"
@@ -320,6 +323,7 @@ if __name__ == '__main__':
         href_lsit = getnewslist(href)
         for new in href_lsit:
             list_news.append(getnewsinfo(new,type))
+
         sendlistnews(list_news)
 
     # 爬取政策文件

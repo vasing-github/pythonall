@@ -1,7 +1,6 @@
 import requests
 import conf
 import datetime
-import openpyxl
 import re
 import json
 import collections
@@ -101,32 +100,6 @@ def startMain():
     deal_cw_jugement(pcyw_list,conf.xw_cw_url)
 
 
-
-
-def make_excel(news_list,excelname):
-    # 创建一个Workbook对象
-    wb = openpyxl.Workbook()
-
-    # 获取当前的Worksheet对象
-    ws = wb.active
-
-    # 遍历列表中的每一个元组
-    for tup in news_list:
-        # 将元组添加到表格的一行中
-        ws.append(tup)
-    counter = collections.Counter(tup[2] for tup in news_list)
-
-    # 打印计数结果
-    print(counter)
-    ws.append(['单位', '数量'])
-
-    # 遍历字典中的每一个键值对
-    for key, value in counter.items():
-        # 将键值对添加到表格的一行中
-        ws.append([key, value])
-
-    # 保存表格到文件中
-    wb.save(excelname)
 def jugedate(date):
     date_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
     date_target = datetime.datetime.now() - datetime.timedelta(days=conf.before_date)

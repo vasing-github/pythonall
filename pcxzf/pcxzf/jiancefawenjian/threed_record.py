@@ -185,10 +185,10 @@ class QueueManager:
 
         # 保存文件
         wb.save(conf.xlsx_score_name)
-        # self.send_excel()
+        self.send_excel()
 
     def send_excel(self):
-        key = conf.key_cs
+        key = conf.record_key_choose
         url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
         # 上传文件
         filename = conf.xlsx_score_name
