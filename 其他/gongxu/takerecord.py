@@ -1,7 +1,8 @@
 import requests
-def taskrecord(recordid,studycode,src,sectionid,studytime):
+import conf
+def taskrecord(recordid,studycode,src,sectionid,studytime, userid,planid):
     cookies = {
-        'JSESSIONID': '3ED2DF485B568035AF67D07581AA3136',
+        'JSESSIONID': conf.jessionid,
     }
 
     headers = {
@@ -27,10 +28,15 @@ def taskrecord(recordid,studycode,src,sectionid,studytime):
         'updateRedisMap': '1',
         'recordId': recordid,
         'sectionId': sectionid,
-        'signId': '151#b34287b27e1142fb9f00d0046e6a9ee9#p1s0_25322e12-92be-11e3-b77c-d4ae526c695b',
+        'signId': '151#'+planid+'#'+userid,
+        # 'signId': '151#97624af4fdea4442890d4c257dbe83f2#db94e12f4a9d45a19936bc304cbe26c4',
+
         'time': studytime,
         'businessId': 'gp5',
     }
-    print(studytime)
+    # print(data)
+
     response = requests.post('https://videoadmin.chinahrt.com/videoPlay/takeRecord', cookies=cookies, headers=headers, data=data)
     print(response.text)
+    return response.json()['status']
+

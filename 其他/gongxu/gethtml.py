@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
-
-def get_src(courceid,selectionid):
+import conf
+def get_src(courceid,selectionid,ck,planid):
     cookies = {
         'PLATFORM_INFO__': '151',
-        'chrt_token_151': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzIzMTk4MDAzMjgzMzM2QDE1MSIsIm1vYmlsZSI6IjEzNTY4NDcxMjY2IiwidXNlck5hbWUiOiI1MTM3MjMxOTgwMDMyODMzMzYiLCJ1c2VySWQiOiJwMXMwXzI1MzIyZTEyLTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcwOTc5NTAzMSwianRpIjoiMmMzMjNkNjkyOTQ2NGRlY2E0NzMxNmY2YWY1MThkNmQifQ.WF2xw43lxx9w_bJlf0S0DWNx4oqxS7OEXMNKNKFOQZw',
+        'chrt_token_151': ck,
     }
 
     headers = {
@@ -31,7 +31,7 @@ def get_src(courceid,selectionid):
     }
 
     response = requests.get(
-        'https://edu.chinahrt.com/151/play_video/b34287b27e1142fb9f00d0046e6a9ee9-'+courceid,
+        'https://edu.chinahrt.com/151/play_video/'+planid+'-'+courceid,
         params=params,
         cookies=cookies,
         headers=headers,
@@ -49,5 +49,9 @@ def get_src(courceid,selectionid):
         src = iframe.get('src')
         # 检查src是否以"https://videoadmin.chinahrt.com"开头
         if src and src.startswith('https://videoadmin.chinahrt.com'):
-            print(src)
+            # print(src)
             return src
+
+
+if __name__ == '__main__':
+    get_src()

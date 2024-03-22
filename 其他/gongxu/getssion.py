@@ -1,6 +1,6 @@
 import requests
-import conf
-def get_all_cource(ck, trainplanId):
+
+def getssion(ck):
 
     headers = {
         'Accept': '*/*',
@@ -18,18 +18,6 @@ def get_all_cource(ck, trainplanId):
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Windows"',
     }
-    url = 'https://gp.chinahrt.com/gp6/lms/stu/trainplanCourseHandle/selected_course?platformId=151&trainplanId='+trainplanId+'&curPage=1&pageSize=20&classType&learnFinish&selectCourseClassId'
-    # print(url)
-    response = requests.get(url,headers=headers,verify = False)
-    # print(response.text)
-    list_cource = response.json()['data']['courseStudyList']
-    ret_list = []
-    for cource in list_cource:
-        if cource['learnPercent'] == '100':
-            continue
-        ret_list.append(cource['courseId'])
-    return ret_list
 
-
-if __name__ == '__main__':
-    print(get_all_cource())
+    response = requests.get('https://gp.chinahrt.com/gp6/system/stu/user/getSession', headers=headers,verify = False)
+    return response.json()['data']['userId'], response.json()['data']['realName']

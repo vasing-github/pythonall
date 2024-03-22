@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
 import time
-
 import requests
-import conf
+
 import test_get_recordid
 import takerecord
-def get_cource_detail(courceid):
+import get_cource
+def get_cource_detail(courceid,ck,planid):
     headers = {
         'Accept': '*/*',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
-        'Hrttoken': conf.cookie,
+        'Hrttoken': ck,
         'Origin': 'https://edu.chinahrt.com',
         'Referer': 'https://edu.chinahrt.com/',
         'Sec-Fetch-Dest': 'empty',
@@ -24,48 +25,56 @@ def get_cource_detail(courceid):
 
     params = {
         'courseId': courceid,
-        'trainplanId': 'b34287b27e1142fb9f00d0046e6a9ee9',
+        'trainplanId': planid,
         'platformId': '151',
     }
 
-    response = requests.get('https://gp.chinahrt.com/gp6/lms/stu/course/courseDetail', params=params, headers=headers, verify=False)
+    response = requests.get('https://gp.chinahrt.com/gp6/lms/stu/course/courseDetail', params=params, headers=headers)
     chapter_list = response.json()['data']['course']['chapter_list']
     all_cource = []
     for chapter in chapter_list:
         for selction in chapter['section_list']:
-
+            if selction['study_status']  =='已学完':
+                continue
             all_cource.append(selction)
 
     return all_cource
+
+
 if __name__ == '__main__':
-    list_cource = [
-       '09f49a3bbc0d4d89a422550a366a9a18',
-       '2c9ff022029b4d0fa3a64948fc00a73c',
-        '2gPauPN1AgJXV4v6wJsX5',
-       #  '6fidE1rl-j1plKeBNSFAk',
-       #  '8f1fbd28c2ce43c983c51c1030a80c63',
-       #  'd536937a57be45f38233a245496a976c',
-       #  'd8d7128ffd984e95960c8daf31540638',
-        'e0QdGP6T7NPtjbW3Ec8ud',
-        'ed4db77a25954589b7732bd044618f0d',
-         'Mq1UUdk8k-GqsQqMUVEVF',
-    ]
+
+    list_cource = get_cource.get_all_cource()
+    print('所有课程id：',list_cource)
     cource_selection_dic = {}
     for cource in list_cource:
         list_selection = get_cource_detail(cource)
         cource_selection_dic[cource] = list_selection
-    print(cource_selection_dic)
-    # cource_selection_dic = {'6fidE1rl-j1plKeBNSFAk': ['6fidE1rl-j1plKeBNSFAk1-1', '6fidE1rl-j1plKeBNSFAk1-2', '6fidE1rl-j1plKeBNSFAk1-3', '6fidE1rl-j1plKeBNSFAk1-4'], '8f1fbd28c2ce43c983c51c1030a80c63': ['8f1fbd28c2ce43c983c51c1030a80c631-1', '8f1fbd28c2ce43c983c51c1030a80c631-2', '8f1fbd28c2ce43c983c51c1030a80c631-3', '8f1fbd28c2ce43c983c51c1030a80c631-4'], 'd536937a57be45f38233a245496a976c': ['d536937a57be45f38233a245496a976c1-1', 'd536937a57be45f38233a245496a976c1-2', 'd536937a57be45f38233a245496a976c1-3', 'd536937a57be45f38233a245496a976c1-4', 'd536937a57be45f38233a245496a976c1-5'], 'd8d7128ffd984e95960c8daf31540638': ['d8d7128ffd984e95960c8daf315406381-1', 'd8d7128ffd984e95960c8daf315406381-2', 'd8d7128ffd984e95960c8daf315406381-3']}
+    print('所有章节：',cource_selection_dic)
+
+
+    # cource_selection_dic =  {'-JnWdzhKUqeQfcpwyubzs': [{'id': '-JnWdzhKUqeQfcpwyubzs1-1', 'name': '导言', 'type': 0, 'total_time': 458.0, 'sco_current': None, 'total_time_str': '00:07:38', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '-JnWdzhKUqeQfcpwyubzs1-2', 'name': '第一章  如何正确理解数字经济与数字化转型', 'type': 0, 'total_time': 3302.0, 'sco_current': None, 'total_time_str': '00:55:02', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '-JnWdzhKUqeQfcpwyubzs1-3', 'name': '第二章  数字化转型的本质和关键问题', 'type': 0, 'total_time': 905.0, 'sco_current': None, 'total_time_str': '00:15:05', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '-JnWdzhKUqeQfcpwyubzs1-4', 'name': '第三章  如何做好数字化转型与管理创新', 'type': 0, 'total_time': 3440.0, 'sco_current': None, 'total_time_str': '00:57:20', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], '09e5d544d149413ebec05801789729b5': [{'id': '09e5d544d149413ebec05801789729b51-1', 'name': '导言', 'type': 0, 'total_time': 615.0, 'sco_current': None, 'total_time_str': '00:10:15', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '09e5d544d149413ebec05801789729b51-2', 'name': '第一章  加快发展方式绿色转型', 'type': 0, 'total_time': 1946.0, 'sco_current': None, 'total_time_str': '00:32:26', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '09e5d544d149413ebec05801789729b51-3', 'name': '第二章  深入推进环境污染防治', 'type': 0, 'total_time': 885.0, 'sco_current': None, 'total_time_str': '00:14:45', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '09e5d544d149413ebec05801789729b51-4', 'name': '第三章  提升生态系统多样性、稳定性、持续性', 'type': 0, 'total_time': 1813.0, 'sco_current': None, 'total_time_str': '00:30:13', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '09e5d544d149413ebec05801789729b51-5', 'name': '第四章  积极稳妥推进碳达峰、碳中和', 'type': 0, 'total_time': 971.0, 'sco_current': None, 'total_time_str': '00:16:11', 'studyTimeStr': '00:00:00', 'sort': 5, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], '0K2tBDpzS4Ui7JKyc3PL_': [{'id': '0K2tBDpzS4Ui7JKyc3PL_1-1', 'name': '第一章\u3000金融科技的含义（一）', 'type': 0, 'total_time': 2594.0, 'sco_current': None, 'total_time_str': '00:43:14', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '0K2tBDpzS4Ui7JKyc3PL_1-2', 'name': '第二章\u3000金融科技的含义（二）', 'type': 0, 'total_time': 2363.0, 'sco_current': None, 'total_time_str': '00:39:23', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '0K2tBDpzS4Ui7JKyc3PL_1-3', 'name': '第三章\u3000金融科技里的大数据和人工智能', 'type': 0, 'total_time': 2199.0, 'sco_current': None, 'total_time_str': '00:36:39', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '0K2tBDpzS4Ui7JKyc3PL_1-4', 'name': '第四章\u3000金融科技与数字化转型的关系', 'type': 0, 'total_time': 334.0, 'sco_current': None, 'total_time_str': '00:05:34', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], '4a668041366c49eda514c6dea0879427': [{'id': '4a668041366c49eda514c6dea08794271-1', 'name': '导言', 'type': 0, 'total_time': 400.0, 'sco_current': None, 'total_time_str': '00:06:40', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '4a668041366c49eda514c6dea08794271-2', 'name': '第一章  法治在党和国家工作全局中的重要地位', 'type': 0, 'total_time': 2040.0, 'sco_current': None, 'total_time_str': '00:34:00', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '4a668041366c49eda514c6dea08794271-3', 'name': '第二章  全面依法治国的推进思路', 'type': 0, 'total_time': 2035.0, 'sco_current': None, 'total_time_str': '00:33:55', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '4a668041366c49eda514c6dea08794271-4', 'name': '第三章  法治中国建设的主要任务', 'type': 0, 'total_time': 2381.0, 'sco_current': None, 'total_time_str': '00:39:41', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], '8e1475b32c03402b917262b399ce5018': [{'id': '8e1475b32c03402b917262b399ce50181-1', 'name': '第一章  数字经济的结构、特性与现状', 'type': 0, 'total_time': 2397.0, 'sco_current': None, 'total_time_str': '00:39:57', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '8e1475b32c03402b917262b399ce50181-2', 'name': '第二章  文化产业高质量发展的研判分析', 'type': 0, 'total_time': 438.0, 'sco_current': None, 'total_time_str': '00:07:18', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': '8e1475b32c03402b917262b399ce50181-3', 'name': '第三章  数字经济时代文化产业新格局', 'type': 0, 'total_time': 1519.0, 'sco_current': None, 'total_time_str': '00:25:19', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], 'b45c1a2f9e644f5dbb8c69a8d082e2a8': [{'id': 'b45c1a2f9e644f5dbb8c69a8d082e2a81-1', 'name': '第一章  产业区块链的实践与思考', 'type': 0, 'total_time': 1001.0, 'sco_current': None, 'total_time_str': '00:16:41', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '学习中', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'b45c1a2f9e644f5dbb8c69a8d082e2a81-2', 'name': '第二章  数字文创新挑战', 'type': 0, 'total_time': 2435.0, 'sco_current': None, 'total_time_str': '00:40:35', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'b45c1a2f9e644f5dbb8c69a8d082e2a81-3', 'name': '第三章  展望新生态', 'type': 0, 'total_time': 4227.0, 'sco_current': None, 'total_time_str': '01:10:27', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], 'eea919c12dbb4e30ba07a3c4348550b9': [{'id': 'eea919c12dbb4e30ba07a3c4348550b91-1', 'name': '导言', 'type': 0, 'total_time': 375.0, 'sco_current': None, 'total_time_str': '00:06:15', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'eea919c12dbb4e30ba07a3c4348550b91-2', 'name': '第一章   数字经济的本质和发展趋势', 'type': 0, 'total_time': 1425.0, 'sco_current': None, 'total_time_str': '00:23:45', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'eea919c12dbb4e30ba07a3c4348550b91-3', 'name': '第二章  产业数字化转型的理论基础和内在逻辑', 'type': 0, 'total_time': 1744.0, 'sco_current': None, 'total_time_str': '00:29:04', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'eea919c12dbb4e30ba07a3c4348550b91-4', 'name': '第三章  我国产业数字化转型的背景和战略意义', 'type': 0, 'total_time': 1258.0, 'sco_current': None, 'total_time_str': '00:20:58', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'eea919c12dbb4e30ba07a3c4348550b91-5', 'name': '第四章  我国产业数字化转型的政策思路和路径举措', 'type': 0, 'total_time': 1440.0, 'sco_current': None, 'total_time_str': '00:24:00', 'studyTimeStr': '00:00:00', 'sort': 5, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'eea919c12dbb4e30ba07a3c4348550b91-6', 'name': '第五章  产业数字化转型案例分享', 'type': 0, 'total_time': 1486.0, 'sco_current': None, 'total_time_str': '00:24:46', 'studyTimeStr': '00:00:00', 'sort': 6, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], 'nePmpPgntvDtG25NrZl-n': [{'id': 'nePmpPgntvDtG25NrZl-n1-1', 'name': '第一章  数智化时代与旅游', 'type': 0, 'total_time': 816.0, 'sco_current': None, 'total_time_str': '00:13:36', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'nePmpPgntvDtG25NrZl-n1-2', 'name': '第二章 数智化技术及其在旅游行业中的应用', 'type': 0, 'total_time': 4337.0, 'sco_current': None, 'total_time_str': '01:12:17', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'nePmpPgntvDtG25NrZl-n1-3', 'name': '第三章智慧养老的涵义与模式', 'type': 0, 'total_time': 1671.0, 'sco_current': None, 'total_time_str': '00:27:51', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'nePmpPgntvDtG25NrZl-n1-4', 'name': '第四章智慧康养平台的现状与趋势', 'type': 0, 'total_time': 1001.0, 'sco_current': None, 'total_time_str': '00:16:41', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}], 'slQ297_v5nzQcg3vicYbC': [{'id': 'slQ297_v5nzQcg3vicYbC1-1', 'name': '导言', 'type': 0, 'total_time': 463.0, 'sco_current': None, 'total_time_str': '00:07:43', 'studyTimeStr': '00:00:00', 'sort': 1, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': True, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'slQ297_v5nzQcg3vicYbC1-2', 'name': '第一章  我国数字经济发展现状', 'type': 0, 'total_time': 2343.0, 'sco_current': None, 'total_time_str': '00:39:03', 'studyTimeStr': '00:00:00', 'sort': 2, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'slQ297_v5nzQcg3vicYbC1-3', 'name': '第二章  欧美数字经济发展与中外对比', 'type': 0, 'total_time': 1744.0, 'sco_current': None, 'total_time_str': '00:29:04', 'studyTimeStr': '00:00:00', 'sort': 3, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'slQ297_v5nzQcg3vicYbC1-4', 'name': '第三章  数字经济的空间和方向', 'type': 0, 'total_time': 1135.0, 'sco_current': None, 'total_time_str': '00:18:55', 'studyTimeStr': '00:00:00', 'sort': 4, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'slQ297_v5nzQcg3vicYbC1-5', 'name': '第四章  数字人民币概述', 'type': 0, 'total_time': 1585.0, 'sco_current': None, 'total_time_str': '00:26:25', 'studyTimeStr': '00:00:00', 'sort': 5, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'slQ297_v5nzQcg3vicYbC1-6', 'name': '第五章  数字人民币背后的技术支持', 'type': 0, 'total_time': 210.0, 'sco_current': None, 'total_time_str': '00:03:30', 'studyTimeStr': '00:00:00', 'sort': 6, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}, {'id': 'slQ297_v5nzQcg3vicYbC1-7', 'name': '第六章  数字人民币产业链梳理', 'type': 0, 'total_time': 400.0, 'sco_current': None, 'total_time_str': '00:06:40', 'studyTimeStr': '00:00:00', 'sort': 7, 'studyStatus': None, 'study_status': '未学习', 'study_time': 0, 'ifShouldPay': False, 'sco_total': '', 'studyProcess': 0, 'trySeeTime': None}]}
+
     for courceid,selctions in cource_selection_dic.items():
-        print(courceid)
+
         for selction in selctions:
-            recordid , studydoce ,src = test_get_recordid.get_study_code_and_recordid(courceid,selction['id'])
+            print(courceid, selction['id'])
+            time.sleep(1)
             study_time = selction['study_time']
             total_time = selction['total_time']
             print(selction['name'])
+            print(study_time,total_time)
+            if selction['study_status'] == '已学完':
+                continue
+            recordid , studydoce ,src = test_get_recordid.get_study_code_and_recordid(courceid,selction['id'])
 
-            if study_time < 0.85 * total_time:
-                takerecord.taskrecord(recordid,studydoce,src,selction['id'],0.85 * total_time)
+            if study_time < 0.8 * total_time:
+                code = takerecord.taskrecord(recordid,studydoce,src,selction['id'], '%.4f' % (0.85 * total_time))
+                if code == '1':
+                    time.sleep(10)
+                    takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.85 * total_time))
             else:
-                takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30)
+                code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30)
+                if code == '1':
+                    time.sleep(10)
+                    takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30)
             time.sleep(10)

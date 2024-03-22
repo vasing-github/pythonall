@@ -3,8 +3,8 @@ import requests
 import gethtml
 import re
 from bs4 import BeautifulSoup
-def get_study_code_and_recordid(courceid,selectionid):
-    url = gethtml.get_src(courceid,selectionid)
+def get_study_code_and_recordid(courceid,selectionid,ck,planid):
+    url = gethtml.get_src(courceid,selectionid,ck,planid)
     response = requests.get(url, )
 
 

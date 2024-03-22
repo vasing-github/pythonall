@@ -1,27 +1,13 @@
-import requests
+# -*- coding: utf-8 -*-
+# return {'水质监测': 18, '不动产登记': 6, '征地信息': 4, '财政资金直达基层': 2, '环评公示': 2, '助企纾困': 1, '公共资源交易': 1, '价格信息': 1, '卫生健康': 1, '食品药品监管': 1}
+menu_num_dic = {'水质监测': 18, '不动产登记': 6, '征地信息': 4, '财政资金直达基层': 2, '环评公示': 2, '助企纾困': 1, '公共资源交易': 1, '价格信息': 1, '卫生健康': 1, '食品药品监管': 1}
+# 使用 sorted 函数对字典按值排序，并取前10个项目
+sorted_items = sorted(menu_num_dic.items(), key=lambda item: item[1], reverse=True)[:10]
 
-headers = {
-    'Accept': '*/*',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-    'Connection': 'keep-alive',
-    'Hrttoken': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzIzMTk4MDAzMjgzMzM2QDE1MSIsIm1vYmlsZSI6IjEzNTY4NDcxMjY2IiwidXNlck5hbWUiOiI1MTM3MjMxOTgwMDMyODMzMzYiLCJ1c2VySWQiOiJwMXMwXzI1MzIyZTEyLTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcwOTc5NTAzMSwianRpIjoiMmMzMjNkNjkyOTQ2NGRlY2E0NzMxNmY2YWY1MThkNmQifQ.WF2xw43lxx9w_bJlf0S0DWNx4oqxS7OEXMNKNKFOQZw',
-    'Origin': 'https://edu.chinahrt.com',
-    'Referer': 'https://edu.chinahrt.com/',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'same-site',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
-    'appid': 'gp6-1',
-    'sec-ch-ua': '"Microsoft Edge";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-}
+# 将排序后的元组列表转换为字典
+sorted_dict = dict(sorted_items)
 
-params = {
-    'courseId': '2c9ff022029b4d0fa3a64948fc00a73c',
-    'trainplanId': 'b34287b27e1142fb9f00d0046e6a9ee9',
-    'platformId': '151',
-}
-
-response = requests.get('https://gp.chinahrt.com/gp6/lms/stu/course/courseDetail', params=params, headers=headers, verify=False)
-print(response.text)
+# 打印排序后的字典
+print(sorted_dict)
+converted_list = [{"name": item[0], "value": item[1]} for item in sorted_items]
+print(converted_list)
