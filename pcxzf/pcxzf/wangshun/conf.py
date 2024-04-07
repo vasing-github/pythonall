@@ -16,7 +16,7 @@ def make_request_get(url):
 # 当日期小于目标不再爬取 包含
 target_date = '2024-1-1'
 # 当日期大于目标继续翻页  包含
-after_date = '2024-3-21'
+after_date = '2024-3-31'
 # 来源是这些排除
 out_comp = ['团委',
 			'日报',

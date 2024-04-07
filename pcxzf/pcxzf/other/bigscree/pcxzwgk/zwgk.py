@@ -50,8 +50,9 @@ async def save_web_data():
         json_str = json.dumps(hight_area_dic, ensure_ascii=False)
         f.write('hight_area_dic = ' + json_str + '\n')
 
-
         f.write('alljcgk = ' + str(alljcgk) + '\n')
+
+        f.write("time = '" + str(datetime.datetime.now()) + "'\n")
 
 
 # HTTP请求处理函数
@@ -59,16 +60,28 @@ async def handle_root(request):
     return web.Response(text="这是根路径")
 
 
+async def handle_checkpa(request):
+    dic = {}
+    dic['time'] = data_txt.time
+    dic['prox_num'] = conf.prox_num
+    a = all_gk_num.get('基础信息') + all_gk_num.get('要闻动态') + all_gk_num.get('重点领域1') + all_gk_num.get(
+        '所有政府信息') + all_gk_num.get('专题专栏') + alljcgk
+    dic['all_num'] = a
+    return web.json_response(dic)
+
+
 async def handle_pa(request):
-    await get_all_data()
-    return web.Response(text="爬完了")
+    asyncio.create_task(get_all_data())
+    return web.Response(text="Crawler started")
 
 
 async def handle_zhuanti(request):
     return web.json_response(zhuanti_of)
 
+
 async def handle_height(request):
     return web.json_response(hight_area_dic)
+
 
 async def handle_data(request):
     return web.json_response(jczwgk_dic)
@@ -122,7 +135,9 @@ async def init_app():
     cors.add(app.router.add_route("GET", '/getallgk', handle_getallgk))
     cors.add(app.router.add_route("GET", '/getdayweekmon', handle_getdayweekmon))
     cors.add(app.router.add_route("GET", '/pa', handle_pa))
+    cors.add(app.router.add_route("GET", '/checkpa', handle_checkpa))
     return app
+
 
 # 定时执行的爬虫任务
 async def periodic_crawler():
@@ -149,6 +164,8 @@ async def periodic_crawler():
 
 
 async def get_all_data():
+    conf.prox_num = 0
+
     new_dic = await get_web_data.get_ywdt_num()
     all_gk_num = await get_web_data.get_all_gk_num()
     day_week_mon_dic = await get_web_data.get_day_week_mon_dic()
@@ -166,13 +183,9 @@ async def main():
     # 启动HTTP服务
     runner = web.AppRunner(await init_app())
     await runner.setup()
-    site = web.TCPSite(runner, 'localhost', 8888)
+    site = web.TCPSite(runner, '0.0.0.0', 8888)
     await site.start()
     print("HTTP服务已启动")
-
-    # 启动定时爬虫任务
-    asyncio.create_task(periodic_crawler())
-
     # 运行直到被取消
     await asyncio.Event().wait()
 

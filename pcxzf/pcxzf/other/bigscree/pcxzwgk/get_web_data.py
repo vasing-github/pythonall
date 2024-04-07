@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 import conf
 import asyncio
-import re
 import jczwgk
-from bs4 import BeautifulSoup
-import requests
-import json
 import datetime
 import re
 
@@ -21,11 +17,11 @@ async def count_a(href):
     return a
     # all_gk_dic['all_gk'] = all_gk_dic.get('all_gk') + a
 
-def getzfxxpages():
-    bumenList = getAllbumen(None)
+async def getzfxxpages():
+    bumenList = await getAllbumen()
     bumen_Mennu_list = {}
     for key, value in bumenList.items():
-        menuDic = getMenniu(None, value)
+        menuDic = await getMenniu(None, value)
         bumen_Mennu_list[key] = menuDic
 
     # 这是第三步找更新时间
@@ -41,7 +37,7 @@ def getzfxxpages():
         for menu, href in value.items():
             print(menu)
             time_list = []
-            upTime = getkeywork(None, href, time_list)
+            upTime = await getkeywork(None, href, time_list)
             print('uptime', upTime)
             print(len(time_list))
             _a += get_li_num(time_list, False)
@@ -77,7 +73,7 @@ async def get_all_gk_num():
     _a = 0
     for key, href in conf.height_area_redirct_dic.items():
         time_list = []
-        getkeywork(None, href, time_list)
+        await getkeywork(None, href, time_list)
         _a += get_li_num(time_list, False)
     all_gk_dic['重点领域2'] = _a
 
@@ -88,7 +84,7 @@ async def get_all_gk_num():
     all_gk_dic['专题专栏'] = _a
 
     # 政府信息部分计数
-    all,day,week,mon = getzfxxpages()
+    all,day,week,mon = await getzfxxpages()
     all_gk_dic['所有政府信息'] = all
     all_gk_dic['当天政府信息'] = day
     all_gk_dic['本周政府信息'] = week
@@ -97,11 +93,11 @@ async def get_all_gk_num():
 
     print('count', all_gk_dic)
     return all_gk_dic
-def getMenniu(prox,bumen):
+async def getMenniu(prox,bumen):
     if not bumen.startswith('http'):
         bumen = 'http://www.scpc.gov.cn' + bumen
 
-    response,soup = conf.make_request_get(bumen)
+    response, soup = await conf.make_request_get(bumen)
     # 以 Beautiful Soup 解析 HTML 程序码
 
     # 提取 id 为 fdzd_gknr 的 div 标签下的所有 a 标签
@@ -116,21 +112,18 @@ def getMenniu(prox,bumen):
             menuList[title] = href
     return menuList
 
-def getAllbumen(prox):
+async def getAllbumen():
     url = 'http://www.scpc.gov.cn/public/column/6601841?type=4&action=rel'
-    data = {}
-    headers = {
-        'Accept': '*/*',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-        'Connection': 'keep-alive',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
-    }
-    response = requests.get(url, headers=headers, data=data,proxies=prox)
-
-    # 以 Beautiful Soup 解析 HTML 程序码
-    soup = BeautifulSoup(response.text, 'html.parser')
+    # data = {}
+    # headers = {
+    #     'Accept': '*/*',
+    #     'Accept-Encoding': 'gzip, deflate, br',
+    #     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+    #     'Connection': 'keep-alive',
+    #     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
+    # }
+    response, soup = await conf.make_request_get(url,)
 
     # 提取所有 ul 标签下的所有 li 元素
     li_elements = []
@@ -151,7 +144,7 @@ def getAllbumen(prox):
     return bumenList
 
 async def get_num(href):
-    response, soup = conf.make_request_get(href)
+    response, soup = await conf.make_request_get(href)
     print(href)
     scripts = soup.find_all("script")
     for script in scripts:
@@ -201,20 +194,19 @@ async def get_day_week_mon_dic():
     list_pages =[]
     # 要闻动态计数
     for href in conf.ywdt_dic.values():
-        list_pages.extend(get_page(href))
+        list_pages.extend(await get_page(href))
 
     # 基础信息公开计数
     for href in conf.jichu_dic.values():
-        list_pages.extend(get_page(href))
+        list_pages.extend(await get_page(href))
 
     # 重点领域不跳转部分计数
     for href in conf.height_area_with_total_dic.values():
-        list_pages.extend(get_page(href))
+        list_pages.extend(await get_page(href))
 
     # 专题专栏部分计数
     for href in conf.zhuanti_total_list:
-        list_pages.extend(get_page(href))
-
+        list_pages.extend(await get_page(href))
 
     count_day, count_week, count_month = count_dates(list_pages, datetime.now())
 
@@ -225,7 +217,7 @@ async def get_day_week_mon_dic():
     print(count_dic)
     return count_dic
 
-def deal_page(page_count, url):
+async def deal_page(page_count, url):
     list_all_page = []
     flag = False
     for i in range(1, int(page_count) + 1):
@@ -233,10 +225,10 @@ def deal_page(page_count, url):
             break
         new_url = url + str(i)
         # print(new_url)
-        res = conf.make_request_get(new_url)
+        res = await conf.make_request_get(new_url)
         # 如果这里的网页请求不到，说明就是在基层政务公开这个专栏发的，没有跳转到其他地方链接，这个时候要用网页里面获取页面内容的js方法请求
         # 有些页面加了pageindex仍然能访问，但实际却并不会跳转，这一部分再上面处理
-        if res[0].status_code != 404:
+        if res[0].status != 404:
 
             div_elment = res[1].find('div', {'class': 'listnews'})
             if div_elment is not None:
@@ -259,14 +251,14 @@ def deal_page(page_count, url):
 
     return list_all_page
 
-def get_page(url):
+async def get_page(url):
     # 正则表达式
     pattern = r'www\.scpc\.gov\.cn(.*)'
     # 搜索匹配的路径
     match = re.search(pattern, url)
     if match:
         url = match.group(1)
-    res = conf.make_request_get(url)
+    res = await conf.make_request_get(url)
     # 二级事项跳转目录不尽相同，如果div有listnews，直接在这个页面找，并且有些会翻页,第一步找含有listnews的能否翻页，第二部找是否有listnews，第三步找没有listnews的
     # 找到包含pageCount的<script>标签
     script_tag = res[1].find('script', string=re.compile('pageCount'))
@@ -282,7 +274,7 @@ def get_page(url):
             if url_match:
                 url = url_match.group(1)
                 print(f"提取的URL是: {url}")
-                return deal_page(page_count, url)
+                return await deal_page(page_count, url)
     else:
         # 如果没有pagecount，可能是只有一页，所以传值1，但也可能是不跳转，所以没有pagecount，这个时候在基层政务公开这个页面找右侧列表
         div_elment = res[1].find('div', {'class': 'navjz clearfix'})
@@ -296,13 +288,13 @@ def get_page(url):
                     page_news_dic[title] = href
                 return deal_area_page_news(page_news_dic)
         else:
-            return deal_page(1, url)
+            return await deal_page(1, url)
 
 
-def deal_area_page_news(page_news_dic):
+async def deal_area_page_news(page_news_dic):
     list_all_page = []
     for title, url in page_news_dic.items():
-        res = conf.make_request_get(url)
+        res = await conf.make_request_get(url)
         div_elment = res[1].find('div', {'class': 'newsinfo clearfix'})
         if div_elment is None:
             continue
@@ -338,7 +330,7 @@ async def get_jczwgk_dic():
     # {"name": "司法局", "value": 0}
     # ],2489
 
-    area_num_dic, allgk = jczwgk.startMain()
+    area_num_dic, allgk = await jczwgk.startMain()
     comp_num_dic = {}
 
     for area, comp in conf.jczwgk_area_comp_dic.items():
@@ -367,8 +359,10 @@ def get_li_num2(list_tags):
     current_day = now.day
 
     # 获取当前周的开始和结束日期
-    start_week = now - timedelta(days=now.weekday())
-    end_week = start_week + timedelta(days=6)
+    # 计算一周的开始和结束时间
+    start_week = now - timedelta(days=now.weekday(), hours=now.hour, minutes=now.minute, seconds=now.second,
+                                 microseconds=now.microsecond)
+    end_week = start_week + timedelta(days=6, hours=23, minutes=59, seconds=59)
 
     # 初始化计数器
     count_day = 0
@@ -376,7 +370,6 @@ def get_li_num2(list_tags):
     count_month = 0
 
     for tag_str in list_tags:
-
         tag = tag_str.text
 
         # 检查标签的内容是否是日期
@@ -434,13 +427,13 @@ async def get_height_area():
     menu_num_dic = {}
     # 重点领域不跳转部分计数
     for key, href in conf.height_area_with_total_dic.items():
-        _a = len(get_page(href))
+        _a = len(await get_page(href))
         menu_num_dic[key] = _a
 
     # 重点领域跳转部分计数
     for key, href in conf.height_area_redirct_dic.items():
         time_list = []
-        getkeywork(None, href, time_list)
+        await getkeywork(None, href, time_list)
         _a = get_li_num(time_list, True)
         menu_num_dic[key] = _a
 
@@ -457,11 +450,11 @@ async def get_height_area():
 
 
 # 这个方法不是直接取网页数据了，是取网页中的js方法，以及参数，用它来请求每一页的数据，如果js为空  说明就只有一页数据，那就拿到这一页的日期返回去，如果不为空，就用gettimebypage方法返回所有日期列表
-def getkeywork(prox,menu,time_list):
+async def getkeywork(prox,menu,time_list):
     if not menu.startswith('http'):
         menu = 'http://www.scpc.gov.cn' + menu
 
-    response,soup = conf.make_request_get(menu)
+    response,soup = await conf.make_request_get(menu)
 
     # 查找所有的<script>标签
     scripts = soup.find_all('script')
@@ -486,7 +479,7 @@ def getkeywork(prox,menu,time_list):
 
                     page_count = page_count_match.group(1)
 
-                    return getTimeListByPage(time_list,url,data_str,page_count)
+                    return await getTimeListByPage(time_list,url,data_str,page_count)
 
 
     li_elements = soup.find_all('li', {'class': 'rq'})
@@ -496,7 +489,7 @@ def getkeywork(prox,menu,time_list):
     return time_list
 
 
-def getTimeListByPage(time_list,url,data_str,pagecount):
+async def getTimeListByPage(time_list,url,data_str,pagecount):
     # 存储所有页面的数据
     # all_pages_data = []
     # 使用正则表达式提取siteId，catId和file
@@ -537,10 +530,10 @@ def getTimeListByPage(time_list,url,data_str,pagecount):
             }
 
             # 发送请求
-            response, soup = conf.make_request_get(url, params=params)
+            response, soup = await conf.make_request_get(url, params=params)
 
             # 检查响应状态码
-            if response.status_code == 200:
+            if response.status == 200:
                 # 将页面数据添加到列表中
                 # all_pages_data.append(response.text)
 
@@ -548,7 +541,7 @@ def getTimeListByPage(time_list,url,data_str,pagecount):
 
                 time_list.extend(li_elements)
             else:
-                print(f"请求失败，状态码：{response.status_code}")
+                print(f"请求失败，状态码：{response.status}")
 
     return time_list
 
@@ -567,9 +560,9 @@ async def get_zhuanti_of():
     return zhuan_dic
 
 async def main():
-    await get_ywdt_num()
-    await get_all_gk_num()
-    await get_day_week_mon_dic()
+    # await get_ywdt_num()
+    # await get_all_gk_num()
+    # await get_day_week_mon_dic()
     await get_jczwgk_dic()
     await get_zhuanti_of()
     await get_height_area()

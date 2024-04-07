@@ -1,0 +1,1070 @@
+/*动画延时*/
+.delay04{
+	-webkit-animation-delay:0.4s;
+}
+.delay05{
+	-webkit-animation-delay:0.5s;
+}
+.delay06{
+	-webkit-animation-delay:0.6s;
+}
+.delay07{
+	-webkit-animation-delay:0.7s;
+}
+.delay08{
+	-webkit-animation-delay:0.8s;
+}
+.delay09{
+	-webkit-animation-delay:0.9s;
+}
+.delay10{
+	-webkit-animation-delay:1.0s;
+}
+.delay11{
+	-webkit-animation-delay:1.1s;
+}
+.delay12{
+	-webkit-animation-delay:1.2s;
+}
+.delay13{
+	-webkit-animation-delay:1.3s;
+}
+.delay14{
+	-webkit-animation-delay:1.4s;
+}
+/*新闻列表样式*/
+.ksnews-box{
+	position: relative;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	height: auto;
+	overflow: hidden;
+}
+.ksnews-box li{
+	position: relative;
+	width: 50%;
+	height: auto;
+	float: left;
+	margin: 0;
+	padding: 2.5%;
+	cursor: pointer;
+}
+.ksnews-box li.list2{
+	width: 50%;
+}
+.ksnews-box li:nth-child(4n-1){
+	background: rgba(255,255,255,.4);
+	transition:all 0.3s;
+	border: 2px solid  rgba(225,205,190,.1);
+}
+.ksnews-box li:nth-child(4n+0){
+	transition:all 0.3s;
+	background: rgba(225,205,190,.3);
+	border: 2px solid  rgba(0,153,68,.01);
+}
+.ksnews-box li:nth-child(4n+1){
+	background: rgba(225,205,190,.3);
+	transition:all 0.3s;
+	border: 2px solid  rgba(0,153,68,.01);
+}
+.ksnews-box li:nth-child(4n+2){
+	transition:all 0.3s;
+	background: rgba(255,255,255,.4);
+	border: 2px solid  rgba(255,255,255,.1);
+}
+
+.ksnews-box li:hover{
+	background: #fff;
+	border: 2px solid #9e4f68;
+}
+/*.ksnews-box li:nth-child(4n-1):hover{
+	background: #27c8a3;
+}
+.ksnews-box li:nth-child(4n+0):hover{
+	background: #27c8a3;
+}
+.ksnews-box li:nth-child(4n+1):hover{
+	background: #27c8a3;
+}
+.ksnews-box li:nth-child(4n+2):hover{
+	background: #27c8a3;
+}*/
+
+/*.ksnews-box li:nth-child(odd){
+	background: rgba(221,221,221,.2);
+	transition:all 0.3s;
+}
+.ksnews-box li:nth-child(odd):hover{
+	background: rgba(255,255,255,1);
+}
+.ksnews-box li:nth-child(even){
+	transition:all 0.3s;
+	background: rgba(255,255,255,.2);
+}
+.ksnews-box li:nth-child(even):hover{
+	background: rgba(255,255,255,1);
+}*/
+.ksnews-box li .time-m{
+	position: relative;
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	font-family: arial;
+	font-size: 20px ;
+	color: rgba(141,117,96,.5);
+	text-align: left;
+	transition:all 0.3s;
+}
+.ksnews-box li:hover .time-m{
+	color: rgba(141,117,96,1);
+}
+.ksnews-box li .time-y{
+	position: relative;
+	width: 100%;
+	height: 18px;
+	line-height: 18px;
+}
+.ksnews-box li .time-y .year{
+	float: left;
+	width: auto;
+	line-height: 18px;
+	font-size: 13px ;
+	color: rgba(141,117,96,.5);
+}
+.ksnews-box li:hover .time-y .year{
+	color: rgba(141,117,96,1);
+}
+.ksnews-box li .time-y .yright{
+	float: left;
+	width: 10px;
+	height: 2px;
+	background: #9e4f68;;
+	margin: 10px 0px 0px 5px;
+	transition: all 0.3s;
+}
+.ksnews-box li:hover .time-y .yright{
+	width: 30px;
+}
+.ksnews-box li .title{
+    position: relative;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    font-size: 16px;
+    color: #8d7560;
+    margin-top: 10px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    transition: all 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.ksnews-box li:hover .title{
+	color: #9e4f68;
+}
+.ksnews-box li .title span.tists {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 3px;
+}
+.ksnews-box li .title span.fushu {
+    display: block;
+    width: auto;
+    height: 16px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    line-height: 16px;
+    color: rgb(255, 255, 255);
+    margin-left: 5px;
+    padding: 0px 5px;
+    background: #9e4f68;
+    overflow: hidden;
+}
+.ksnews-box li .info{
+	height: 65px;
+	line-height: 21px;
+	font-size: 12px;
+	color: rgba(141,117,96,.7);
+	margin-top: 15px;
+    overflow: hidden;
+    transition:all 0.3s;
+}
+.ksnews-box li:hover .info{
+	color:rgba(141,117,96,1);
+}
+.ksnews-box li .info .imgbox{
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 65px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+.ksnews-box li .info .imgbox .spico{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition:all 0.3s;
+    background: rgba(0,0,0,.1);
+    z-index: 100;
+}
+.ksnews-box li .info .imgbox .spico i{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 50%;
+    margin-left: -15px;
+    top: 50%;
+    margin-top: -15px;
+    color: #fff;
+    font-size: 30px;
+    line-height: 30px;
+}
+.ksnews-box li .info .imgbox .img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition:all 0.3s;
+    /*-webkit-filter: grayscale(80%);
+    filter: grayscale(80%);*/
+}
+.ksnews-box li:hover .info .imgbox .img{
+    -webkit-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+	-webkit-filter: grayscale(0);
+    filter: grayscale(0);
+}
+.ksnews-box li .more{
+    position: relative;
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	font-size: 12px;
+	text-align: left;
+	color: #7d6f66;
+	margin-top: 10PX;
+	transition:all 0.3s;
+}
+.ksnews-box li:hover .more{
+	color: #9e4f68;
+}
+.ksnews-box li .more span{
+	color: #9e4f68;
+	font-size: 30px;
+}
+
+/*图文列表样式*/
+.kspics-box{
+	position: relative;
+	width: 100%;
+	max-width: 1350px;
+	margin: 0 auto;
+	height: auto;
+	margin-bottom: 25px;
+	overflow: hidden;
+}
+.kspics-box li{
+	position: relative;
+	width: 49.8%;
+	height: 220px;
+	float: left;
+	margin: 0;
+	border: 2px solid rgba(153,0,0,.0);
+	transition:all 0.3s;
+	cursor: pointer;
+}
+.kspics-box li:hover{
+	border: 2px solid rgba(153,0,0,0.8);
+}
+.kspics-box li .imgbox{
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	top: 0;
+	overflow: hidden;
+	transition:all 0.3s;
+	border: 0px solid rgba(0,0,0,.0);
+}
+.kspics-box li:hover .imgbox{
+	width: 45%;
+	border: 3px solid rgba(0,0,0,.0);
+}
+.kspics-box li .imgbox .img{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition:all 0.3s;
+	-webkit-filter: grayscale(80%);
+    filter: grayscale(80%);
+}
+.kspics-box li:hover .imgbox .img{
+	-webkit-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+	-webkit-filter: grayscale(0);
+    filter: grayscale(0);
+}
+.kspics-box li .infobox{
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	top: 0;
+	overflow: hidden;
+	transition:all 0.3s;
+}
+.kspics-box li:hover .infobox{
+	position: absolute;
+	width: 55%;
+	height: 100%;
+	top: 0;
+	overflow: hidden;
+	transition:all 0.3s;
+}
+.kspics-box li .infobox .textbox{
+	position: absolute;
+	width: 100%;
+	height: 155px;
+	top: 50%;
+	margin-top: -78px;
+	padding: 0px 8%;
+}
+.kspics-box li .infobox .textbox .title{
+	position: relative;
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	color: #533523;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition:all 0.3s;
+}
+.kspics-box li:hover .infobox .textbox .title{
+	color: #900;
+}
+.kspics-box li .infobox .textbox .txt{
+	position: relative;
+	width: 100%;
+	height: 70px;
+	line-height: 23px;
+	font-size: 12px;
+	color: #999;
+	margin-top: 20px;
+	overflow: hidden;
+    transition:all 0.3s;
+    display: -webkit-box;
+    display: -moz-box;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    transition:all 0.3s;
+}
+.kspics-box li:hover .infobox .textbox .txt{
+	color: #666;
+}
+.kspics-box li .infobox .textbox .morebox{
+	position: relative;
+	width: 100%;
+	height: 25px;
+	vertical-align: top;
+	margin-top: 15px;
+}
+.kspics-box li .infobox .textbox .more{
+	position: relative;
+	float: left;
+	width: auto;
+	height: 25px;
+	line-height: 25px;
+	font-size: 14px;
+	color: #666;
+	border-bottom: 2px solid #900;
+	transition:all 0.3s;
+}
+.kspics-box li:hover .infobox .textbox .more{
+	color: #900;
+	border-bottom: 2px solid #f60;
+}
+
+.kspics-box li .infobox .gnbtn{
+	position: relative;
+	float: left;
+	width: 20px;
+	height: 20px;
+	background: rgba(0,0,0,.2);
+	border-radius:13px ;
+	overflow: hidden;
+	vertical-align: top;
+	margin: 5px 0px 0px 5px;
+	transition: all 0.3s;
+}
+.kspics-box li .infobox .gnbtn:hover{
+	background:#900;
+}
+.kspics-box li .infobox .gnbtn:hover{
+	position: relative;
+	display: inline-block;
+	width: 85px;
+	height: 20px;
+	background: #900;
+	border-radius:13px ;
+	vertical-align: top;
+	transition: all 0.3s;
+}
+.kspics-box li .infobox .gnbtn .ico{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
+	left: 0px;
+	transition: all 0.3s;
+}
+.kspics-box li .infobox .gnbtn:hover .ico{
+	left: 3px;
+}
+.kspics-box li .infobox .gnbtn .ico01{
+	background: url(../images/ico01.png) center no-repeat;
+}
+.kspics-box li .infobox .gnbtn .ico02{
+	background: url(../images/ico02.png) center no-repeat;
+	background-size:16px ;
+}
+.kspics-box li .infobox .gnbtn .ico03{
+	background: url(../images/ico03.png) center no-repeat;
+	background-size:16px ;
+}
+.kspics-box li .infobox .gnbtn .zi{
+	position: absolute;
+	width: 55px;
+	height: 20px;
+	line-height: 20px;
+	font-size: 12px;
+	color: #fff;
+	top: 0;
+	left: 26px;
+	text-align: left;
+	transition: all 0.5s;
+	opacity: 1;
+}
+
+.kspics-box li:nth-child(4n-1) .imgbox{
+	right: 0;
+}
+.kspics-box li:nth-child(4n+0) .imgbox{
+	right: 0;
+}
+.kspics-box li:nth-child(4n+1) .imgbox{
+	left: 0;
+}
+.kspics-box li:nth-child(4n+2) .imgbox{
+	left: 0;
+}
+.kspics-box li:nth-child(4n-1) .infobox{
+	left: 0;
+	background: rgba(221,221,221,.3);
+}
+.kspics-box li:nth-child(4n+0) .infobox{
+	left: 0;
+	background: rgba(221,221,221,.3);
+}
+.kspics-box li:nth-child(4n+1) .infobox{
+	right: 0;
+	background: rgba(255,255,255,.3);
+}
+.kspics-box li:nth-child(4n+2) .infobox{
+	right: 0;
+	background: rgba(255,255,255,.3);
+}
+.kspics-box li:nth-child(4n-1):hover .infobox{
+	left: 0;
+	background:#fff;
+}
+.kspics-box li:nth-child(4n+0):hover .infobox{
+	left: 0;
+	background:#fff;
+}
+.kspics-box li:nth-child(4n+1):hover .infobox{
+	right: 0;
+	background:#fff;
+}
+.kspics-box li:nth-child(4n+2):hover .infobox{
+	right: 0;
+	background:#fff;
+}
+.kspics-box li .sjx{
+	position: absolute;
+	width: 14px;
+	height: 30px;
+	z-index: 200;
+	top: 50%;
+	margin-top:-15px;
+	overflow: hidden;
+	transition:all 0.3s;
+}
+.kspics-box li .sort{
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-top: 5px;
+	border: 10px solid #fff;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    transition:all 0.3s;
+}
+/*.kspics-box li:hover .sort{
+	border: 10px solid #900;
+}*/
+.kspics-box li:nth-child(4n-1) .sort{
+	margin-left: -10px;
+	transform: rotate(-45deg);
+}
+.kspics-box li:nth-child(4n+0) .sort{
+	margin-left: -10px;
+	transform: rotate(-45deg);
+}
+.kspics-box li:nth-child(4n+1) .sort{
+	margin-left: 4px;
+	transform: rotate(-225deg);
+}
+.kspics-box li:nth-child(4n+2) .sort{
+	margin-left: 4px;
+	transform: rotate(-225deg);
+}
+.kspics-box li:nth-child(4n-1) .sjx{
+	left: 50%;
+}
+.kspics-box li:nth-child(4n+0) .sjx{
+	left: 50%;
+}
+.kspics-box li:nth-child(4n+1) .sjx{
+	right: 50%;
+}
+.kspics-box li:nth-child(4n+2) .sjx{
+	right: 50%;
+}
+.kspics-box li:nth-child(4n-1):hover .sjx{
+	left: 55%;
+}
+.kspics-box li:nth-child(4n+0):hover .sjx{
+	left: 55%;
+}
+.kspics-box li:nth-child(4n+1):hover .sjx{
+	right: 55%;
+}
+.kspics-box li:nth-child(4n+2):hover .sjx{
+	right: 55%;
+}
+
+/*非终极栏目样式*/
+.kslms-box{
+	position: relative;
+	width: 100%;
+	max-width: 1450px;
+	margin: 0 auto;
+	height: auto;
+	margin-bottom: 25px;
+	overflow: hidden;
+	margin-top: 20px;
+}
+.kslms-box li{
+	position: relative;
+	width: 33.333%;
+	height: 400px;
+	float: left;
+	margin: 0;
+	/*border: 2px solid rgba(153,0,0,.0);*/
+	transition:all 0.3s;
+	cursor: pointer;
+}
+.kslms-box .m4{
+	width: 25%;
+}
+.kslms-box li:hover{
+	/*border: 2px solid rgba(153,0,0,0.8);*/
+}
+.kslms-box li .imgbox{
+	position: absolute;
+	width: 100%;
+	height: 50%;
+	left: 0;
+	overflow: hidden;
+	transition:all 0.3s;
+	/*border: 0px solid rgba(0,0,0,.0);*/
+}
+.kslms-box li:hover .imgbox{
+	/*border: 3px solid rgba(0,0,0,.0);*/
+}
+.kslms-box li .imgbox .spico{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition:all 0.3s;
+    background: rgba(0,0,0,.1);
+    z-index: 5;
+}
+.kslms-box li:hover .imgbox .spico{
+    background: rgba(0,0,0,.2);
+}
+.kslms-box li .imgbox .spico i{
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: 50%;
+    margin-left: -40px;
+    top: 50%;
+    margin-top: -40px;
+    color: rgba(255,255,255,.7);
+    font-size: 50px;
+    line-height: 80px;
+    transition:all 0.3s;
+    text-align: center;
+}
+.kslms-box li:hover .imgbox .spico i{
+    font-size: 65px;
+    color: rgba(255,255,255,.9);
+}
+
+
+.kslms-box li .imgbox .img{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition:all 0.3s;
+	-webkit-filter: grayscale(50%);
+    filter: grayscale(50%);
+}
+.kslms-box li:hover .imgbox .img{
+	-webkit-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+	-webkit-filter: grayscale(0);
+    filter: grayscale(0);
+}
+.kslms-box li .infobox{
+	position: absolute;
+	width: 100%;
+	height: 50%;
+	left: 0;
+	overflow: hidden;
+	transition:all 0.3s;
+	background: rgba(255,255,255,.5);
+}
+.kslms-box li:hover .infobox{
+	background: rgba(255,255,255,1);
+}
+
+
+.kslms-box li:nth-child(odd) .imgbox{
+	top:0;
+}
+.kslms-box li:nth-child(even) .imgbox{
+	bottom:0;
+}
+.kslms-box li:nth-child(odd) .infobox{
+	bottom:0;
+}
+.kslms-box li:nth-child(even) .infobox{
+	top:0;
+}
+
+.kslms-box  li .sjx{
+	position: absolute;
+	width: 30px;
+	height: 24px;
+	z-index: 200;
+	left: 50%;
+	margin-left: -15px;
+	overflow: hidden;
+}
+.kslms-box  li .sort{
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-top: 5px;
+	margin-left: 5px;
+	border: 10px solid #fff;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    transition:all 0.3s;
+}
+.kslms-box li:nth-child(odd) .sjx{
+	top: 50%;
+	margin-top:-14px;
+}
+.kslms-box li:nth-child(even) .sjx{
+	top: 50%;
+	margin-top:-7px;
+}
+.kslms-box li:nth-child(odd) .sort{
+	transform: rotate(-135deg);
+}
+.kslms-box li:nth-child(even) .sort{
+	transform: rotate(45deg);
+	margin-top: -10px;
+}
+.kslms-box li .infobox .textbox{
+	position: absolute;
+	width: 100%;
+	height: 145px;
+	top: 50%;
+	margin-top: -73px;
+	padding: 0px 8%;
+}
+.kslms-box li .infobox .textbox .title{
+	position: relative;
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	font-size: 18px;
+	font-weight: 700;
+	color: #796358;
+	text-align: center;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition:all 0.3s;
+}
+.kslms-box li:hover .infobox .textbox .title{
+	color: #9e4f68;
+}
+.kslms-box li .infobox .textbox .txt{
+	position: relative;
+	width: 100%;
+	height: 70px;
+	line-height: 23px;
+	font-size: 12px;
+	color: #9b8c82;
+	margin-top: 10px;
+	overflow: hidden;
+    transition:all 0.3s;
+    display: -webkit-box;
+    display: -moz-box;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    transition:all 0.3s;
+}
+.kslms-box li:hover .infobox .textbox .txt{
+	color: #796358;
+}
+.kslms-box li .infobox .textbox .morebox{
+	position: relative;
+	text-align: center;
+	width: 100%;
+	height: 25px;
+	vertical-align: top;
+	margin-top: 10px;
+}
+.kslms-box li .infobox .textbox .morebox .icos{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 25px;
+	height: 25px;
+	transition:all 0.3s;
+}
+.kslms-box li .infobox .textbox .morebox .morex{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	height: 22px;
+	line-height: 22px;
+	font-size: 14px;
+	color: #9b8c82;
+	transition:all 0.3s;
+}
+.kslms-box li:hover .infobox .textbox .morebox .morex{
+	color: #9e4f68;
+}
+
+/*弹窗内容样式*/
+.kstc-bg{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: url(../images/gk-bg.png);
+}
+.kstc-bg .leftbg{
+	position: absolute;
+	width: 116px;
+	height: 267px;
+	top: 80px;
+	left: 30px;
+	z-index: 1000;
+	background: url(../images/gcdr.png) top left no-repeat;
+	background-size: 100% auto;
+	opacity: 0.5;
+}
+.kstc-bg .rightbg{
+	position: absolute;
+	width: 254px;
+	height: 412px;
+	bottom: 0px;
+	right: 0px;
+	z-index: 1000;
+	background: url(../images/jnb.png) top left no-repeat;
+	background-size: 100% auto;
+	opacity: 0.5;
+}
+.kstc-top{
+	position: fixed;
+	width: 100%;
+	height: 50px;
+	top: 0;
+	left: 0;
+	z-index: 5000;
+	background:#900;
+	border-bottom: 1px solid rgba(0,0,0,.2);
+}
+.kstc-top .title{
+	position: absolute;
+	width: 100%;
+	height: 50px;
+	top: 0;
+	left: 0;
+	line-height: 30px;
+	font-size: 20px;
+	color: rgba(255,255,255,.9);
+	padding: 10px 140px 10px 50px;
+	border-bottom: 1px solid rgba(0,0,0,.2);
+	background: url(../images/hb-2.png) 20px 13px no-repeat;
+	background-size:24px auto;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kstc-top .tcback{
+	position: absolute;
+	width: 100px;
+	height: 50px;
+	top: 0;
+	right: 0;
+	background: rgba(0,0,0,.2);
+	border-left: 1px solid rgba(255,255,255,.3);
+	z-index: 1200;
+	cursor: pointer;
+	text-align: center;
+	transition:all 0.3s;
+}
+.kstc-top .tcback:hover{
+	background: rgba(0,0,0,.5);
+}
+.kstc-top .tcback .ico{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 40px;
+	height: 50px;
+	background: url(../images/close.png) center no-repeat;
+}
+.kstc-top .tcback .zi{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: auto;
+	height: 50px;
+	font-size: 16px;
+	color: #fff;
+	line-height: 50px;
+}
+.kstc-showbox{
+	padding: 80px 0px 30px 0px !important;
+	background:rgb(0,0,0,0) !important;
+}
+
+/*企业成员*/
+.ks-qycy{
+	position: relative;
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	margin-top: 30px;
+}
+.ks-qycy li{
+	position: relative;
+	float: left;
+	width: 50%;
+	height: auto;
+	border-bottom: 1px solid rgb(0,0,0,.1);
+	margin-bottom: 40px;
+    padding-bottom: 40px;
+    overflow: hidden;
+}
+.ks-qycy li:nth-child(odd){
+	padding-right:30px;
+}
+.ks-qycy li:nth-child(even){
+	padding-left:30px;
+}
+.ks-qycy li .picbox{
+	position: relative;
+	float: left;
+	width: 45%;
+	height: 240px;
+	overflow: hidden;
+	text-align: center;
+}
+.ks-qycy li .picbox .img{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transition: all 0.4s;
+}
+.ks-qycy li:hover .picbox .img{
+	-webkit-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	transform: scale(1.1);
+}
+.ks-qycy li .txtbox{
+	position: relative;
+	float: right;
+	height: 240px;
+	width: 55%;
+	padding-top: 20px;
+	padding-right: 5px;
+	padding-left: 6%;
+	transition: all 0.4s;
+}
+.ks-qycy li:hover .txtbox{
+	background: rgba(225,205,190,.3);
+}
+
+.ks-qycy li .txtbox h4 {
+    color: #847465;
+    font-weight: bold;
+    text-align: left;
+    font-size: 20px;
+    height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.6s ease;
+}
+.ks-qycy li:hover .txtbox h4 {
+    color: #9e4f68;
+    font-weight: bold;
+}
+.ks-qycy li .txtbox h5 {
+    line-height: 25px;
+    color: rgba(141,117,96,.7);
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    height: 100px;
+    margin-bottom: 7%;
+    margin-top: 6%;
+    font-weight: normal;
+   transition: all 0.6s ease;
+}
+.ks-qycy li:hover .txtbox h5 {
+    color: rgba(141,117,96,1);
+}
+.ks-qycy li .txtbox h6 {
+	font-size: 14px;
+	width: 65px;
+    color: #847465;
+    line-height: 20px;
+    padding: 0 2px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #847465;
+    font-weight: normal;
+    transition: all 0.6s ease;
+}
+.ks-qycy li:hover .txtbox h6 {
+	color: #9e4f68;
+	border-bottom: 2px solid #9e4f68;
+}
+
+
+@media (max-width: 1441px){
+	.ksnews-box li .title{
+		font-size: 15px;
+	}
+	.ksnews-box li .info{
+		margin-top: 12px;
+	}
+	.ksnews-box li .more{
+		height: 22px;
+		line-height: 22px;
+	}
+	.kspics-box li{
+		height: 190px;
+	}
+	.kspics-box li .infobox .textbox{
+		height: 135px;
+		margin-top: -67px;
+	}
+	.kspics-box li .infobox .textbox .title{
+		font-size: 14px;
+	}
+
+	.kspics-box li .infobox .textbox .txt{
+		height: 60px;
+		line-height: 20px;
+		margin-top: 15px;
+	}
+	.kspics-box li .infobox .textbox .morebox{
+		margin-top: 10px;
+	}
+	.kslms-box li .infobox .textbox .title{
+		font-size: 16px;
+	}
+}
+@media (max-width: 1025px){
+	.ksnews-box li{
+		width: 50%;
+		padding: 15px;
+	}
+	.ksnews-box li:nth-child(4n-1){
+		background: rgba(255,255,255,.4);
+		transition:all 0.3s;
+	}
+	.ksnews-box li:nth-child(4n+0){
+		transition:all 0.3s;
+		background: rgba(225,205,190,.3);
+	}
+	.ksnews-box li:nth-child(4n+1){
+		background: rgba(225,205,190,.3);
+		transition:all 0.3s;
+	}
+	.ksnews-box li:nth-child(4n+2){
+		transition:all 0.3s;
+		background: rgba(255,255,255,.4);
+	}
+	.kslms-box li{
+		width: 50%;
+	}
+	.kslms-box .m4{
+		width: 50%;
+	}
+	.kslms-box li .infobox .textbox .title{
+		font-size: 14px;
+	}
+	.ksnews-box li:hover{
+		background: #fff;
+		border: 2px solid #9e4f68;
+	}
+}

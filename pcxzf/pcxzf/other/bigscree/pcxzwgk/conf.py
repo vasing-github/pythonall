@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
-
+import aiohttp
 # 爬虫执行时间
 
 first_hour = 3
@@ -104,28 +104,62 @@ zhuanti_of_dic = {
 # 基层政务公开领域和负责单位映射
 jczwgk_area_comp_dic = {'公共文化服务': '文广旅局', '就业领域': '人社局', '涉农补贴': '农业局', '食品药品': '市监局', '社会救助': '民政局', '卫生健康': '卫健局', '养老服务': '民政局', '义务教育': '教科体局', '公共法律': '司法局', '税收管理': '税务局', '广播电视和网络视听': '文广旅局', '旅游领域': '文广旅局', '社会保险': '人社局', '自然资源': '自规局', '城市综合执法': '执法局', '户籍管理': '公安局', '财政预决算': '财政局', '市政服务': '住建局', '农村危房改造': '住建局', '国有土地上房屋征收与补偿': '住建局', '保障性住房': '住建局', '新闻出版版权': '县委宣传部', '生态环境': '生态环境局', '统计领域': '统计局', '公共资源交易': '交易中心', '交通运输': '交运局', '扶贫领域': '乡村振兴局', '重大建设项目': '发改局', '安全生产': '应急局', '救灾领域': '应急局'}
 
+proxies = None
+prox_num = 0
 
-def make_request_get(url, params=None, proxies=None):
+async def make_request_get(url, params=None, proxies=None):
     if not url.startswith('http'):
         url = 'http://www.scpc.gov.cn' + url
-    try:
-        response = requests.get(url, params=params, proxies=proxies)
-    except Exception as e:
-        print('网络波动', url)
+
+    async with aiohttp.ClientSession() as session:
         try:
-            print(url)
-            response = requests.get(url, params=params, proxies=getproxies())
+            async with session.get(url, params=params, proxy=proxies) as response:
+                text = await response.text()
+                soup = BeautifulSoup(text, 'html.parser')
+                return response, soup
         except Exception as e:
-            print('代理过期', url)
-            response = requests.get(url, params=params, proxies=getproxies(up=True))
+            print('网络波动', url)
+            try:
+                print(url)
+                async with session.get(url, params=params, proxy=getproxies()['http']) as response:
+                    text = await response.text()
+                    soup = BeautifulSoup(text, 'html.parser')
+                    return response, soup
+            except Exception as e:
+                print('代理过期', url)
+                async with session.get(url, params=params, proxy=getproxies(up=True)['http']) as response:
+                    text = await response.text()
+                    soup = BeautifulSoup(text, 'html.parser')
+                    return response, soup
 
-    response.encoding = 'utf-8'
-    soup = BeautifulSoup(response.text, 'html.parser')
-    return response, soup
+async def make_request_post(url, data=None, proxies=None):
+    if not url.startswith('http'):
+        url = 'http://www.scpc.gov.cn' + url
 
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.post(url, data=data, proxy=proxies) as response:
+                text = await response.text()
+                soup = BeautifulSoup(text, 'html.parser')
+                return response, soup
+        except Exception as e:
+            print('网络波动', url)
+            try:
+                print(url)
+                async with session.post(url, params=data, proxy=getproxies()['http']) as response:
+                    text = await response.text()
+                    soup = BeautifulSoup(text, 'html.parser')
+                    return response, soup
+            except Exception as e:
+                print('代理过期', url)
+                async with session.post(url, params=data, proxy=getproxies(up=True)['http']) as response:
+                    text = await response.text()
+                    soup = BeautifulSoup(text, 'html.parser')
+                    return response, soup
 
 def getproxies(up=False):
-    global proxies  # 在函数内部修改全局变量，需要声明 global
+    global proxies, prox_num  # 在函数内部修改全局变量，需要声明 global
+
     if up or proxies is None:
         # 提取代理API接口，获取1个代理IP
         api_url = "https://dps.kdlapi.com/api/getdps/?secret_id=o6zqx71jh7hiii663qrt&num=1&signature=ae5jtj55np18yfpsjrra5gagd1ljuymx&pt=1&sep=1&transferip=1"
@@ -140,5 +174,6 @@ def getproxies(up=False):
             "http": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy_ip},
             "https": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy_ip}
         }
+        prox_num += 1
     print('代理：', proxies)
     return proxies
