@@ -15,9 +15,10 @@ jczwgk_dic = data_txt.jczwgk_dic
 zhuanti_of = data_txt.zhuanti_of
 hight_area_dic = data_txt.hight_area_dic
 alljcgk = data_txt.alljcgk
+up_time = data_txt.time
 
-def modify_news_num_dic(new_dic, new_all_gk_num, new_day_week_mon_dic, new_jczwgk_dic, new_zhuanti_of, new_hight_area_dic,new_alljcgk):
-    global news_num_dic, all_gk_num, day_week_mon_dic,jczwgk_dic, zhuanti_of, hight_area_dic,alljcgk
+def modify_news_num_dic(new_dic, new_all_gk_num, new_day_week_mon_dic, new_jczwgk_dic, new_zhuanti_of, new_hight_area_dic,new_alljcgk,new_uptime):
+    global news_num_dic, all_gk_num, day_week_mon_dic, jczwgk_dic, zhuanti_of, hight_area_dic, alljcgk, up_time
 
     news_num_dic = new_dic
     all_gk_num = new_all_gk_num
@@ -26,10 +27,11 @@ def modify_news_num_dic(new_dic, new_all_gk_num, new_day_week_mon_dic, new_jczwg
     zhuanti_of = new_zhuanti_of
     hight_area_dic = new_hight_area_dic
     alljcgk = new_alljcgk
+    up_time = new_uptime
 
 
 async def save_web_data():
-    global news_num_dic, all_gk_num, day_week_mon_dic,jczwgk_dic, zhuanti_of, hight_area_dic,alljcgk
+    global news_num_dic, all_gk_num, day_week_mon_dic,jczwgk_dic, zhuanti_of, hight_area_dic, alljcgk, up_time
     with open('data_txt.py', 'w', encoding='utf-8') as f:
 
         json_str = json.dumps(news_num_dic, ensure_ascii=False)
@@ -52,7 +54,7 @@ async def save_web_data():
 
         f.write('alljcgk = ' + str(alljcgk) + '\n')
 
-        f.write("time = '" + str(datetime.datetime.now()) + "'\n")
+        f.write("time = '" + up_time + "'\n")
 
 
 # HTTP请求处理函数
@@ -62,17 +64,44 @@ async def handle_root(request):
 
 async def handle_checkpa(request):
     dic = {}
-    dic['time'] = data_txt.time
+    dic['time'] = up_time
     dic['prox_num'] = conf.prox_num
     a = all_gk_num.get('基础信息') + all_gk_num.get('要闻动态') + all_gk_num.get('重点领域1') + all_gk_num.get(
         '所有政府信息') + all_gk_num.get('专题专栏') + alljcgk
     dic['all_num'] = a
     return web.json_response(dic)
 
+async def handle_checkminipa(request):
+
+    url = 'https://localhost:8080/smartpc/dataScreen/ThreePublicAll'
+    response, soup = await conf.make_request_get(url)
+    data_json = await response.json()
+    data_list = data_json['public_total']
+
+    # 定义要求和的名称
+    names_to_sum = ['党务', '村务', '财务']
+
+    # 计算指定名称的值总和
+    total_sum = sum(item['value'] for item in data_list if item['name'] in names_to_sum)
+
+    # 输出结果
+    print(f"党务，村务，财务的总和是: {total_sum}")
+    print(data_json['refreshRedis_time'])
+
+    dic = {}
+    dic['time'] = data_json['refreshRedis_time']
+    dic['total_num'] = total_sum
+    return web.json_response(dic)
+
 
 async def handle_pa(request):
     asyncio.create_task(get_all_data())
     return web.Response(text="Crawler started")
+
+
+async def handle_minipa(request):
+    asyncio.create_task(getminidata())
+    return web.Response(text="getminidata started")
 
 
 async def handle_zhuanti(request):
@@ -135,7 +164,9 @@ async def init_app():
     cors.add(app.router.add_route("GET", '/getallgk', handle_getallgk))
     cors.add(app.router.add_route("GET", '/getdayweekmon', handle_getdayweekmon))
     cors.add(app.router.add_route("GET", '/pa', handle_pa))
+    cors.add(app.router.add_route("GET", '/minipa', handle_minipa))
     cors.add(app.router.add_route("GET", '/checkpa', handle_checkpa))
+    cors.add(app.router.add_route("GET", '/checkminipa', handle_checkminipa))
     return app
 
 
@@ -172,10 +203,22 @@ async def get_all_data():
     jczwgk_dic,alljcgk = await get_web_data.get_jczwgk_dic()
     zhuanti_of = await get_web_data.get_zhuanti_of()
     hight_area_dic = await get_web_data.get_height_area()
+    new_uptime = str(datetime.datetime.now())
 
-    modify_news_num_dic(new_dic,all_gk_num,day_week_mon_dic,jczwgk_dic,zhuanti_of,hight_area_dic,alljcgk)
+
+    modify_news_num_dic(new_dic, all_gk_num, day_week_mon_dic, jczwgk_dic, zhuanti_of, hight_area_dic, alljcgk, new_uptime)
 
     await save_web_data()
+    print(f'消耗代理数量{conf.prox_num}')
+
+
+async def getminidata():
+    url = 'https://localhost:8080/smartpc/dataScreen/refreshDataInRedis'
+    response, sop =await conf.make_request_get(url)
+    # json_data = await response.json()  # 获取JSON响应内容
+    # refresh_time = json_data['refreshRedis_time']
+    text = await response.text()
+    print(text)
 
 
 # 主函数

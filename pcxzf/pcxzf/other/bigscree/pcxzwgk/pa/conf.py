@@ -2,18 +2,15 @@
 import requests
 from bs4 import BeautifulSoup
 import aiohttp
-import ssl
-
 # 爬虫执行时间
 
-first_hour = 3
-firt_minutes = 0
-
-second_hour = 11
-sencond_minutes = 1
-
-third_hour = 16
-third_minutes = 30
+# 私人测试新功能群
+key_person = '7de50f0c-a890-4a72-8c50-d50b8b6e5f3c'
+# 测试小群的key
+key_cs = '425a53f6-696e-46c1-9d4a-fae8940b136f'
+# 正式群key
+key_zs = '6c00ba33-68ab-403e-bab2-2b9134a7d7f6'
+key_choose = key_cs
 
 ywdt_dic = {
     '公示公告': 'http://www.scpc.gov.cn/ywdt/gsgg/index.html',  # 公示公告
@@ -109,19 +106,13 @@ jczwgk_area_comp_dic = {'公共文化服务': '文广旅局', '就业领域': '�
 proxies = None
 prox_num = 0
 
-
-# 创建一个SSL上下文对象，忽略证书验证
-ssl_context = ssl.create_default_context()
-ssl_context.check_hostname = False
-ssl_context.verify_mode = ssl.CERT_NONE
-
 async def make_request_get(url, params=None, proxies=None):
     if not url.startswith('http'):
         url = 'http://www.scpc.gov.cn' + url
 
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(url, params=params, proxy=proxies, ssl=ssl_context) as response:
+            async with session.get(url, params=params, proxy=proxies) as response:
                 text = await response.text()
                 soup = BeautifulSoup(text, 'html.parser')
                 return response, soup
@@ -129,13 +120,13 @@ async def make_request_get(url, params=None, proxies=None):
             print('网络波动', url)
             try:
                 print(url)
-                async with session.get(url, params=params, proxy=getproxies()['http'], ssl=ssl_context) as response:
+                async with session.get(url, params=params, proxy=getproxies()['http']) as response:
                     text = await response.text()
                     soup = BeautifulSoup(text, 'html.parser')
                     return response, soup
             except Exception as e:
                 print('代理过期', url)
-                async with session.get(url, params=params, proxy=getproxies(up=True)['http'], ssl=ssl_context) as response:
+                async with session.get(url, params=params, proxy=getproxies(up=True)['http']) as response:
                     text = await response.text()
                     soup = BeautifulSoup(text, 'html.parser')
                     return response, soup
@@ -146,7 +137,7 @@ async def make_request_post(url, data=None, proxies=None):
 
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.post(url, data=data, proxy=proxies, ssl=ssl_context) as response:
+            async with session.post(url, data=data, proxy=proxies) as response:
                 text = await response.text()
                 soup = BeautifulSoup(text, 'html.parser')
                 return response, soup
@@ -154,13 +145,13 @@ async def make_request_post(url, data=None, proxies=None):
             print('网络波动', url)
             try:
                 print(url)
-                async with session.post(url, params=data, proxy=getproxies()['http'], ssl=ssl_context) as response:
+                async with session.post(url, params=data, proxy=getproxies()['http']) as response:
                     text = await response.text()
                     soup = BeautifulSoup(text, 'html.parser')
                     return response, soup
             except Exception as e:
                 print('代理过期', url)
-                async with session.post(url, params=data, proxy=getproxies(up=True)['http'], ssl=ssl_context) as response:
+                async with session.post(url, params=data, proxy=getproxies(up=True)['http']) as response:
                     text = await response.text()
                     soup = BeautifulSoup(text, 'html.parser')
                     return response, soup
@@ -185,9 +176,3 @@ def getproxies(up=False):
         prox_num += 1
     print('代理：', proxies)
     return proxies
-def addprox():
-    global proxies, prox_num
-    prox_num += 1
-
-if __name__ == '__main__':
-    getproxies()
