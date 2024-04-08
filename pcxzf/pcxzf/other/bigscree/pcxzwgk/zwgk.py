@@ -69,6 +69,7 @@ async def handle_checkpa(request):
     a = all_gk_num.get('基础信息') + all_gk_num.get('要闻动态') + all_gk_num.get('重点领域1') + all_gk_num.get(
         '所有政府信息') + all_gk_num.get('专题专栏') + alljcgk
     dic['all_num'] = a
+    print(dic)
     return web.json_response(dic)
 
 async def handle_checkminipa(request):
