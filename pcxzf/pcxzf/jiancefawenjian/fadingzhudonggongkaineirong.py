@@ -267,8 +267,11 @@ def deal_tj_year(final_dic):
             years.add(year)
 
         # 根据单位设置检查的年份范围
-        if unit == '四川平昌经济开发区管理委员会':
+        if unit == '四川平昌经济开发区管理委员会' or unit == '平昌县金宝街道办事处' or unit == '平昌县江家口镇人民政府':
             check_years = range(2020, 2023)
+
+        elif unit == '平昌县商务局':
+            check_years = range(2019, 2023)
         else:
             check_years = range(2018, 2023)
 
@@ -341,4 +344,25 @@ def startMain():
 
 
 if __name__ == '__main__':
-    startMain()
+    # startMain()
+    bumen_Mennu_list = conf.bumen_Mennu_list
+    final_dic = {}
+    no_content_list = []
+    tj_final_dic = {}
+
+    for key, value in bumen_Mennu_list.items():
+        print(key)
+        menu_Dic = {}
+        tj_time_list = []
+        for menu, href in value.items():
+            print(menu)
+            if key == '平昌县人民政府办公室':
+                continue
+            if menu == '统计信息':
+                # 收集统计信息的所有发文时间
+                tj_final_dic[key] = get_all_tj_time(href, tj_time_list, key, menu, no_content_list)
+
+            deal_menu_dic(menu_Dic, key, menu, href, no_content_list, final_dic)
+
+    tj_miss_year_dic = deal_tj_year(tj_final_dic)
+    print(tj_miss_year_dic)

@@ -34,6 +34,7 @@ def getMenniu(prox,bumen):
     # 提取 id 为 fdzd_gknr 的 div 标签下的所有 a 标签
     a_elements = res[1].find('ul', {'id': 'timeFrame'}).find_all('a')
     # 输出所有 a 标签的文本内容和链接地址
+
     menuList={}
     for a in a_elements:
         # print(f'{a.text}: {a["href"]}')
@@ -53,17 +54,24 @@ def cacul(href):
 
 def startMain():
     bumenList = conf.bumenList
-
-    # 这是第二步 通过单位找政府信息公开年报所有列表得到的是部门名称下所有年份对应的地址
+    #
+    # # 这是第二步 通过单位找政府信息公开年报所有列表得到的是部门名称下所有年份对应的地址
     bumen_Mennu_list = {}
     for key, value in bumenList.items():
         menuDic = getMenniu(None, value)
         bumen_Mennu_list[key] = menuDic
-    print(bumen_Mennu_list)
+    # print(bumen_Mennu_list)
 
-    years_to_check = [str(year) + '年' for year in range(2018, 2023)]
+
     missing_years_dict = {}
     for unit, years in bumen_Mennu_list.items():
+        if unit == '四川平昌经济开发区管理委员会' or unit == '平昌县金宝街道办事处' or unit == '平昌县江家口镇人民政府':
+            years_to_check = [str(year) + '年' for year in range(2020, 2023)]
+        elif unit == '平昌县商务局':
+            years_to_check = [str(year) + '年' for year in range(2019, 2023)]
+        else:
+            years_to_check = [str(year) + '年' for year in range(2018, 2023)]
+
         missing_years = [year for year in years_to_check if year not in years.keys()]
         if missing_years:
             # print(f"单位 {unit} 缺少以下年份: {', '.join(missing_years)}")
@@ -73,6 +81,8 @@ def startMain():
     # missing_years_dict = {'平昌县商务局': ['2018年', '2019年'], '平昌县退役军人事务局': ['2018年', '2019年'], '平昌县信访局': ['2018年', '2019年'], '平昌县医疗保障局': ['2018年', '2019年'], '平昌县金宝街道办事处': ['2018年', '2019年'], '平昌县驷马镇人民政府': ['2020年'], '平昌县江家口镇人民政府': ['2018年', '2019年']}
     qm.add_item({conf.zf_year_report: missing_years_dict})
     makeExcel(missing_years_dict)
+
+
 def makeExcel(msg):
     # 加载现有的Excel文件
     wb = load_workbook(conf.xlsx_name)
