@@ -265,8 +265,17 @@ def deal_tj_year(final_dic):
             year = date.text.split('-')[0]
             # 添加年份到集合
             years.add(year)
-        # 检查是否包含2018-2022年
-        missing_years = [str(year) for year in range(2018, 2023) if str(year) not in years]
+
+        # 根据单位设置检查的年份范围
+        if unit == '四川平昌经济开发区管理委员会':
+            check_years = range(2020, 2023)
+        else:
+            check_years = range(2018, 2023)
+
+        # 检查是否包含指定年份
+        missing_years = [str(year) for year in check_years if str(year) not in years]
+        # # 检查是否包含2018-2022年
+        # missing_years = [str(year) for year in range(2018, 2023) if str(year) not in years]
         # 如果有缺少的年份，添加到新字典
         if missing_years:
             new_data[unit] = missing_years

@@ -1,6 +1,9 @@
 
 qy_id = 'ww10b2b295ab660549'
+#数字平昌2.0
 secret_szpc = 'vwoopFGBA92smZ28oF03KPMM0DN6lXz2lM4VCYDU14c'
+# 农村污水
+# secret_ncws = 'XM1DfioQGtKJIoRWHsm7IrfgA0h0shTyO72v9ZsjuyA'
 
 database_cs = {
     "host": "yuxiaohaishidalao.shop",

@@ -10,7 +10,6 @@ def get_access_token():
     response = requests.get(url, )
     print(response.text)
     token = response.json()['access_token']
-    # token = 'Bi0-HT5bwQFmGp57jKjnHQa7hRotK4jIJf5eO3HIT1-gOZsX-8FYItzhKFErA4vAbLW4QUaP_UDPE37B6dY3Rt-3fWwzzr0Wp3imB8XghqMJOBGGHwZL16Kesjm9wQNYUgEl8rmFeklyPEt2DyIcCLv08wWSBn6ppUPN-1gzZxHCtFDbzezRnwZzKhvOROcaMnTYXBeYYjVZQuePoVr6mw'
     save_token(token)
     return token
 

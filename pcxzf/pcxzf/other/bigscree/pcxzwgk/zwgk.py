@@ -206,7 +206,6 @@ async def get_all_data():
     hight_area_dic = await get_web_data.get_height_area()
     new_uptime = str(datetime.datetime.now())
 
-
     modify_news_num_dic(new_dic, all_gk_num, day_week_mon_dic, jczwgk_dic, zhuanti_of, hight_area_dic, alljcgk, new_uptime)
 
     await save_web_data()

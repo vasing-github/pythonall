@@ -7,7 +7,7 @@ import json
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from io import BytesIO
-
+import send
 class QueueManager:
     def __init__(self):
         self.q = queue.Queue()
@@ -129,7 +129,8 @@ class QueueManager:
                 WHERE date = CURDATE();
             """
         res2 = self.execute_query(sql)
-        self.sendMsg(res,res2)
+        self.sendMsg(res, res2)
+        send.sendszpc(res)
 
     def process_item(self, item):
         for key, value in item.items():
@@ -137,7 +138,7 @@ class QueueManager:
             if func:
                 func(value)
 
-    def sendMsg(self, res,res2):
+    def sendMsg(self, res, res2):
 
         # 创建一个新的工作簿
         wb = Workbook()

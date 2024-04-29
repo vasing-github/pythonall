@@ -61,18 +61,7 @@ def sendmsg(time_str, prox_num, all_num, mini_num):
                     "quote_text": f"最后更新时间：{time_only}\n三务公开总数：{mini_num}\n消耗代理数量：{prox_num}"
                 },
                 "sub_title_text": "点击卡片进入数字平昌小程序，参与积分活动换取精美礼品！",
-                # "horizontal_content_list": [
-                #     {
-                #         "keyname": "三务公开总数",
-                #         "value": mini_num
-                #     },
-                #     {
-                #         "keyname": "redis刷新时间",
-                #         "value": redis_uptime,
-                #
-                #     },
-                #
-                # ],
+
                 "jump_list": [
 
                     {
