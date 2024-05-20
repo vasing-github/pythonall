@@ -36,3 +36,18 @@ def randomNumchart():
     return ''.join(sa)
 def toolmd5(t):
     return md5(t.encode()).hexdigest()
+
+def generate_uuid(length=None, radix=None):
+    chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    uuid = [None]*36
+    radix = len(chars) if radix is None else radix
+    if length is not None:
+        return ''.join(random.choice(chars[:radix]) for _ in range(length))
+    else:
+        for i in range(36):
+            if not uuid[i]:
+                r = random.randint(0, 16)
+                uuid[i] = chars[(r & 0x3) | 0x8] if i==19 else chars[r]
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
+        uuid[14] = '4'
+        return ''.join(uuid)

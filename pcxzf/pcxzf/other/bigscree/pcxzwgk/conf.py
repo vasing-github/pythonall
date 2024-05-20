@@ -86,6 +86,7 @@ zhuanti_total_list = [
     'http://www.scpc.gov.cn/ztzl/xyxxsgs/xzxk/index.html',
     'http://www.scpc.gov.cn/ztzl/xyxxsgs/xzcf/index.html',
     'http://www.scpc.gov.cn/ztzl/xyxxsgs/xkml/index.html',
+    'http://www.scpc.gov.cn/ztzl/wqqxkpctdxbfjxs/index.html',
     'http://www.scpc.gov.cn/ztzl/pcxsdlyjczwgkbzml/pcxbmsdlyjczwgkbzml/index.html',  # 部门试点目录
     'http://www.scpc.gov.cn/ztzl/pcxsdlyjczwgkbzml/pcxgzjdbscsdlyjczwgkbzml/index.html',  # 乡镇试点目录
 ]

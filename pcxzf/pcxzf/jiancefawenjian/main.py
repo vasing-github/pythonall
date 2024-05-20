@@ -1,3 +1,4 @@
+from jiancefawenjian import zhengce
 from openpyxl import load_workbook
 import fadingzhudonggongkaineirong
 import gongkainianbao
@@ -77,12 +78,12 @@ def end_excel():
     ws.column_dimensions['H'].width = 20
     ws.column_dimensions['I'].width = 20
 
-    ws['H74'] = '基层政务公开栏目检测标准:'
-    ws['H74'].font = conf.header_font
-    ws['H75'] = '1.每个事项的总内容不少于4条'
-    ws['H76'] = '2.最新更新时间不大于90天'
-    ws['H77'] = '3.每相邻两条信息之间更新时间不大于90天'
-    ws['H78'] = '注意：除办事服务等不易发布的内容外，其余链接形式的内容应尽量粘贴复制而不是直接跳转，否则机器人无法监测'
+    ws['H49'] = '基层政务公开栏目检测标准:'
+    ws['H49'].font = conf.header_font
+    ws['H50'] = '1.每个事项的总内容不少于4条'
+    ws['H51'] = '2.最新更新时间不大于90天'
+    ws['H52'] = '3.每相邻两条信息之间更新时间不大于90天'
+    ws['H53'] = '注意：除办事服务等不易发布的内容外，其余链接形式的内容应尽量粘贴复制而不是直接跳转，否则机器人无法监测'
 
     # 保存更改
     wb.save(conf.xlsx_name)
@@ -100,6 +101,7 @@ def start_main():
     fadingzhudonggongkaineirong.startMain()
     gongkainianbao.startMain()
     jigouzhineng.startMain()
+    zhengce.startMain()
     # jicengzwgk.startMain()
 
     # 给表格增加一些注释

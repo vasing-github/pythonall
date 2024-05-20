@@ -1,9 +1,9 @@
 
 import pymysql
-import conf
+from jiancefawenjian import conf
 import requests
 import json
-from conf2 import access_token  # ensure you have this module conf2 with access_token
+from .conf2 import access_token  # ensure you have this module conf2 with access_token
 from datetime import datetime
 token = access_token
 def get_access_token():
@@ -23,7 +23,7 @@ def get_access_token():
 
 
 def save_token(token):
-    with open('conf2.py', 'w') as f:
+    with open('.conf2.py', 'w') as f:
         f.write('access_token = \'' + token + '\'\n')
 
 
@@ -94,6 +94,10 @@ def sendmsg(comp,score, curdate):
     print(result)
 
 
+def testsendszpc():
+    print("test success!")
+
+
 def sendszpc(res):
     current_date = datetime.now()
     # 格式化日期
@@ -103,15 +107,13 @@ def sendszpc(res):
         # print(row[0],row[1])
         sendmsg(row[0], row[1], formatted_date)
 
-
-if __name__ == '__main__':
-
+def main():
     connection = pymysql.connect(**conf.database)
     cursor = connection.cursor()
     sql = """
             SELECT company_name, SUM(score) AS total_score
             FROM assessment_record
-            WHERE date = '2024-4-29'
+            WHERE date = '2024-5-20'
             GROUP BY company_name;
             """
     cursor.execute(sql)
@@ -121,6 +123,10 @@ if __name__ == '__main__':
     sendszpc(result)
     cursor.close()
     connection.close()
+
+if __name__ == '__main__':
+
+    pass
 
 
 

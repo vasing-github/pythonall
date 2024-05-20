@@ -270,7 +270,7 @@ def deal_tj_year(final_dic):
         if unit == '四川平昌经济开发区管理委员会' or unit == '平昌县金宝街道办事处' or unit == '平昌县江家口镇人民政府':
             check_years = range(2020, 2023)
 
-        elif unit == '平昌县商务局':
+        elif unit == '平昌县商务局' or unit == '平昌县退役军人事务局' or unit == '平昌县信访局' or unit == '平昌县医疗保障局':
             check_years = range(2019, 2023)
         else:
             check_years = range(2018, 2023)

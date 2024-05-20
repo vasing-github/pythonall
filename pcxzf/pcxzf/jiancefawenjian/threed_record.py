@@ -3,11 +3,15 @@ import threading
 import conf
 import pymysql
 import requests
-import json
+
+from send import sendszpc
+from send import sendsms
+
+
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from io import BytesIO
-import send
+
 class QueueManager:
     def __init__(self):
         self.q = queue.Queue()
@@ -20,6 +24,7 @@ class QueueManager:
             conf.miss_tj_year: self.process_tj_miss,
             conf.zf_year_report: self.process_zf_year_miss,
             conf.finish_score: self.process_finish_score,
+            conf.zc_over_time: self.process_zc_over,
         }
         # 创建数据库连接和游标
         self.connection = pymysql.connect(**conf.database)
@@ -114,6 +119,28 @@ class QueueManager:
     def process_tj_miss(self, val):
         self.process_list_miss(val, conf.miss_tj_year)
 
+    def process_zc_over(self,val):
+        up_record_list = []
+        up_assessment_record = []
+        for dup in val:
+            sql_search = f"SELECT * FROM demerit_record WHERE company_name = '{dup[0]}' AND reason = '{conf.zc_over_time}' "
+            reslt = self.execute_query(sql_search)
+
+            if reslt:
+                # 如果记录表存在就要添加扣分信息
+                up_assessment_record.append((dup[0], conf.zc_over_time, -1))
+            up_record_list.append((dup[0], conf.zc_over_time,))
+        print(up_record_list)
+        # 删除记录表
+        sql_up_demerit_record = f'DELETE FROM demerit_record WHERE reason = "{conf.zc_over_time}"'
+        self.update_data(sql_up_demerit_record)
+        # 插入记录表新值
+        sql_insert_record = "INSERT INTO demerit_record (company_name, date,reason) VALUES (%s, CURDATE(),%s)"
+        self.insert_data(sql_insert_record, up_record_list)
+        # 插入扣分表
+        sql_insert_assessment_record = "INSERT INTO assessment_record (company_name, date,score_change_reason,score) VALUES (%s, CURDATE(),%s, %s)"
+        self.insert_data(sql_insert_assessment_record, up_assessment_record)
+
     def process_finish_score(self, val):
         sql = """
         SELECT company_name, SUM(score) AS total_score
@@ -130,7 +157,8 @@ class QueueManager:
             """
         res2 = self.execute_query(sql)
         self.sendMsg(res, res2)
-        send.sendszpc(res)
+        sendszpc.sendszpc(res)
+        sendsms.sendsmsmethod(res)
 
     def process_item(self, item):
         for key, value in item.items():

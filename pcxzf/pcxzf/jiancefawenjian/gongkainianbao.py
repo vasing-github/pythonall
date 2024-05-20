@@ -67,7 +67,7 @@ def startMain():
     for unit, years in bumen_Mennu_list.items():
         if unit == '四川平昌经济开发区管理委员会' or unit == '平昌县金宝街道办事处' or unit == '平昌县江家口镇人民政府':
             years_to_check = [str(year) + '年' for year in range(2020, 2023)]
-        elif unit == '平昌县商务局':
+        elif unit == '平昌县商务局' or unit == '平昌县退役军人事务局' or unit == '平昌县信访局' or unit == '平昌县医疗保障局':
             years_to_check = [str(year) + '年' for year in range(2019, 2023)]
         else:
             years_to_check = [str(year) + '年' for year in range(2018, 2023)]

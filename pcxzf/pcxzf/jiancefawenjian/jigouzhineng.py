@@ -149,8 +149,8 @@ def startMain():
     getAllbumen(None, jigou_dic)
     getzhishu(None, jigou_dic)
     # print(len(jigou_dic))
-    if len(jigou_dic) != 74:
-        sendMsg(f'## 机构职能页监测：\n\n', f'机构数量不等于74.检查是否多发少发')
+    # if len(jigou_dic) != 74:
+    #     sendMsg(f'## 机构职能页监测：\n\n', f'机构数量不等于74.检查是否多发少发')
     not_open_list = []
     error_state_list = []
     zzgk_error_list = []
