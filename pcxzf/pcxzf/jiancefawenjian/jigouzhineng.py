@@ -1,15 +1,16 @@
-from bs4 import BeautifulSoup
-import requests
 import json
-import datetime
+
 import conf
+import requests
+from bs4 import BeautifulSoup
 from openpyxl import load_workbook
-from openpyxl.styles import Font
+
+
 # /**
 # 这是从机构职能页进入检查机关简介
 # **/
 
-def getAllbumen(prox,jigou_dic):
+def getAllbumen(prox, jigou_dic):
     url = 'http://www.scpc.gov.cn/jgzn/index.html'
     data = {}
     headers = {
@@ -18,10 +19,10 @@ def getAllbumen(prox,jigou_dic):
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Cookie':'search_history=%E5%8E%95%E6%89%80%E9%9D%A9%E5%91%BD; SHIROJSESSIONID=8b77c272-388b-411e-8dc2-f5115ea2bd40',
+        'Cookie': 'search_history=%E5%8E%95%E6%89%80%E9%9D%A9%E5%91%BD; SHIROJSESSIONID=8b77c272-388b-411e-8dc2-f5115ea2bd40',
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
     }
-    response = requests.get(url, headers=headers, data=data,proxies=prox)
+    response = requests.get(url, headers=headers, data=data, proxies=prox)
 
     response.encoding = 'utf-8'
     # 以 Beautiful Soup 解析 HTML 程序码
@@ -30,11 +31,12 @@ def getAllbumen(prox,jigou_dic):
         title = all_a.get('title')
         href = all_a.get('href')
         if title in jigou_dic:
-            sendMsgError('f ## 机构职能页死链监测：\n\n 以下机构重复，检测是否多发布一条',f'f {title}--{href}')
+            sendMsgError('f ## 机构职能页死链监测：\n\n 以下机构重复，检测是否多发布一条', f'f {title}--{href}')
             continue
         jigou_dic[title] = href
 
-def getzhishu(prox,jigou_dic):
+
+def getzhishu(prox, jigou_dic):
     url = 'http://www.scpc.gov.cn/ljglzy/jgznljgl/xzfgzbmgwh/6790771.js?num=99&ect=1697104935796'
 
     data = {}
@@ -46,7 +48,7 @@ def getzhishu(prox,jigou_dic):
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
     }
-    response = requests.get(url, headers=headers, data=data,proxies=prox)
+    response = requests.get(url, headers=headers, data=data, proxies=prox)
     response.encoding = 'utf-8'
     # 以 Beautiful Soup 解析 HTML 程序码
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -54,12 +56,12 @@ def getzhishu(prox,jigou_dic):
         title = all_a.get('title')
         href = all_a.get('href')
         if title in jigou_dic:
-            sendMsgError(f'## 机构职能页死链监测：\n\n 以下机构重复，检测是否多发布一条',f' {title}--{href}')
+            sendMsgError(f'## 机构职能页死链监测：\n\n 以下机构重复，检测是否多发布一条', f' {title}--{href}')
             continue
         jigou_dic[title] = href
 
 
-def sendMsgError(tittle,content):
+def sendMsgError(tittle, content):
     data = {
         "msgtype": "markdown",
         "markdown": {
@@ -73,7 +75,9 @@ def sendMsgError(tittle,content):
     response = requests.post(url, data=json.dumps(data))
     # 输出响应结果
     print(response.text)
-def sendMsg(tittle,content):
+
+
+def sendMsg(tittle, content):
     data = {
         "msgtype": "markdown",
         "markdown": {
@@ -90,8 +94,8 @@ def sendMsg(tittle,content):
     # 输出响应结果
     print(response.text)
 
-def modifgyHref(key,url, not_open_list ,error_state_list,zzgk_error_list ):
 
+def modifgyHref(key, url, not_open_list, error_state_list, zzgk_error_list, time_err_list):
     if not url.startswith('http'):
         url = 'http://www.scpc.gov.cn' + url
     data = {}
@@ -118,11 +122,17 @@ def modifgyHref(key,url, not_open_list ,error_state_list,zzgk_error_list ):
     div_elment = soup.find_all('div', {'class': 'xxgk-wzcon'})
 
     for element in div_elment:
-        if '政务公开' not in element.get_text():
+        text = element.get_text()
+        if '政务公开' not in text:
             zzgk_error_list.append(key)
+        if '下午13' in text or '下午14' in text or '下午:13' in text or '下午:14' in text or '下午 13' in text or '下午 14' in text or '下午：14' in text or '下午：13' in text:
+            print("有下午144：" + url)
+            time_err_list.append(key)
 
-    return not_open_list,error_state_list,zzgk_error_list
-def sendMsgErrorList(titlle,list):
+    return not_open_list, error_state_list, zzgk_error_list, time_err_list
+
+
+def sendMsgErrorList(titlle, list):
     data = {
         "msgtype": "markdown",
         "markdown": {
@@ -135,14 +145,14 @@ def sendMsgErrorList(titlle,list):
     # 定义企业微信机器人的webhook地址
 
     # url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=425a53f6-696e-46c1-9d4a-fae8940b136f"
-        # 正式群
+    # 正式群
     url = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=6c00ba33-68ab-403e-bab2-2b9134a7d7f6'
-
 
     # 发送HTTP POST请求
     response = requests.post(url, data=json.dumps(data))
     # 输出响应结果
     print(response.text)
+
 
 def startMain():
     jigou_dic = {}
@@ -154,16 +164,18 @@ def startMain():
     not_open_list = []
     error_state_list = []
     zzgk_error_list = []
+    time_err_list = []
     for key, value in jigou_dic.items():
-        modifgyHref(key, value, not_open_list, error_state_list, zzgk_error_list)
+        modifgyHref(key, value, not_open_list, error_state_list, zzgk_error_list, time_err_list)
 
     # not_open_list= ['镇龙镇', ' 县卫生健康局']
     # error_state_list=['白衣镇']
     # zzgk_error_list = ['青云镇','江口水乡管理局']
 
-    makeExcel(not_open_list,error_state_list,zzgk_error_list)
+    makeExcel(not_open_list, error_state_list, zzgk_error_list, time_err_list)
 
-def makeExcel(not_open_list,error_state_list,zzgk_error_list):
+
+def makeExcel(not_open_list, error_state_list, zzgk_error_list, time_err_list):
     # 加载现有的Excel文件
     wb = load_workbook(conf.xlsx_name)
 
@@ -188,6 +200,9 @@ def makeExcel(not_open_list,error_state_list,zzgk_error_list):
     ws.append(['3.以下单位机关简介中无领导分管政务公开，请对应部门修改'])
     # if not_open_list:
     ws.append(zzgk_error_list)
+    ws.append(['4.以下单位机关简介中时间表述错误，请对应部门修改'])
+    # if not_open_list:
+    ws.append(time_err_list)
 
     # 保存文件
     wb.save(conf.xlsx_name)
@@ -195,6 +210,3 @@ def makeExcel(not_open_list,error_state_list,zzgk_error_list):
 
 if __name__ == '__main__':
     startMain()
-
-
-

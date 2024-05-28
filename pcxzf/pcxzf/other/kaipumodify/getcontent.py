@@ -1,0 +1,226 @@
+from datetime import datetime
+
+import conf
+import requests
+
+
+def getcontent(organId, contentId,bzid,jid):
+    cookies = {
+        'authenticatecenterjsessionid': jid,
+        'bz_govc_SHIROJSESSIONID': bzid,
+        'historyCookie': '%E5%B9%B3%E6%98%8C%E5%99%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%87%AA%E7%84%B6%E8%B5%84%E6%BA%90%E5%92%8C%E8%A7%84%E5%88%92%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%86%9C%E4%B8%9A%E5%86%9C%E6%9D%91%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%B4%A2%E6%94%BF%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E7%A4%BA%E8%8C%83%E5%B9%BC%E5%84%BF%E5%9B%AD%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B1%9F%E5%8F%A3%E6%B0%B4%E4%B9%A1%E6%B0%B4%E5%88%A9%E9%A3%8E%E6%99%AF%E5%8C%BA%E5%BB%BA%E8%AE%BE%E7%AE%A1%E7%90%86%E5%B1%80%2C%E5%8E%BF%E5%86%9C%E4%B8%9A%E5%86%9C%E6%9D%91%E5%B1%80',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection': 'keep-alive',
+        # 'Cookie': 'authenticatecenterjsessionid=NDYzMDcxZWItOTlkOC00ZDA4LTg3Y2UtZDQyOGM2NmM2NDdi; bz_govc_SHIROJSESSIONID=1aee0a6d-3f13-44bd-9a17-dfd99b0ed07a; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%95%87%E9%BE%99%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%87%AA%E7%84%B6%E8%B5%84%E6%BA%90%E5%92%8C%E8%A7%84%E5%88%92%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%86%9C%E4%B8%9A%E5%86%9C%E6%9D%91%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%B4%A2%E6%94%BF%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E7%A4%BA%E8%8C%83%E5%B9%BC%E5%84%BF%E5%9B%AD%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B1%9F%E5%8F%A3%E6%B0%B4%E4%B9%A1%E6%B0%B4%E5%88%A9%E9%A3%8E%E6%99%AF%E5%8C%BA%E5%BB%BA%E8%AE%BE%E7%AE%A1%E7%90%86%E5%B1%80%2C%E5%8E%BF%E5%86%9C%E4%B8%9A%E5%86%9C%E6%9D%91%E5%B1%80',
+        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=public_content&columnId=6603181&id=13940017&isOpen=true&_=1715850502563',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+
+    params = {
+        'contentId': contentId,
+        'organId': organId,
+        'attribute': '',
+        'IsAjax': '1',
+        'dataType': 'JSON',
+        '_': '1715850503020',
+    }
+
+    response = requests.get(
+        'http://10.15.3.133:83/public/content/getPublicContent',
+        params=params,
+        cookies=cookies,
+        headers=headers,
+        verify=False,
+    )
+
+    return response.json()
+
+
+def get_current_time():
+    # 获取当前时间
+    now = datetime.now()
+    # 格式化时间为指定格式
+    formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    return formatted_time
+
+
+def saveorupdate(content, wrong, right,bzid,jid):
+    cookies = {
+        'authenticatecenterjsessionid': jid,
+        'bz_govc_SHIROJSESSIONID': bzid,
+        'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
+        'Origin': 'http://10.15.3.133:83',
+        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+
+    params = {
+        'IsAjax': '1',
+        'dataType': 'JSON',
+        '_': '0.4361940897591683',
+    }
+
+    data = {
+        'siteId': content['data']['siteId'],
+        'id': content['data']['id'],
+        'summarize': content['data']['summarize'],
+        'organId': content['data']['organId'],
+        'contentId': content['data']['contentId'],
+        'type': content['data']['type'],
+
+        'sortNum': content['data']['sortNum'],
+        'attachSavedName': content['data']['attachSavedName'],
+        'attachRealName': content['data']['attachRealName'],
+        # 'attachSize': content['data']['attachSize'],
+        'catId': content['data']['catId'],
+        'indexNum': content['data']['indexNum'],
+        'fileNum': content['data']['fileNum'],
+        'classIds': content['data']['classIds'],
+        'parentClassIds': content['data']['parentClassIds'],
+        # 'classNames': content['data']['siteId'],
+        'synColumnIds': content['data']['synColumnIds'],
+        # 'synColumnNames': content['data']['siteId'],
+        'synOrganCatIds': content['data']['synOrganCatIds'],
+        # 'synOrganCatNames': content['data']['siteId'],
+        'synMsgCatIds': content['data']['synMsgCatIds'],
+        # 'synMsgCatNames': content['data']['siteId'],
+        # 'effective': content['data']['siteId'],
+        'effectiveDate': content['data']['effectiveDate'],
+        'repealDate': content['data']['repealDate'],
+        # 'writtenDate': content['data']['siteId'],
+        'title': correct_string(content['data']['title'], wrong, right),
+        'keyWords': content['data']['keyWords'],
+        'publishDate': content['data']['publishDate'],
+        'createDate': content['data']['createDate'],
+        'content': correct_string(content['data']['content'], wrong, right),
+        'isPublish': '1',
+        'isTop': content['data']['isTop'],
+        'author': content['data']['author'],
+        'resources': content['data']['resources'],
+        'redirectLink': content['data']['redirectLink'],
+        'remarks': correct_string(content['data']['remarks'], wrong, right),
+        'sortDate': content['data']['sortDate'],
+        'hit': content['data']['hit'],
+        # 'link': content['data']['isTop'],
+        'catName': content['data']['catName'],
+        'organName': content['data']['organName'],
+        # 'process':content['data']['isTop'],
+        # 'counts': content['data']['isTop'],
+        'isInvalid': content['data']['isInvalid'],
+        'invalidReason': content['data']['invalidReason'],
+        # 'filePath': content['data']['isTop'],
+        # 'relContentId': content['data']['isTop'],
+        # 'attribute': content['data']['isTop'],
+        # 'titleColor': content['data']['isTop'],
+        'isBold': content['data']['isBold'],
+        'isUnderline': content['data']['isUnderline'],
+        'isTilt': content['data']['isTilt'],
+        'subTitle': content['data']['subTitle'],
+        # 'article': content['data']['isTop'],
+        'isAllowComments': content['data']['isAllowComments'],
+        'videoStatus': content['data']['videoStatus'],
+        # 'oldSchemaId': content['data']['isTop'],
+        # 'logStr': content['data']['isTop'],
+        'referedNews': content['data']['referedNews'],
+        'referNews': content['data']['referNews'],
+        'explainType': content['data']['explainType'],
+        # 'relContentIds':content['data']['isTop'],
+        # 'relLink': content['data']['isTop'],
+        # 'relContentTitles':content['data']['isTop'],
+        'isPush': content['data']['isPush'],
+        # 'invalidType': content['data']['isTop'],
+        # 'invalidFileType': content['data']['isTop'],
+        'updateDate': get_current_time(),
+        'readFileType': content['data']['readFileType'],
+        # 'relInfo': content['data']['isTop'],
+        'topTitle': content['data']['topTitle'],
+        # 'relExplainType': content['data']['relExplainType'],
+        # 'explainId': content['data']['isPush'],
+        # 'isSpecial': content['data']['isPush'],
+        'themeNote': content['data']['themeNote'],
+        'wordDocName': content['data']['wordDocName'],
+        'wordDocPath': content['data']['wordDocPath'],
+        'pdfDocName': content['data']['pdfDocName'],
+        'pdfDocPath': content['data']['pdfDocPath'],
+        'publishDepartment': content['data']['publishDepartment'],
+        # 'startDate': content['data']['isPush'],
+        # 'endDate': content['data']['isPush'],
+        'publicYear': content['data']['publicYear'],
+        # 'organCode': content['data']['isPush'],
+        'imageLink': content['data']['imageLink'],
+        'regNo': content['data']['regNo'],
+        'pubMode': content['data']['pubMode'],
+        'pubRange': content['data']['pubRange'],
+        # 'abolishDate': content['data']['isPush'],
+        # 'writeDate': content['data']['isPush'],
+        # 'regDate': content['data']['isPush'],
+        'pubOrg': content['data']['pubOrg'],
+        'cateCode': content['data']['cateCode'],
+        'appendixPath': content['data']['appendixPath'],
+        'appendixName': content['data']['appendixName'],
+        'ownerDept': content['data']['ownerDept'],
+        'explainTypes': content['data']['explainTypes'],
+        'explainTitles': content['data']['explainTitles'],
+        'explainLinks': content['data']['explainLinks'],
+        'docExplainRelateJson': content['data']['docExplainRelateJson'],
+        # 'pushStatus': '',
+        # 'sourcesInfoId': '',
+        # 'sourcesClassId': '',
+        # 'opeStatus': '',
+        # 'ectLevel': '',
+        # 'resClassifyArray': '',
+        'isNormalPolicy': content['data']['isNormalPolicy'],
+        # 'policyPushStatus': '',
+        # 'valid': '',
+        'isCurSite': content['data']['isCurSite'],
+        # 'domain': '',
+        # 'policyCash': '',
+        'remoteContent': content['data']['content'],
+    }
+
+    response = requests.post(
+        'http://10.15.3.133:83/public/content/saveOrUpdate',
+        params=params,
+        cookies=cookies,
+        headers=headers,
+        data=data,
+        verify=False,
+    )
+    print(response.text)
+
+
+def correct_string(content, wrong, correct):
+    """
+    将字符串 content 中的所有 wrong 替换为 correct。
+
+    :param content: 原始字符串
+    :param wrong: 错误的字符串
+    :param correct: 正确的字符串
+    :return: 更正后的字符串
+    """
+    return content.replace(wrong, correct)
+
+
+def modify(organId, contentId, wrong, right):
+    content = getcontent(organId, contentId)
+    saveorupdate(content, wrong, right)
+
+
+if __name__ == '__main__':
+    content = getcontent()
+    # print(content['data']['content'])
+    saveorupdate(content)

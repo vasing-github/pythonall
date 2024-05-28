@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
 import json
+import re
 from datetime import datetime, timedelta
 
 import conf
 import requests
 import text
-
+from loginwz import getjsseion
+from other.kaipumodify import getcontent2, getcontent
+from io import BytesIO
+from openpyxl import Workbook
+from openpyxl import load_workbook
 token = text.token
 wait_fix = text.wait_fix
 text_yinsi_num = text.text_yinsi_num
 text_out_num = text.text_out_num
 text_link_use_num = text.text_link_use_num
+bz_gov_id = text.bz_gov_id
+jid = text.jid
 
 endDate = datetime.now()
 startDate = endDate - timedelta(days=30)
@@ -31,6 +38,12 @@ def modify_token(newtoken):
     token = newtoken
 
 
+def modify_cookie(new_bz_gov_id, new_jid):
+    global bz_gov_id, jid
+    bz_gov_id = new_bz_gov_id
+    jid = new_jid
+
+
 def save_data():
     with open('text.py', 'w') as f:
         f.write('token = \'' + token + '\'\n')
@@ -38,6 +51,66 @@ def save_data():
         f.write('text_yinsi_num = ' + str(text_yinsi_num) + '\n')
         f.write('text_out_num = ' + str(text_out_num) + '\n')
         f.write('text_link_use_num = ' + str(text_link_use_num) + '\n')
+        f.write('bz_gov_id = \'' + bz_gov_id + '\'\n')
+        f.write('jid = \'' + jid + '\'\n')
+
+
+def get_cuomin_list():
+    cookies = {
+        'HWWAFSESID': '49d6373a41e52c2bd8',
+        'HWWAFSESTIME': '1716168884097',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Authorization': 'Bearer ' + token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'HWWAFSESID=49d6373a41e52c2bd8; HWWAFSESTIME=1716168884097',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+        'page': {
+            'size': 100,
+            'current': 1,
+        },
+        'check': 1,
+        'dataState': True,
+        'dateType': 1,
+        'codeType': 1,
+        'custCode': '5119230005',
+        'startDate': startDate_str,
+        'endDate': endDate_str,
+        'rectifyStatus': 0,
+        'searchBox': '',
+        'questionLevel': '',
+        'labelIds': [],
+        'resultType': '',
+        'pageType': '',
+        'recommendUpdateList': [],
+        'protectCode': '5119230005',
+        'custLevel': '1',
+        'unitLevel': 3,
+        'isHandoff': 1,
+    }
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteSensitiveDetail/listPageByDto',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+    print(response.text)
+    return response.json()['data']['records']
 
 
 def get_link_use_num(token):
@@ -206,7 +279,7 @@ def get_yinsi_num(token):
     return response.json()['data']['allCount']
 
 
-def start_search(token):
+def start_search():
     print(endDate_str)
     cookies = {
         'HWWAFSESID': '40854762319bc867f7',
@@ -258,13 +331,19 @@ def start_search(token):
     )
     print(response.json())
     if response.status_code != 200:
-        new_token = get_new_token()
-        wait_num = start_search(new_token)[2]
-        return 1, new_token, wait_num
+        dealtoken()
+        return start_search()
     waitrefix = response.json()['data']['notRectifiedNum']
     print('waitrefix:', waitrefix)
-    print(response.text)
-    return 0, '', waitrefix
+
+    return waitrefix
+
+
+def dealtoken():
+    print("get new token ..........")
+    new_token = get_new_token()
+    modify_token(new_token)
+    save_data()
 
 
 def get_new_token():
@@ -386,8 +465,44 @@ def get_kaipu_uptime(token):
     return response.json()['data']['records'][0]['updateTime']
 
 
-if __name__ == '__main__':
-    is_up_token, new_token, kaipu_waitrefix = start_search(token)
+def kaipucorrect(ids):
+    cookies = {
+        'HWWAFSESID': '49d6373a41e52c2bd8',
+        'HWWAFSESTIME': '1716168884097',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Authorization': 'Bearer ' + token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'HWWAFSESID=49d6373a41e52c2bd8; HWWAFSESTIME=1716168884097',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+        'ids': ids,
+        'rectifyStatus': 1,
+    }
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteSensitiveDetail/updateCheckTypeByIds',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+    print(response.text)
+
+def get_all_tips():
+    is_up_token, new_token, kaipu_waitrefix = start_search()
     yinsi_num = get_yinsi_num(new_token if is_up_token else token)
     kai_out_num = get_out_link(new_token if is_up_token else token)
     kai_link_use_num = get_link_use_num(new_token if is_up_token else token)
@@ -410,3 +525,154 @@ if __name__ == '__main__':
         modify_token(new_token)
 
     save_data()
+
+
+def get_new_bzid_jid():
+    print("bz_gov_id token press...........")
+    new_bz_gov_id, new_jid = getjsseion.get_new_cookie()
+    modify_cookie(new_bz_gov_id, new_jid)
+    save_data()
+
+
+def isgetnewsseion(res):
+    pass
+
+
+def add_to_correct(correctlist, correctids, cuomin):
+    correctids.append(cuomin['id'])
+    correctlist.append((cuomin['sensitiveWords'], cuomin['recommendUpdate'], cuomin['snapshotNew'], cuomin['url'],
+                        cuomin['parentUrl']))
+
+
+def dealcuo():
+    kaipu_waitrefix = start_search()
+    if kaipu_waitrefix != 0:
+
+        list_cuomin = get_cuomin_list()
+        correctlist = []
+        correctids = []
+        for cuomin in list_cuomin:
+            if cuomin['pageType'] == "3":  # 表示是文章类型
+                if cuomin['column'] != '互动交流':
+                    numbers = re.findall(r'\d+', cuomin['url'])
+                    # 将提取出的数字转换为整数
+                    numbers = [int(num) for num in numbers]
+                    # 判断 URL 类型并返回结果
+                    if len(numbers) == 1:
+                        res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
+                        if res['status'] == -9:
+                            get_new_bzid_jid()
+                            res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
+                        getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
+                                                  jid)
+                        add_to_correct(correctlist, correctids, cuomin)
+
+                    elif len(numbers) == 2:
+
+                        res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+                        if res['status'] == -9:
+                            get_new_bzid_jid()
+                            res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+                        getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
+                                                jid)
+                        add_to_correct(correctlist, correctids, cuomin)
+                    else:
+                        print("未知情况")
+                        send_nosee()
+
+                    kaipucorrect(correctids)
+                    send_correct_msg(correctlist)
+
+
+def send_nosee():
+    data = {
+        "msgtype": "markdown",
+        "markdown": {
+            "content": f" 检测到开普云有新类型错敏，机器人无法修改，请人工核实。\n<@WuXiaoLong>\n"
+        }
+    }
+
+    key = conf.key_cs
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+    # 发送HTTP POST请求
+    response = requests.post(url, data=json.dumps(data))
+
+    # 输出响应结果
+    print(response.text)
+
+
+def send_correct_msg(correctlist):
+    key = conf.key_cs
+
+    wb = Workbook()
+
+    ws = wb.active
+
+    row = ws.max_row if ws.max_row == 1 else ws.max_row + 2
+
+    # 合并单元格设置标题和表头
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=4)
+    ws.cell(row=row, column=1).value = '机器人改错记录  '+endDate_str
+    # 设置合并后单元格的字体样式
+    ws.cell(row=row, column=1).font = conf.tittle_font
+
+    ws.append(['错敏词', '修改词', '快照', '地址', '父地址'])
+    # 设置新添加的行的字体为加粗
+    for row in [ws[row + 1]]:
+        for cell in row:
+            cell.font = conf.header_font
+
+    # 遍历字典
+
+    for tup in correctlist:
+
+        ws.append(tup)
+    ws.column_dimensions['A'].width = 20
+    # 设置列A的宽度为50
+    ws.column_dimensions['B'].width = 20
+    ws.column_dimensions['C'].width = 20
+    ws.column_dimensions['D'].width = 20
+    ws.column_dimensions['E'].width = 20
+    # 保存文件
+    filename = conf.correct_name + endDate + '.xlsx'
+    wb.save(filename)
+
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+
+
+    # 加载现有的Excel文件
+    wb = load_workbook(filename)
+    # 获取活动工作表
+
+    # 将工作簿保存到一个字节流中
+    output = BytesIO()
+    wb.save(output)
+
+    # 准备发送文件
+    files = {"file": (filename, output.getvalue())}
+    response = requests.post(
+        'https://qyapi.weixin.qq.com/cgi-bin/webhook/upload_media?key=' + key + '&type=file',
+        files=files)
+
+    print(response.text)
+
+    # 检查是否有'media_id'在响应中
+    if 'media_id' in response.json():
+        # 发送消息
+        headers = {"Content-Type": "application/json"}
+        message = {
+            "msgtype": "file",
+            "file": {
+                "media_id": response.json()["media_id"]
+            }
+        }
+        response = requests.post(url, headers=headers, json=message)
+
+        # 输出响应结果
+        print(response.text)
+    else:
+        print("No media_id in response")
+
+
+if __name__ == '__main__':
+    dealcuo()

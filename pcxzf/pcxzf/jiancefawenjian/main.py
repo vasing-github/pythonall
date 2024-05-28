@@ -1,14 +1,24 @@
-from jiancefawenjian import zhengce
-from openpyxl import load_workbook
+from datetime import datetime
+from io import BytesIO
+
+import conf
 import fadingzhudonggongkaineirong
 import gongkainianbao
-from openpyxl import Workbook
 import jigouzhineng
-import conf
 import requests
-from io import BytesIO
-import jicengzwgk
+from jiancefawenjian import zhengce
+from openpyxl import Workbook
+from openpyxl import load_workbook
 from threed_record import qm
+
+
+def get_current_time():
+    # 获取当前时间
+    now = datetime.now()
+    # 格式化时间为指定格式
+    formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    return formatted_time
+
 
 def sendMsg():
     key = conf.key_choose
@@ -54,19 +64,19 @@ def sendMsg():
 def end_excel():
     wb = load_workbook(conf.xlsx_name)
     ws = wb.active
-
+    ws['j1'] = '检测时间：'+get_current_time()
     # 在h3列写入"栏目更新检测标准"
-    ws['H3'] = '栏目更新检测标准'
-    ws['H3'].font = conf.header_font
+    ws['j3'] = '栏目更新检测标准'
+    ws['j3'].font = conf.header_font
     # 在F4写入"栏目名称"，在G4写入"超期时间"
-    ws['h4'] = '栏目名称'
-    ws['I4'] = '超期时间'
+    ws['j4'] = '栏目名称'
+    ws['k4'] = '超期时间'
 
     # 从F5开始遍历字典up_time_conf并填充内容
     start_row = 5
     for i, (menu, time) in enumerate(conf.up_time_conf.items(), start=start_row):
-        ws['H{}'.format(i)] = menu
-        ws['I{}'.format(i)] = time
+        ws['j{}'.format(i)] = menu
+        ws['k{}'.format(i)] = time
 
         # 设置列A的宽度为50
     ws.column_dimensions['A'].width = 40
@@ -75,15 +85,15 @@ def end_excel():
     ws.column_dimensions['C'].width = 20
     ws.column_dimensions['D'].width = 20
 
-    ws.column_dimensions['H'].width = 20
-    ws.column_dimensions['I'].width = 20
+    ws.column_dimensions['j'].width = 20
+    ws.column_dimensions['k'].width = 20
 
-    ws['H49'] = '基层政务公开栏目检测标准:'
-    ws['H49'].font = conf.header_font
-    ws['H50'] = '1.每个事项的总内容不少于4条'
-    ws['H51'] = '2.最新更新时间不大于90天'
-    ws['H52'] = '3.每相邻两条信息之间更新时间不大于90天'
-    ws['H53'] = '注意：除办事服务等不易发布的内容外，其余链接形式的内容应尽量粘贴复制而不是直接跳转，否则机器人无法监测'
+    ws['j49'] = '基层政务公开栏目检测标准:'
+    ws['j49'].font = conf.header_font
+    ws['j50'] = '1.每个事项的总内容不少于4条'
+    ws['j51'] = '2.最新更新时间不大于90天'
+    ws['j52'] = '3.每相邻两条信息之间更新时间不大于90天'
+    ws['j53'] = '注意：除办事服务等不易发布的内容外，其余链接形式的内容应尽量粘贴复制而不是直接跳转，否则机器人无法监测'
 
     # 保存更改
     wb.save(conf.xlsx_name)
