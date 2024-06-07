@@ -2,15 +2,17 @@
 import json
 import re
 from datetime import datetime, timedelta
+from io import BytesIO
 
 import conf
+import hudongcontent
 import requests
 import text
 from loginwz import getjsseion
-from other.kaipumodify import getcontent2, getcontent
-from io import BytesIO
 from openpyxl import Workbook
 from openpyxl import load_workbook
+from other.kaipumodify import getcontent2, getcontent
+
 token = text.token
 wait_fix = text.wait_fix
 text_yinsi_num = text.text_yinsi_num
@@ -501,6 +503,7 @@ def kaipucorrect(ids):
     )
     print(response.text)
 
+
 def get_all_tips():
     is_up_token, new_token, kaipu_waitrefix = start_search()
     yinsi_num = get_yinsi_num(new_token if is_up_token else token)
@@ -541,8 +544,32 @@ def isgetnewsseion(res):
 def add_to_correct(correctlist, correctids, cuomin):
     correctids.append(cuomin['id'])
     correctlist.append((cuomin['sensitiveWords'], cuomin['recommendUpdate'], cuomin['snapshotNew'], cuomin['url'],
-                        cuomin['parentUrl']))
+                        cuomin['parentUrl'], cuomin['pageTypeMeaning'], cuomin['parentTitle']))
 
+
+def cuo_1_argument(numbers, cuomin, correctlist, correctids):
+    res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
+    if res['status'] == -9:
+        get_new_bzid_jid()
+        res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
+    getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
+                              jid)
+    add_to_correct(correctlist, correctids, cuomin)
+
+
+def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
+    res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+    if res['status'] == -9:
+        get_new_bzid_jid()
+        res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+    getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
+                            jid)
+    add_to_correct(correctlist, correctids, cuomin)
+
+
+def cuo_hudong(cuomin, correctlist, correctids):
+    hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
+    add_to_correct(correctlist, correctids, cuomin)
 
 def dealcuo():
     kaipu_waitrefix = start_search()
@@ -559,29 +586,19 @@ def dealcuo():
                     numbers = [int(num) for num in numbers]
                     # 判断 URL 类型并返回结果
                     if len(numbers) == 1:
-                        res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
-                        if res['status'] == -9:
-                            get_new_bzid_jid()
-                            res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
-                        getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
-                                                  jid)
-                        add_to_correct(correctlist, correctids, cuomin)
-
+                        cuo_1_argument(numbers, cuomin, correctlist, correctids)
                     elif len(numbers) == 2:
-
-                        res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-                        if res['status'] == -9:
-                            get_new_bzid_jid()
-                            res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-                        getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
-                                                jid)
-                        add_to_correct(correctlist, correctids, cuomin)
+                        cuo_2_aruments(numbers, cuomin, correctlist, correctids)
                     else:
                         print("未知情况")
                         send_nosee()
 
-                    kaipucorrect(correctids)
-                    send_correct_msg(correctlist)
+
+                elif cuomin['column'] == '互动交流':
+                    cuo_hudong(cuomin, correctlist, correctids)
+
+                send_correct_msg(correctlist)
+                kaipucorrect(correctids)
 
 
 def send_nosee():
@@ -612,11 +629,11 @@ def send_correct_msg(correctlist):
 
     # 合并单元格设置标题和表头
     ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=4)
-    ws.cell(row=row, column=1).value = '机器人改错记录  '+endDate_str
+    ws.cell(row=row, column=1).value = '机器人改错记录  ' + endDate_str
     # 设置合并后单元格的字体样式
     ws.cell(row=row, column=1).font = conf.tittle_font
 
-    ws.append(['错敏词', '修改词', '快照', '地址', '父地址'])
+    ws.append(['错敏词', '修改词', '快照', '地址', '父地址', '错敏类型', '父标题'])
     # 设置新添加的行的字体为加粗
     for row in [ws[row + 1]]:
         for cell in row:
@@ -625,7 +642,6 @@ def send_correct_msg(correctlist):
     # 遍历字典
 
     for tup in correctlist:
-
         ws.append(tup)
     ws.column_dimensions['A'].width = 20
     # 设置列A的宽度为50
@@ -634,11 +650,11 @@ def send_correct_msg(correctlist):
     ws.column_dimensions['D'].width = 20
     ws.column_dimensions['E'].width = 20
     # 保存文件
-    filename = conf.correct_name + endDate + '.xlsx'
+
+    formatted_date = endDate.strftime('%Y-%m-%d %H_%M_%S')  # 使用下划线代替冒号
+    filename = conf.correct_name + formatted_date + '.xlsx'
     wb.save(filename)
-
     url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
-
 
     # 加载现有的Excel文件
     wb = load_workbook(filename)
@@ -676,3 +692,6 @@ def send_correct_msg(correctlist):
 
 if __name__ == '__main__':
     dealcuo()
+    # formatted_date = endDate.strftime('%Y-%m-%d %H_%M_%S')  # 使用下划线代替冒号
+    # filename = conf.correct_name + formatted_date + '.xlsx'
+    # print(filename)
