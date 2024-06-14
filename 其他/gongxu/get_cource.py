@@ -32,4 +32,6 @@ def get_all_cource(ck, trainplanId):
 
 
 if __name__ == '__main__':
-    print(get_all_cource())
+    trainplanId = '578c78426b91414096f0f94d26f335e6'
+    ck = 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzIzMTk3NjEwMjQwMTA2QDE1MSIsIm1vYmlsZSI6IjEzNTY4NDg5ODM4IiwidXNlck5hbWUiOiI1MTM3MjMxOTc2MTAyNDAxMDYiLCJ1c2VySWQiOiJwMXMwXzIyY2YwZDg0LTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcxNzczMzgwNCwianRpIjoiNmJkYTcxYWUyZGM5NGUyM2JmYTMyYWUxZTgyODNhNzMifQ.ZuWvzBtNItvTBMkbeqLkCP2OSNP9pKZyKY7F_mhq2Us'
+    print(get_all_cource(ck,trainplanId))

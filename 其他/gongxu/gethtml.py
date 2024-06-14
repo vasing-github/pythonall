@@ -29,9 +29,11 @@ def get_src(courceid,selectionid,ck,planid):
     params = {
         'sectionId': selectionid,
     }
-
+    print(courceid,selectionid)
     response = requests.get(
+        # 注意这里，如果是专业课就把获取html请求 改为 /   如果是学公需就是-
         'https://edu.chinahrt.com/151/play_video/'+planid+'-'+courceid,
+        # 'https://edu.chinahrt.com/151/play_video/' + planid + '/' + courceid,
         params=params,
         cookies=cookies,
         headers=headers,

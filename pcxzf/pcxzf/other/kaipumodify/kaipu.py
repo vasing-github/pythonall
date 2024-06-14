@@ -597,8 +597,8 @@ def dealcuo():
                 elif cuomin['column'] == '互动交流':
                     cuo_hudong(cuomin, correctlist, correctids)
 
-                send_correct_msg(correctlist)
-                kaipucorrect(correctids)
+        send_correct_msg(correctlist)
+        kaipucorrect(correctids)
 
 
 def send_nosee():

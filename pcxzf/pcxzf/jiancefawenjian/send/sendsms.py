@@ -43,7 +43,7 @@ def sendmsg(comp,score):
     phont_list = conf.bumen_phone.get(comp)
 
     content = f"{comp}，你单位本周政务公开考核扣{abs(score)}分，请及时进入数字平昌政务微信或登录数字平昌综合治理后台处理。"
-    sign_name = "【数字平昌】"
+    sign_name = "【平政哨兵】"
     if phont_list != None:
         for phone in phont_list:
             mobile = phone[0]

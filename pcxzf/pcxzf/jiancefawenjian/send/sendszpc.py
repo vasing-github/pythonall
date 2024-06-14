@@ -57,7 +57,7 @@ def create_card_payload(comp, score,curdate):
             "card_type": "text_notice",
             "source": {
                 "icon_url": "https://wework.qpic.cn/wwpic/252813_jOfDHtcISzuodLa_1629280209/0",
-                "desc": "政府网站内容保障考核通知",
+                "desc": "\'平政哨兵\'考核通知",
                 "desc_color": 1
             },
             "main_title": {

@@ -24,7 +24,51 @@ def save_data():
         # 将 JSON 字符串写入文件
         f.write('record_user = ' + record_user_json + '\n')
 
+def learn_zhuanyeke():
+    trainplanId = '578c78426b91414096f0f94d26f335e6'
+    ck = 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzIzMTk3NjEwMjQwMTA2QDE1MSIsIm1vYmlsZSI6IjEzNTY4NDg5ODM4IiwidXNlck5hbWUiOiI1MTM3MjMxOTc2MTAyNDAxMDYiLCJ1c2VySWQiOiJwMXMwXzIyY2YwZDg0LTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcxNzczMzgwNCwianRpIjoiNmJkYTcxYWUyZGM5NGUyM2JmYTMyYWUxZTgyODNhNzMifQ.ZuWvzBtNItvTBMkbeqLkCP2OSNP9pKZyKY7F_mhq2Us'
 
+    userid, realname = getssion.getssion(ck)
+    list_cource = get_cource.get_all_cource(ck, trainplanId)
+    print('所有课程id：', list_cource)
+    cource_selection_dic = {}
+    for cource in list_cource:
+        list_selection = get_cource_detail.get_cource_detail(cource,ck,trainplanId)
+        cource_selection_dic[cource] = list_selection
+    print('所有章节：', cource_selection_dic)
+    for courceid, selctions in cource_selection_dic.items():
+
+        for selction in selctions:
+            print(courceid, selction['id'])
+
+            study_time = selction['study_time']
+            total_time = selction['total_time']
+            print(selction['name'])
+            print(study_time, total_time)
+            if selction['study_status'] == '已学完':
+                continue
+             # 注意这里，如果是专业课就把获取html请求 改为 /   如果是学公需就是-
+            recordid, studydoce, src = test_get_recordid.get_study_code_and_recordid(courceid, selction['id'],ck,trainplanId)
+
+            if study_time < 0.8 * total_time:
+                # if 0.15 * total_time <40:
+                #     code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.6 * total_time),
+                #                                  userid, trainplanId)
+                # else:
+                #     code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.85 * total_time), userid,trainplanId)
+                code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.85 * total_time),
+                                             userid, trainplanId)
+            else:
+                code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,trainplanId)
+
+            time.sleep(10)
+            if code  == '1':
+                break
+
+    #如果学完了返回1修改状态，记录时间
+    list_cource = get_cource.get_all_cource(ck, trainplanId)
+    # 如果 list_cource 为空，返回 True，否则返回 False
+    return not list_cource
 
 def start_learn(ck,planid,userid):
 
@@ -134,10 +178,12 @@ def job():
                         end_exam(task['cookie'])
 if __name__ == '__main__':
     # 每隔20分钟执行一次 job 方法
-    schedule.every(10).minutes.do(job)
-    job()
-    while True:
-        # 运行所有可以运行的任务
-        schedule.run_pending()
+    # schedule.every(10).minutes.do(job)
+    # job()
+    # while True:
+    #     # 运行所有可以运行的任务
+    #     schedule.run_pending()
+
+    learn_zhuanyeke()
 
 
