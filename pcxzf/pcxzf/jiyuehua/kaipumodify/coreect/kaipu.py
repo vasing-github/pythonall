@@ -351,13 +351,13 @@ def start_search():
 
     return waitrefix
 
-
+import kaipumodify.cfg.dealtoken
 def dealtoken():
     print("get new token ..........")
     new_token = get_new_token()
     modify_token(new_token)
     save_data()
-
+    dealtoken.hello()
 
 def get_new_token():
     cookies = {
