@@ -5,10 +5,10 @@ from openpyxl import Workbook
 def putin():
     # 数据库连接配置
     db_config = {
-           "host": "10.167.39.125",
-    "user": "kfvasing",
-    "password": "vas9624..",
-    "database": "smartpingchangdb",
+        "host": "yuxiaohaishidalao.shop",
+        "user": "root",
+        "password": "vas9624..",
+        "database": "smartpc",
         'charset': 'utf8mb4'
     }
 
@@ -17,7 +17,7 @@ def putin():
 
 
     # 打开Excel文件
-    workbook = load_workbook('project.xlsx')
+    workbook = load_workbook('project-sign.xlsx')
     sheet = workbook.active
 
     # 准备SQL插入语句
