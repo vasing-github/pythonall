@@ -48,3 +48,22 @@ key_cs = '425a53f6-696e-46c1-9d4a-fae8940b136f'
 # 正式群key
 key_zs = '6c00ba33-68ab-403e-bab2-2b9134a7d7f6'
 
+database_cs = {
+    "host": "yuxiaohaishidalao.shop",
+    "user": "root",
+    "password": "vas9624..",
+    "database": "smartpc"
+}
+database_zs_nat = {
+    "host": "10.167.39.125",
+    "user": "kfvasing",
+    "password": "vas9624..",
+    "database": "smartpingchangdb"
+}
+database_zs_net = {
+    "host": "222.215.24.208",
+    "user": "kfvasing",
+    "password": "vas9624..",
+    "database": "smartpingchangdb"
+}
+database = database_zs_nat

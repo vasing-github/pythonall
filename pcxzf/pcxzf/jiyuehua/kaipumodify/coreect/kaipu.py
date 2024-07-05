@@ -1,34 +1,26 @@
 # -*- coding: utf-8 -*-
-
 import json
 import os
 import re
 import sys
 from datetime import datetime, timedelta
 from io import BytesIO
-
 import hudongcontent
 import requests
-
-import conf
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 获取项目的根目录
-project_root = os.path.abspath(os.path.join(current_dir, os.pardir))
+project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
 # 将项目根目录添加到 sys.path
 sys.path.append(project_root)
-
+from kaipumodify.cfg import dealtext
+from kaipumodify.cfg import conf
 import kaipumodify.cfg.text as text
-from kaipumodify.loginwz import getjsseion
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import getcontent2, getcontent
 
 token = text.token
-wait_fix = text.wait_fix
-text_yinsi_num = text.text_yinsi_num
-text_out_num = text.text_out_num
-text_link_use_num = text.text_link_use_num
+
 bz_gov_id = text.bz_gov_id
 jid = text.jid
 
@@ -36,36 +28,6 @@ endDate = datetime.now()
 startDate = endDate - timedelta(days=30)
 endDate_str = endDate.strftime('%Y-%m-%d')
 startDate_str = startDate.strftime('%Y-%m-%d')
-
-
-def modify_wait_fix(num, yinsinum, outnum, linkusenum):
-    global wait_fix, text_yinsi_num, text_out_num, text_link_use_num
-    wait_fix = num
-    text_yinsi_num = yinsinum
-    text_out_num = outnum
-    text_link_use_num = linkusenum
-
-
-def modify_token(newtoken):
-    global token
-    token = newtoken
-
-
-def modify_cookie(new_bz_gov_id, new_jid):
-    global bz_gov_id, jid
-    bz_gov_id = new_bz_gov_id
-    jid = new_jid
-
-
-def save_data():
-    with open('text.py', 'w') as f:
-        f.write('token = \'' + token + '\'\n')
-        f.write('wait_fix = ' + str(wait_fix) + '\n')
-        f.write('text_yinsi_num = ' + str(text_yinsi_num) + '\n')
-        f.write('text_out_num = ' + str(text_out_num) + '\n')
-        f.write('text_link_use_num = ' + str(text_link_use_num) + '\n')
-        f.write('bz_gov_id = \'' + bz_gov_id + '\'\n')
-        f.write('jid = \'' + jid + '\'\n')
 
 
 def get_cuomin_list():
@@ -351,47 +313,10 @@ def start_search():
 
     return waitrefix
 
-import kaipumodify.cfg.dealtoken
+
 def dealtoken():
-    print("get new token ..........")
-    new_token = get_new_token()
-    modify_token(new_token)
-    save_data()
-    dealtoken.hello()
-
-def get_new_token():
-    cookies = {
-        'HWWAFSESID': '40854762319bc867f7',
-        'HWWAFSESTIME': '1703639525975',
-    }
-
-    headers = {
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'zh-CN,zh;q=0.9',
-        'Authorization': 'Basic dWNhcC1jbG91ZC1uZXdtZWRpYS13ZWItYXBwOnVjYXA=',
-        'Connection': 'keep-alive',
-        # 'Cookie': 'HWWAFSESID=40854762319bc867f7; HWWAFSESTIME=1703639525975',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-origin',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-        'isToken': 'false',
-        'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-    }
-
-    params = {
-        'grant_type': 'custcode',
-        'scope': 'server',
-        'custCode': '5119230005',
-        'custPassWord': 'gPMVQsFEv2EeGOCuhua3ZKEJYtPSYIod94HM341mnctbt6gl72Yl2QvzwUngHgOH4AaWXE1K3MIA1cu02+VpsW7U+2ncYyG8fArt6u9xSm+Zgh+34UfWu3EhMT24MhOVokS2A17Mdnvs6AG6ich2DndAAXd7b0LQvXUUAfV4kGo=',
-    }
-
-    response = requests.get('https://datais.ucap.com.cn/auth/oauth/token', params=params, cookies=cookies,
-                            headers=headers)
-
-    return response.json()["access_token"]
+    global token
+    token = dealtext.deal_kaipu_token()
 
 
 def send_msg(cuomin, yinsi_num, outnum, kai_link_use_num, uptime=None):
@@ -515,41 +440,13 @@ def kaipucorrect(ids):
     print(response.text)
 
 
-def get_all_tips():
-    is_up_token, new_token, kaipu_waitrefix = start_search()
-    yinsi_num = get_yinsi_num(new_token if is_up_token else token)
-    kai_out_num = get_out_link(new_token if is_up_token else token)
-    kai_link_use_num = get_link_use_num(new_token if is_up_token else token)
-
-    if kaipu_waitrefix != 0 or yinsi_num != 0 or kai_out_num != 0 or kai_link_use_num != 0:
-        if wait_fix < kaipu_waitrefix or text_yinsi_num < yinsi_num or text_out_num < kai_out_num or text_link_use_num < kai_link_use_num:
-            # 执行更新语句，更新数据
-            modify_wait_fix(kaipu_waitrefix, yinsi_num, kai_out_num, kai_link_use_num)
-            uptime = ''
-            if kaipu_waitrefix != 0:
-                uptime = get_kaipu_uptime(new_token if is_up_token else token)
-            send_msg(kaipu_waitrefix, yinsi_num, kai_out_num, kai_link_use_num, uptime)
-        if wait_fix != kaipu_waitrefix or yinsi_num != text_yinsi_num or text_out_num != kai_out_num or text_link_use_num != kai_link_use_num:
-            modify_wait_fix(kaipu_waitrefix, yinsi_num, kai_out_num, kai_link_use_num)
-    else:
-        if wait_fix != kaipu_waitrefix or yinsi_num != text_yinsi_num or text_out_num != kai_out_num or text_link_use_num != kai_link_use_num:
-            modify_wait_fix(kaipu_waitrefix, yinsi_num, kai_out_num, kai_link_use_num)
-
-    if is_up_token:
-        modify_token(new_token)
-
-    save_data()
-
-
 def get_new_bzid_jid():
-    print("bz_gov_id token press...........")
-    new_bz_gov_id, new_jid = getjsseion.get_new_cookie()
-    modify_cookie(new_bz_gov_id, new_jid)
-    save_data()
-
-
-def isgetnewsseion(res):
-    pass
+    global bz_gov_id, jid
+    # print("bz_gov_id token press...........")
+    # new_bz_gov_id, new_jid = getjsseion.get_new_cookie()
+    # modify_cookie(new_bz_gov_id, new_jid)
+    # save_data()
+    bz_gov_id, jid = dealtext.jiyue_token()
 
 
 def add_to_correct(correctlist, correctids, cuomin):
@@ -579,7 +476,10 @@ def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
 
 
 def cuo_hudong(cuomin, correctlist, correctids):
-    hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
+    is_need_up_toke = hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
+    if is_need_up_toke:
+        get_new_bzid_jid()
+        hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
     add_to_correct(correctlist, correctids, cuomin)
 
 
@@ -664,7 +564,20 @@ def send_correct_msg(correctlist):
     # 保存文件
 
     formatted_date = endDate.strftime('%Y-%m-%d %H_%M_%S')  # 使用下划线代替冒号
-    filename = conf.correct_name + formatted_date + '.xlsx'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # 指定一个子目录名，例如 'saved_files'
+    subdirectory = 'coreectlist'
+
+    # 创建子目录的完整路径
+    subdirectory_path = os.path.join(script_dir, subdirectory)
+
+    # 如果子目录不存在，则创建它
+    if not os.path.exists(subdirectory_path):
+        os.makedirs(subdirectory_path)
+
+    # 构建最终的文件路径
+    filename = os.path.join(subdirectory_path, conf.correct_name + formatted_date + '.xlsx')
     wb.save(filename)
     url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
 
@@ -675,9 +588,12 @@ def send_correct_msg(correctlist):
     # 将工作簿保存到一个字节流中
     output = BytesIO()
     wb.save(output)
+    base_filename = os.path.basename(filename)
 
+    # 准备发送文件，确保只使用文件名
+    files = {"file": (base_filename, output.getvalue())}
     # 准备发送文件
-    files = {"file": (filename, output.getvalue())}
+
     response = requests.post(
         'https://qyapi.weixin.qq.com/cgi-bin/webhook/upload_media?key=' + key + '&type=file',
         files=files)
@@ -703,8 +619,13 @@ def send_correct_msg(correctlist):
 
 
 if __name__ == '__main__':
+    print(token)
     dealcuo()
+    # print(token)
     # formatted_date = endDate.strftime('%Y-%m-%d %H_%M_%S')  # 使用下划线代替冒号
     # filename = conf.correct_name + formatted_date + '.xlsx'
     # print(filename)
     # getjsseion.hello()
+    # hudongcontent.search_message_by_id('20240620115221974',1,bz_gov_id,jid)
+    # dealtext.save_data()
+

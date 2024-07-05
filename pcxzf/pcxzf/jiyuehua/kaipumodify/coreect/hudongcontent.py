@@ -1,5 +1,5 @@
 import requests
-import text
+
 from bs4 import BeautifulSoup
 
 
@@ -80,10 +80,11 @@ def search_message_by_id(message_id, is_shuji, bz_gov_id, jid):
     response = requests.get('http://10.15.3.133:83/messageBoard/getPage', params=params, cookies=cookies,
                             headers=headers, verify=False)
 
-    if response.json()['total'] != 1:
-        print("通过信件编号找到多条信息")
-        return
-    return response.json()['data'][0]
+    return response.json()
+    # if response.json()['total'] != 1:
+    #     print("通过信件编号找到多条信息")
+    #     return
+    # return response.json()['data'][0]
     # for message in data:
     #     id = message['id']
     #     baseContentId = message['baseContentId']
@@ -285,15 +286,19 @@ def modify_reply(r, bzid, jid, wrong, right):
 def start_kaipu(cuomin, bz_gov_id, jid):
     message_id, is_shuji = get_message_id(cuomin['url'])
     res = search_message_by_id(message_id, is_shuji, bz_gov_id, jid)
-    print(res['replyVOList'][0])
-    modify_mesagee(res, bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'], )
+    if 'status' in res and res['status'] == -9:
+        return 1
 
-    modify_reply(res['replyVOList'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'], )
+    print(res['data'][0]['replyVOList'][0])
+    modify_mesagee(res['data'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'], )
+    modify_reply(res['data'][0]['replyVOList'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'], )
+    return 0
 
 
 if __name__ == '__main__':
-    res = search_message_by_id('20240531190254941', 1, text.bz_gov_id, text.jid)
-    print(res['replyVOList'][0])
-    modify_mesagee(res, text.bz_gov_id, text.jid, '谢谢.', '谢谢。')
-
-    modify_reply(res['replyVOList'][0], text.bz_gov_id, text.jid, '生活愉快。。', '生活愉快。')
+    # res = search_message_by_id('20240531190254941', 1, text.bz_gov_id, text.jid)
+    # print(res['replyVOList'][0])
+    # modify_mesagee(res, text.bz_gov_id, text.jid, '谢谢.', '谢谢。')
+    #
+    # modify_reply(res['replyVOList'][0], text.bz_gov_id, text.jid, '生活愉快。。', '生活愉快。')
+    pass

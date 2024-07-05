@@ -2,7 +2,7 @@ import base64
 import json
 
 import requests
-
+import os
 def hello():
     print('hello')
 def getindex():
@@ -46,9 +46,13 @@ def getcode(jid):
 
     # 发送GET请求
     response = requests.get(url, headers=headers, verify=False)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # 构建 text.py 文件的绝对路径
+    file_path = os.path.join(script_dir,  'verify_code.png')
 
     # 将验证码图片保存到本地文件
-    with open('verify_code.png', 'wb') as f:
+    with open(file_path, 'wb') as f:
         f.write(response.content)
 
     print('验证码图片已保存为 verify_code.png')
@@ -189,12 +193,15 @@ def base64_api(img):
 def get_new_cookie():
     jid = getindex()
     getcode(jid)
-    code = base64_api('verify_code.png')
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # 构建 text.py 文件的绝对路径
+    file_path = os.path.join(script_dir,  'verify_code.png')
+    code = base64_api(file_path)
     print("识别的验证码为：", code)
     new_jid = getjsessionid2(jid, code)
     url = getloginurl(new_jid)
-    ba_gov_id = get_finaly_code(url, new_jid)
-    return ba_gov_id, new_jid
+    bz_gov_id = get_finaly_code(url, new_jid)
+    return bz_gov_id, new_jid
 
 
 if __name__ == '__main__':

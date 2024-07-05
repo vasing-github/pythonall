@@ -1,7 +1,5 @@
-import text
+
 import requests
-
-
 def getcontent(id,bzid,jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
@@ -62,7 +60,7 @@ def savearticnews(content, wrong, right,bz_id,jid):
         'dataType': 'JSON',
         '_': '0.6454915144417703',
     }
-
+    print(content['data']['article']['subTitle'])
     data = {
         'remoteContent': content['data']['content'],
         'fromIndex': '',
@@ -70,8 +68,9 @@ def savearticnews(content, wrong, right,bz_id,jid):
         'columnId': content['data']['article']['columnId'],
         'siteId': content['data']['article']['siteId'],
         'title': content['data']['article']['title'].replace(wrong, right),
-        'subTitle': content['data']['article']['subTitle'].replace(wrong, right),
-        'shortTitle': content['data']['article']['shortTitle'].replace(wrong, right),
+        'subTitle': content['data']['article']['subTitle'].replace(wrong, right) if content['data']['article']['subTitle'] else content['data']['article']['subTitle'],
+
+        'shortTitle': content['data']['article']['shortTitle'].replace(wrong, right) if content['data']['article']['shortTitle'] else content['data']['article']['shortTitle'],
         'author': content['data']['article']['author'],
         'responsibilityEditor': content['data']['article']['responsibilityEditor'],
         'resources': content['data']['article']['resources'],
@@ -84,7 +83,7 @@ def savearticnews(content, wrong, right,bz_id,jid):
         'isUnderline': '0',
         'isTilt': '0',
         'titleColor': '',
-        'remarks': content['data']['article']['remarks'].replace(wrong, right),
+        'remarks': content['data']['article']['remarks'].replace(wrong, right) if content['data']['article']['remarks'] else content['data']['article']['remarks'],
         'content': content['data']['content'].replace(wrong, right),
         'isPublish': '1',
         'publishDate': content['data']['article']['publishDate'],
@@ -161,7 +160,8 @@ def modify(id, wrong, right):
 
 
 if __name__ == '__main__':
-    content = getcontent(13945499,text.bz_gov_id,text.jid)
-    if content['status'] == -9:
-        print("jjj")
-    print(content)
+    # content = getcontent(13945499,text.bz_gov_id,text.jid)
+    # if content['status'] == -9:
+    #     print("jjj")
+    # print(content)
+    pass

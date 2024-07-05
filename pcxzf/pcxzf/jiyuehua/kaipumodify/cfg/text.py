@@ -1,7 +1,3 @@
-token = 'b4b0e11b-2086-4809-821d-cedfcd41faaa'
-wait_fix = 0
-text_yinsi_num = 0
-text_out_num = 0
-text_link_use_num = 10
-bz_gov_id = '5e78b0bb-6ba1-466d-becc-83f6501c12a8'
-jid = 'MGNmOGM3MzAtYjkyYy00Y2MyLWE5M2YtNjAzZTc4NjY5ZTcx'
+token = '058fe9ec-6e1b-4274-9ff6-e57ad1ff3e8e'
+bz_gov_id = '48c0f2d2-7ac9-46fd-b717-436c059ae603'
+jid = 'OWFmZWUyMDgtM2NkOC00YzM1LWIyMTAtM2QwNDU5OGE4ZWUy'

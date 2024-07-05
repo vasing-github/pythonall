@@ -5,10 +5,10 @@ from openpyxl import Workbook
 def putin():
     # 数据库连接配置
     db_config = {
-        "host": "yuxiaohaishidalao.shop",
-        "user": "root",
+        "host": "10.167.39.125",
+        "user": "kfvasing",
         "password": "vas9624..",
-        "database": "smartpc",
+        "database": "smartpingchangdb",
         'charset': 'utf8mb4'
     }
 
