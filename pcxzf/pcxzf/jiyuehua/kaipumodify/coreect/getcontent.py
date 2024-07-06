@@ -199,7 +199,7 @@ def saveorupdate(content, wrong, right,bzid,jid):
         verify=False,
     )
     print(response.text)
-
+    return response.json()
 
 def correct_string(content, wrong, correct):
     """

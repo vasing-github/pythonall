@@ -84,7 +84,7 @@ def get_cuomin_list():
         headers=headers,
         json=json_data,
     )
-    print(response.text)
+    # print(response.text)
     return response.json()['data']['records']
 
 
@@ -304,7 +304,7 @@ def start_search():
         headers=headers,
         json=json_data,
     )
-    print(response.json())
+    # print(response.json())
     if response.status_code != 200:
         dealtoken()
         return start_search()
@@ -460,8 +460,10 @@ def cuo_1_argument(numbers, cuomin, correctlist, correctids):
     if res['status'] == -9:
         get_new_bzid_jid()
         res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
-    getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
+    res_save = getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
                               jid)
+    if res_save['status'] == 0:
+        send_nopage(cuomin['url'])
     add_to_correct(correctlist, correctids, cuomin)
 
 
@@ -470,8 +472,10 @@ def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
     if res['status'] == -9:
         get_new_bzid_jid()
         res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-    getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
+    res_save = getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'], bz_gov_id,
                             jid)
+    if res_save['status'] == 0:
+        send_nopage(cuomin['url'])
     add_to_correct(correctlist, correctids, cuomin)
 
 
@@ -483,6 +487,20 @@ def cuo_hudong(cuomin, correctlist, correctids):
     add_to_correct(correctlist, correctids, cuomin)
 
 
+def extract_numbers(url):
+    # 用斜杠截取 URL
+    parts = url.split('/')
+    numbers = []
+
+    # 遍历每个部分
+    for part in parts:
+        # 检查部分是否以数字开头并且长度大于4
+        match = re.match(r'^\d{5,}', part)
+        if match:
+            numbers.append(match.group())
+
+    return numbers
+
 def dealcuo():
     kaipu_waitrefix = start_search()
     if kaipu_waitrefix != 0:
@@ -491,9 +509,10 @@ def dealcuo():
         correctlist = []
         correctids = []
         for cuomin in list_cuomin:
+            print(cuomin['sensitiveWords'])
             if cuomin['pageType'] == "3":  # 表示是文章类型
                 if cuomin['column'] != '互动交流':
-                    numbers = re.findall(r'\d+', cuomin['url'])
+                    numbers = extract_numbers(cuomin['url'])
                     # 将提取出的数字转换为整数
                     numbers = [int(num) for num in numbers]
                     # 判断 URL 类型并返回结果
@@ -529,6 +548,22 @@ def send_nosee():
     # 输出响应结果
     print(response.text)
 
+
+def send_nopage(url):
+    data = {
+        "msgtype": "markdown",
+        "markdown": {
+            "content": f" 检测到无效静态页，请人工核实是否放入回收站。\n\n\n{url}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+        }
+    }
+
+    key = conf.key_cs
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+    # 发送HTTP POST请求
+    response = requests.post(url, data=json.dumps(data))
+
+    # 输出响应结果
+    print(response.text)
 
 def send_correct_msg(correctlist):
     key = conf.key_cs
@@ -619,7 +654,7 @@ def send_correct_msg(correctlist):
 
 
 if __name__ == '__main__':
-    print(token)
+    # print(token)
     dealcuo()
     # print(token)
     # formatted_date = endDate.strftime('%Y-%m-%d %H_%M_%S')  # 使用下划线代替冒号
@@ -628,4 +663,7 @@ if __name__ == '__main__':
     # getjsseion.hello()
     # hudongcontent.search_message_by_id('20240620115221974',1,bz_gov_id,jid)
     # dealtext.save_data()
+    # send_nopage('http://www.scpc.gov.cn/public/6603881/10561641.html')
+
+
 

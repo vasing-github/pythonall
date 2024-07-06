@@ -60,14 +60,21 @@ def savearticnews(content, wrong, right,bz_id,jid):
         'dataType': 'JSON',
         '_': '0.6454915144417703',
     }
-    print(content['data']['article']['subTitle'])
+
     data = {
         'remoteContent': content['data']['content'],
         'fromIndex': '',
-        'id': content['data']['article']['id'],
-        'columnId': content['data']['article']['columnId'],
-        'siteId': content['data']['article']['siteId'],
-        'title': content['data']['article']['title'].replace(wrong, right),
+        'id': content['data']['article']['id'] if content and content.get('data') and content['data'].get('article') and content['data']['article'].get('id') else None,
+        'columnId': content['data']['article']['columnId'] if content and content.get('data') and content['data'].get(
+            'article') and content['data']['article'].get('columnId') else None,
+        'siteId': content['data']['article']['siteId'] if content and content.get('data') and content['data'].get(
+            'article') and content['data']['article'].get('siteId') else None,
+
+        'title': content['data']['article']['title'].replace(wrong, right) if content and content.get('data') and
+                                                                              content['data'].get('article') and
+                                                                              content['data']['article'].get(
+                                                                                  'title') else None,
+
         'subTitle': content['data']['article']['subTitle'].replace(wrong, right) if content['data']['article']['subTitle'] else content['data']['article']['subTitle'],
 
         'shortTitle': content['data']['article']['shortTitle'].replace(wrong, right) if content['data']['article']['shortTitle'] else content['data']['article']['shortTitle'],
@@ -151,7 +158,7 @@ def savearticnews(content, wrong, right,bz_id,jid):
         verify=False,
     )
     print(response.text)
-
+    return response.json()
 
 def modify(id, wrong, right):
     content = getcontent(id)
