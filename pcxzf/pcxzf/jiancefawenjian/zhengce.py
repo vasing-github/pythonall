@@ -97,7 +97,7 @@ def startMain():
             print(title)
             zc_over_list.append((key, title, upTime, days))
 
-    # qm.add_item({conf.zc_over_time: zc_over_list})
+    qm.add_item({conf.zc_over_time: zc_over_list})
     print(zc_over_list)
 
 

@@ -197,7 +197,7 @@ def startMain():
     sql = f"""
                     SELECT d.dict_label, COALESCE(SUM(a.score), 0) AS total_score
         FROM sys_dict_data d
-        LEFT JOIN assessment_record a ON d.dict_label = a.company_name AND a.date >= '2024-07-01'
+        LEFT JOIN assessment_record a ON d.dict_label = a.company_name AND a.date >= '{current_date}'
         WHERE d.dict_type = 'bm_list'
         GROUP BY d.dict_label
         ORDER BY total_score;
@@ -215,3 +215,6 @@ def startMain():
 if __name__ == '__main__':
     startMain()
     # sendMsg(13951138,'县委十四届常委会第103次会议召开')
+
+
+
