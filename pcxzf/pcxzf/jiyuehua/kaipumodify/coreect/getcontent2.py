@@ -157,7 +157,7 @@ def savearticnews(content, wrong, right,bz_id,jid):
         data=data,
         verify=False,
     )
-    print(response.text)
+
     return response.json()
 
 def modify(id, wrong, right):

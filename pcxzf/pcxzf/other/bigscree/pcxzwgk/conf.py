@@ -77,16 +77,15 @@ height_area_redirct_dic = {
 }
 # 专题专栏-
 zhuanti_total_list = [
-    'http://www.scpc.gov.cn/ztzl/xxxjpzsjlcsczyzsjs/index.html',
-    'http://www.scpc.gov.cn/ztzl/lhzt/index.html',
-    'http://www.scpc.gov.cn/ztzl/tpbk/index.html',
-    'http://www.scpc.gov.cn/ztzl/yfzx/index.html',
-    'http://www.scpc.gov.cn/ztzl/zfxxzdgkjbml/xzbsc/index.html',
-    'http://www.scpc.gov.cn/ztzl/zfxxzdgkjbml/xjbm/index.html',
-    'http://www.scpc.gov.cn/ztzl/xyxxsgs/xzxk/index.html',
-    'http://www.scpc.gov.cn/ztzl/xyxxsgs/xzcf/index.html',
-    'http://www.scpc.gov.cn/ztzl/xyxxsgs/xkml/index.html',
-    'http://www.scpc.gov.cn/ztzl/wqqxkpctdxbfjxs/index.html',
+    'http://www.scpc.gov.cn/ztzl/lhzt/index.html',  # 两会专题
+    'http://www.scpc.gov.cn/ztzl/tpbk/index.html',  # 乡村振兴
+    'http://www.scpc.gov.cn/ztzl/yfzx/index.html',  # 依法治县
+    'http://www.scpc.gov.cn/ztzl/zfxxzdgkjbml/xzbsc/index.html',  # 镇街政府信息主动公开目录
+    'http://www.scpc.gov.cn/ztzl/zfxxzdgkjbml/xjbm/index.html',  # 县级部门政府信息主动公开目录
+    'http://www.scpc.gov.cn/ztzl/xyxxsgs/xzxk/index.html',  # 行政许可
+    'http://www.scpc.gov.cn/ztzl/xyxxsgs/xzcf/index.html',  # 行政处罚
+    'http://www.scpc.gov.cn/ztzl/xyxxsgs/xkml/index.html',  # 双公示目录
+    'http://www.scpc.gov.cn/ztzl/wqqxkpctdxbfjxs/index.html',  # 拖底帮扶
     'http://www.scpc.gov.cn/ztzl/pcxsdlyjczwgkbzml/pcxbmsdlyjczwgkbzml/index.html',  # 部门试点目录
     'http://www.scpc.gov.cn/ztzl/pcxsdlyjczwgkbzml/pcxgzjdbscsdlyjczwgkbzml/index.html',  # 乡镇试点目录
 ]

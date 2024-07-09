@@ -290,8 +290,8 @@ def start_kaipu(cuomin, bz_gov_id, jid):
         return 1
 
     print(res['data'][0]['replyVOList'][0])
-    modify_mesagee(res['data'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'], )
-    modify_reply(res['data'][0]['replyVOList'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'], )
+    modify_mesagee(res['data'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0], )
+    modify_reply(res['data'][0]['replyVOList'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0], )
     return 0
 
 

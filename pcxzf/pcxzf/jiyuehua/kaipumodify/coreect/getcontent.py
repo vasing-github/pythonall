@@ -110,7 +110,7 @@ def saveorupdate(content, wrong, right,bzid,jid):
         'author': content['data']['author'],
         'resources': content['data']['resources'],
         'redirectLink': content['data']['redirectLink'],
-        'remarks': correct_string(content['data']['remarks'], wrong, right),
+        'remarks': correct_string(content['data']['remarks'], wrong, right) if content['data']['remarks'] else content['data']['remarks'],
         'sortDate': content['data']['sortDate'],
         'hit': content['data']['hit'],
         # 'link': content['data']['isTop'],
@@ -198,7 +198,7 @@ def saveorupdate(content, wrong, right,bzid,jid):
         data=data,
         verify=False,
     )
-    print(response.text)
+
     return response.json()
 
 def correct_string(content, wrong, correct):
