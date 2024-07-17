@@ -528,7 +528,7 @@ def dealcuo():
         for cuomin in list_cuomin:
             print(cuomin['sensitiveWords'])
             print(cuomin['url'])
-            if cuomin['pageType'] == "3":  # 表示是文章类型
+            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱':  # 表示是文章类型
                 if cuomin['column'] != '互动交流':
                     numbers = extract_numbers(cuomin['url'])
                     # 将提取出的数字转换为整数
@@ -690,14 +690,16 @@ if __name__ == '__main__':
 
 
 
-    # res = getcontent2.getcontent('13780825', bz_gov_id, jid)
+    # res = getcontent2.getcontent('13951566', bz_gov_id, jid)
     #
     # if res['status'] == -9:
     #     get_new_bzid_jid()
-    #     res = getcontent2.getcontent('13780825', bz_gov_id, jid)
+    #     res = getcontent2.getcontent('13951566', bz_gov_id, jid)
     # print(res)
     # res_save = getcontent2.savearticnews(res,'下午17:00', '下午5时', bz_gov_id, jid)
     # print(res_save)
+
+
 
 
 

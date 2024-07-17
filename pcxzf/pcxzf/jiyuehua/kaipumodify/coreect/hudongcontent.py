@@ -1,7 +1,20 @@
+from datetime import time
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 获取项目的根目录
+project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
+# 将项目根目录添加到 sys.path
+sys.path.append(project_root)
 import requests
 
 from bs4 import BeautifulSoup
+import kaipumodify.cfg.text as text
 
+token = text.token
+
+bz_gov_id = text.bz_gov_id
+jid = text.jid
 
 # 请求网页得到信件id
 def get_message_id(url):
@@ -291,6 +304,7 @@ def start_kaipu(cuomin, bz_gov_id, jid):
 
     print(res['data'][0]['replyVOList'][0])
     modify_mesagee(res['data'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0], )
+    time.sleep(2)
     modify_reply(res['data'][0]['replyVOList'][0], bz_gov_id, jid, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0], )
     return 0
 
@@ -301,4 +315,11 @@ if __name__ == '__main__':
     # modify_mesagee(res, text.bz_gov_id, text.jid, '谢谢.', '谢谢。')
     #
     # modify_reply(res['replyVOList'][0], text.bz_gov_id, text.jid, '生活愉快。。', '生活愉快。')
-    pass
+
+    message_id, is_shuji = get_message_id('http://www.scpc.gov.cn/content/article/13951566')
+    res = search_message_by_id(message_id, is_shuji, bz_gov_id, jid)
+
+
+    print(res['data'][0]['replyVOList'][0])
+    modify_mesagee(res['data'][0], bz_gov_id, jid, '按装','安装' )
+    modify_reply(res['data'][0]['replyVOList'][0], bz_gov_id, jid, '按装','安装' )
