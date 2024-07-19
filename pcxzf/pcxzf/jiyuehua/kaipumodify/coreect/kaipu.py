@@ -543,7 +543,7 @@ def dealcuo():
                         send_nosee()
 
 
-                elif cuomin['column'] == '互动交流':
+            elif cuomin['column'] == '互动交流'or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
                     cuo_hudong(cuomin, correctlist, correctids)
             else:
                 send_excel_correct(cuomin['url'])

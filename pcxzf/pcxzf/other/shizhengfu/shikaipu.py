@@ -7,9 +7,14 @@ import conf
 token = text.token
 
 endDate = datetime.now()
-startDate = endDate - timedelta(days=5)
+startDate = endDate - timedelta(days=30)
+
 endDate_str = endDate.strftime('%Y-%m-%d')
 startDate_str = startDate.strftime('%Y-%m-%d')
+
+cuomin_start_date = endDate - timedelta(days=7)
+cuomin_start_date_str = cuomin_start_date.strftime('%Y-%m-%d')
+
 current_time = endDate.strftime('%Y-%m-%d %H:%M:%S')
 
 
@@ -80,7 +85,7 @@ def get_cuomin_list():
         'dateType': 1,
         'codeType': 0,
         'custCode': '511900',
-        'startDate': startDate_str,
+        'startDate': cuomin_start_date_str,
         'endDate': endDate_str,
         'rectifyStatus': 0,
         'searchBox': '',
@@ -122,14 +127,6 @@ def dealtoken():
     new_token = oauth()
     modify_token(new_token)
     save_data()
-
-
-comp_call_dic = {
-    '巴中市生态环境局': '@市生态环境局网站 柏明15378253701',
-    '巴中市营商环境和数据局': '@市数据局-王杰-网站1772340982 ',
-    '巴中市巴州区人民政府': '@巴州区刘海波 ',
-    '巴中市教育局': '@市教育局网新符晓15681688383 ',
-}
 
 
 def send_msg(data):
@@ -332,6 +329,66 @@ def get_update():
     return response.json()
 
 
+def get_yinsi():
+    cookies = {
+        'Path': '/',
+        'HWWAFSESID': '7ff857355c8b68535f',
+        'HWWAFSESTIME': '1721353697724',
+        'Path': '/',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Authorization': 'Bearer '+token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'Path=/; HWWAFSESID=7ff857355c8b68535f; HWWAFSESTIME=1721353697724; Path=/',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+        'page': {
+            'size': 100,
+            'current': 1,
+        },
+        'check': 1,
+        'resultTypeList': [
+            1,
+            2,
+        ],
+        'dateType': 1,
+        'codeType': 0,
+        'codeTypeVal': [
+            '511900',
+        ],
+        'startDate': startDate_str,
+        'endDate': endDate_str,
+        'pageType': '',
+        'reviewType': 0,
+        'protectCode': '511900',
+        'custLevel': '0',
+        'unitLevel': 2,
+        'isHandoff': 1,
+    }
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteInfoLeakageMaster/listByDto',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+
+    return response.json()
+
+
 def makedata(site_counts, title):
     units_table = "| 单位名称 | 数量 |\n| :----- | :--: |\n"
     for site_name, count in site_counts.items():
@@ -381,8 +438,14 @@ def updatefunc():
     deal_res(response, '栏目更新提醒')
 
 
+def yinsifunc():
+    response = get_yinsi()
+    deal_res(response, '隐私泄露提醒')
+
+
 if __name__ == '__main__':
     cuominfunc()
     outlinkfun()
     linusefunc()
     updatefunc()
+    yinsifunc()
