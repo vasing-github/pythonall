@@ -97,4 +97,4 @@ def deal_kaipu_token():
 
 
 if __name__ == '__main__':
-    save_data()
+    jiyue_token()

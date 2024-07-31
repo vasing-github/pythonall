@@ -77,7 +77,7 @@ def get_cuomin_list():
 
     json_data = {
         'page': {
-            'size': 100,
+            'size': 2000,
             'current': 1,
         },
         'check': 1,
@@ -184,7 +184,7 @@ def getoutlink():
 
     json_data = {
         'page': {
-            'size': 100,
+            'size': 5000,
             'current': 1,
         },
         'check': 1,
@@ -299,7 +299,7 @@ def get_update():
 
     json_data = {
         'page': {
-            'size': 100,
+            'size': 5000,
             'current': 1,
         },
         'statisticsDate': endDate_str,
@@ -356,7 +356,7 @@ def get_yinsi():
 
     json_data = {
         'page': {
-            'size': 100,
+            'size': 5000,
             'current': 1,
         },
         'check': 1,

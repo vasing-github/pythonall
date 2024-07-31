@@ -6,8 +6,11 @@ import sys
 import time
 from datetime import datetime, timedelta
 from io import BytesIO
+
 import hudongcontent
 import requests
+from bs4 import BeautifulSoup
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 获取项目的根目录
 project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
@@ -19,6 +22,7 @@ import kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import getcontent2, getcontent
+from kaipumodify.modifyfile import upfile
 
 token = text.token
 
@@ -461,8 +465,9 @@ def cuo_1_argument(numbers, cuomin, correctlist, correctids):
     if res['status'] == -9:
         get_new_bzid_jid()
         res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
-    res_save = getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0], bz_gov_id,
-                              jid)
+    res_save = getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0],
+                                         bz_gov_id,
+                                         jid)
     print(res_save)
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
@@ -474,8 +479,9 @@ def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
     if res['status'] == -9:
         get_new_bzid_jid()
         res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-    res_save = getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0], bz_gov_id,
-                            jid)
+    res_save = getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0],
+                                       bz_gov_id,
+                                       jid)
     print(res_save)
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
@@ -503,6 +509,8 @@ def extract_numbers(url):
             numbers.append(match.group())
 
     return numbers
+
+
 def send_excel_correct(url):
     data = {
         "msgtype": "markdown",
@@ -518,6 +526,58 @@ def send_excel_correct(url):
 
     # 输出响应结果
     print(response.text)
+
+
+def send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate):
+    data = {
+        "msgtype": "markdown",
+        "markdown": {
+            "content": f" 本次网站改错包含表格附件修改，需人工**重点**核实\n\n\n[{articleTitle}]({parent_url})\n\n\n错敏词：{sensitiveWords}\n\n推荐词：{recommendUpdate}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+        }
+    }
+
+    key = conf.key_cs
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+    # 发送HTTP POST请求
+    response = requests.post(url, data=json.dumps(data))
+
+    # 输出响应结果
+    print(response.text)
+
+
+def cuo_excel(cuomin, correctlist, correctids):
+    articleTitle = cuomin['articleTitle']
+    parent_url = cuomin['parentUrl']
+    parentTitle = cuomin['parentTitle']
+    sensitiveWords = cuomin['sensitiveWords']
+    recommendUpdate = cuomin['recommendUpdate']
+
+    url = find_matching_href(parent_url, articleTitle)
+    print(f'匹配的href: {url}')
+
+    if not url.startswith('http'):
+        url = 'http://www.scpc.gov.cn' + url
+    # 截取最后一个斜杠后的文件名
+    filename = url.rsplit('/', 1)[-1]
+    path_start = 'www.scpc.gov.cn'
+    path_excel = url.split(path_start, 1)[-1]
+    upfile.download_file(url, filename)
+
+    numbers = extract_numbers(parent_url)
+    # 将提取出的数字转换为整数
+    numbers = [int(num) for num in numbers]
+    # 获取最后一个数字
+    last_number = numbers[-1] if numbers else None
+
+    upfile.modify_file(filename, sensitiveWords, recommendUpdate)
+    # 这里还有懒更新bzid没写
+    upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
+                      articleTitle, last_number)
+
+    send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
+    add_to_correct(correctlist, correctids, cuomin)
+
+
 def dealcuo():
     kaipu_waitrefix = start_search()
     if kaipu_waitrefix != 0:
@@ -542,11 +602,13 @@ def dealcuo():
                         print("未知情况")
                         send_nosee()
 
-
-            elif cuomin['column'] == '互动交流'or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
-                    cuo_hudong(cuomin, correctlist, correctids)
+            elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
+                cuo_hudong(cuomin, correctlist, correctids)
             else:
-                send_excel_correct(cuomin['url'])
+                if cuomin['pageType'] == 7:  # 表格类错误
+                    cuo_excel(cuomin, correctlist, correctids)
+                else:
+                    send_excel_correct(cuomin['url'])
             time.sleep(2)
         send_correct_msg(correctlist)
         kaipucorrect(correctids)
@@ -584,6 +646,7 @@ def send_nopage(url):
 
     # 输出响应结果
     print(response.text)
+
 
 def send_correct_msg(correctlist):
     key = conf.key_cs
@@ -673,11 +736,30 @@ def send_correct_msg(correctlist):
         print("No media_id in response")
 
 
+def find_matching_href(url, target_text):
+    # 发送HTTP请求获取网页内容
+    response = requests.get(url)
+    response.raise_for_status()  # 确保请求成功
+
+    # 指定编码规则
+    response.encoding = response.apparent_encoding
+
+    # 使用BeautifulSoup解析网页内容
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 查找所有的a标签
+    a_tags = soup.find_all('a')
+
+    # 遍历所有a标签，查找与给定文本匹配的标签
+    for a_tag in a_tags:
+        if a_tag.text == target_text:
+            return a_tag.get('href')
+
+    return None
+
+
 if __name__ == '__main__':
-
     dealcuo()
-
-
 
     # res = getcontent.getcontent('6603801', '10686931', bz_gov_id, jid)
     # if res['status'] == -9:
@@ -688,8 +770,6 @@ if __name__ == '__main__':
     #                                    jid)
     # print(res_save)
 
-
-
     # res = getcontent2.getcontent('13951566', bz_gov_id, jid)
     #
     # if res['status'] == -9:
@@ -699,10 +779,26 @@ if __name__ == '__main__':
     # res_save = getcontent2.savearticnews(res,'下午17:00', '下午5时', bz_gov_id, jid)
     # print(res_save)
 
-
-
-
-
-
-
-
+    # articleTitle = '附件1：政府信息公开各栏目更新情况统计表.xls'
+    # parent_url = 'http://www.scpc.gov.cn/public/6601841/13818985.html'
+    # parentTitle = '关于2022年二季度政务公开、政府网站与政务新媒体管理、政务信息工作情况的通报'
+    # sensitiveWords = '人民de代表大会第五次会议'
+    # recommendUpdate = '人民代表大会第五次会议'
+    #
+    # url = find_matching_href(parent_url, articleTitle)
+    # print(f'匹配的href: {url}')
+    # if not url.startswith('http'):
+    #     url = 'http://www.scpc.gov.cn' + url
+    # # 截取最后一个斜杠后的文件名
+    # filename = url.rsplit('/', 1)[-1]
+    # path_start = 'www.scpc.gov.cn'
+    # path_excel = url.split(path_start, 1)[-1]
+    # upfile.download_file(url, filename)
+    # numbers = extract_numbers(parent_url)
+    # # 将提取出的数字转换为整数
+    # numbers = [int(num) for num in numbers]
+    # # 获取最后一个数字
+    # last_number = numbers[-1] if numbers else None
+    # upfile.modify_file(filename, sensitiveWords, recommendUpdate)
+    # upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
+    #                   articleTitle, last_number)

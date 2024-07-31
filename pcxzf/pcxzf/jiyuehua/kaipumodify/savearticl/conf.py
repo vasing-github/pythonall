@@ -67,3 +67,5 @@ database_zs_net = {
     "database": "smartpingchangdb"
 }
 database = database_zs_nat
+
+knowleges = ['class_hj','class_gjj','class_zcpd','class_xszz','class_cj','class_sb','class_sfzbl','class_gldj','class_nczjd','class_qt','class_sj','class_xftlwd','class_qyrk','class_lsaq','class_ffhjznfx','class_gwyc','class_gdbh','class_gczb']
