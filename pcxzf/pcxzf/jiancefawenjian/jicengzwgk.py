@@ -45,7 +45,7 @@ def makeExcel(len_less_four_list, uptime_more_ninteen, each_more_ninteen):
         ws.append(content)
 
     row = ws.max_row
-    ws.cell(row=row + 2, column=1).value = '2.以下位置最近更新时间大于90天'
+    ws.cell(row=row + 2, column=1).value = '2.以下位置最近更新时间大于330天'
     # ws.append(['2.以下位置最近更新时间大于90天'])
     for cell in ws[row + 2]:
         cell.font = conf.header_font
@@ -102,7 +102,7 @@ def get_first_munu(url):
     return first_menu_dic
 
 
-def get_second_menu(url):
+def get_second_menu(url,first_key):
     res = conf.make_request_get(url)
     # 提取curFirstLevelChildId的值
     cur_first_level_child_id = res[1].find(id='curFirstLevelChildId')
@@ -131,8 +131,28 @@ def get_second_menu(url):
             return 1, cur_first_level_child_id
     else:
         # 返回2表示没有二级事项，但是跳转了
-        return 2, 0
+        # 2024-8-12更新，返回2表示跳转，但是跳转后有的仍有二级事项
+        # 查找类名为 lmtitle 的 div 标签，并获取其中的 h1 标签内容
+        title = res[1].find('div', class_='lmtitle').h1.text
+        # 如果跳转后的栏目标题和一级事项名称相同，说明跳转后的页面有二级栏目，也就是二级事项
+        if title == first_key:
+            # 使用 BeautifulSoup 解析 HTML
+
+
+            # 查找类名为 menunr 的 div 标签，并获取其中的所有 a 标签
+            links = res[1].find('div', class_='menunr').find_all('a')
+
+            # 创建一个列表，存储 a 标签的 title 和 href
+            result = [{'title': link['title'], 'href': link['href']} for link in links]
+
+            print(result)
+            return 2, result
+        else:
+            return 2, 0
+
     return 3, second_menu_dic
+
+
 
 
 def get_page(url):
@@ -307,7 +327,7 @@ def judgement_news(articles):
     # 判断最新更新时间是否大于90天
     latest_update_date = datetime.strptime(articles[0][0], '%Y-%m-%d') if articles else None
     is_latest_update_more_than_ninety = latest_update_date and (
-                datetime.now() - latest_update_date > timedelta(days=90))
+                datetime.now() - latest_update_date > timedelta(days=330))
 
     # 判断相邻两个文章的更新时间是否大于90天
     list_each_more_ninety = [
@@ -326,8 +346,8 @@ def deal_information(menu_dup, error_news_dup, len_less_four_list, uptime_more_n
         len_less_four_list.append(menu_dup)
     if error_news_dup[1]:
         uptime_more_ninteen.append(menu_dup)
-    if len(error_news_dup[2]) > 0:
-        each_more_ninteen.append((menu_dup, error_news_dup[2]))
+    # if len(error_news_dup[2]) > 0:
+    #     each_more_ninteen.append((menu_dup, error_news_dup[2]))
 
 
 def startMain():
@@ -335,9 +355,9 @@ def startMain():
     uptime_more_ninteen = []
     each_more_ninteen = []
     area_type_dic = get_all_type_menu()
-    # area_type_dic = { '公共法律': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ggfl/index.html'}
+    # area_type_dic = { '公共法律': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/gbdshwlst/index.html'}
     # print(area_type_dic)
-    # area_type_dic = {'公共文化服务': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ggwhfw/index.html', '就业领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/jyly/index.html', '涉农补贴': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/snbt/index.html', '食品药品': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/spyp/index.html', '社会救助': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/shjz/index.html', '卫生健康': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/wsjk/index.html', '养老服务': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ylfw/index.html', '义务教育': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ywjy/index.html', '公共法律': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ggfl/index.html', '税收管理': 'https://sichuan.chinatax.gov.cn/col/col12057/index.html?number=A0015', '广播电视和网络视听': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/gbdshwlst/index.html', '旅游领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ly/index.html', '社会保险': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/shbx/index.html', '自然资源': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/zrzy/index.html', '城市综合执法': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/cszhzf/index.html', '户籍管理': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/hjgl/index.html', '财政预决算': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/czyjs/index.html', '市政服务': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/szfw/index.html', '农村危房改造': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ncwfgz/index.html', '国有土地上房屋征收与补偿': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/gytdsfwzsybc/index.html', '保障性住房': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/bzxzf/index.html', '新闻出版版权': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/xwcbbq/index.html', '生态环境': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/sthj/index.html', '统计领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/tjly/index.html', '公共资源交易': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ggzyjy/index.html', '交通运输': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/jtys/index.html', '扶贫领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/fply/index.html', '重大建设项目': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/zdjsxm/index.html', '安全生产': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/aqsc/index.html', '救灾领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/jzly/index.html'}
+    # area_type_dic = {'公共文化服务': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/gbdshwlst/index.html', '就业领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/jyly/index.html', '涉农补贴': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/snbt/index.html', '食品药品': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/spyp/index.html', '社会救助': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/shjz/index.html', '卫生健康': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/wsjk/index.html', '养老服务': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ylfw/index.html', '义务教育': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ywjy/index.html', '公共法律': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ggfl/index.html', '税收管理': 'https://sichuan.chinatax.gov.cn/col/col12057/index.html?number=A0015', '广播电视和网络视听': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/gbdshwlst/index.html', '旅游领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ly/index.html', '社会保险': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/shbx/index.html', '自然资源': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/zrzy/index.html', '城市综合执法': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/cszhzf/index.html', '户籍管理': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/hjgl/index.html', '财政预决算': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/czyjs/index.html', '市政服务': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/szfw/index.html', '农村危房改造': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ncwfgz/index.html', '国有土地上房屋征收与补偿': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/gytdsfwzsybc/index.html', '保障性住房': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/bzxzf/index.html', '新闻出版版权': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/xwcbbq/index.html', '生态环境': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/sthj/index.html', '统计领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/tjly/index.html', '公共资源交易': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/ggzyjy/index.html', '交通运输': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/jtys/index.html', '扶贫领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/fply/index.html', '重大建设项目': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/zdjsxm/index.html', '安全生产': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/aqsc/index.html', '救灾领域': 'http://www.scpc.gov.cn/ztzl/jczwgk/gkly/jzly/index.html'}
 
     for area, href in area_type_dic.items():
         print('领域：', area)
@@ -346,7 +366,8 @@ def startMain():
         first_menu_dic = get_first_munu(href)
         for first_key, first_href in first_menu_dic.items():
             print('一级事项：', first_key)
-            second_menu_dic = get_second_menu(first_href)
+
+            second_menu_dic = get_second_menu(first_href,first_key)
             print(second_menu_dic)
             if second_menu_dic[0] == 3:
                 for second_key, second_href in second_menu_dic[1].items():
@@ -367,11 +388,22 @@ def startMain():
 
             elif second_menu_dic[0] == 2:
                 # 返回2表示没有二级事项还跳转了
-                list_all_news = deal_first_menu_direct(first_href)
+                # 2024-8-12更新，返回2表示跳转，但是跳转后有的仍有二级事项
 
-                error_news_dup = judgement_news(list_all_news)
-                deal_information((area, first_key), error_news_dup, len_less_four_list, uptime_more_ninteen,
-                                 each_more_ninteen)
+                if second_menu_dic[1] == 0:
+                    list_all_news = deal_first_menu_direct(first_href)
+
+                    error_news_dup = judgement_news(list_all_news)
+                    deal_information((area, first_key), error_news_dup, len_less_four_list, uptime_more_ninteen,
+                                     each_more_ninteen)
+                else:
+                    for second in second_menu_dic[1]:
+                        print('二级事项：', second['title'])
+                        list_all_news = deal_first_menu_direct(second['href'])
+
+                        error_news_dup = judgement_news(list_all_news)
+                        deal_information((area, first_key,second['title']), error_news_dup, len_less_four_list, uptime_more_ninteen,
+                                         each_more_ninteen)
 
     makeExcel(len_less_four_list, uptime_more_ninteen, each_more_ninteen)
 

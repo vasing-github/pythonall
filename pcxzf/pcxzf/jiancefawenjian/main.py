@@ -6,7 +6,7 @@ import fadingzhudonggongkaineirong
 import gongkainianbao
 import jigouzhineng
 import requests
-from jiancefawenjian import zhengce
+from jiancefawenjian import zhengce, jicengzwgk
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from threed_record import qm
@@ -112,7 +112,7 @@ def start_main():
     gongkainianbao.startMain()
     jigouzhineng.startMain()
     zhengce.startMain()
-    # jicengzwgk.startMain()
+    jicengzwgk.startMain()
 
     # 给表格增加一些注释
     end_excel()

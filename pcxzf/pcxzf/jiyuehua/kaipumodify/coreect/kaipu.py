@@ -588,7 +588,7 @@ def dealcuo():
         for cuomin in list_cuomin:
             print(cuomin['sensitiveWords'])
             print(cuomin['url'])
-            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱':  # 表示是文章类型
+            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
                 if cuomin['column'] != '互动交流':
                     numbers = extract_numbers(cuomin['url'])
                     # 将提取出的数字转换为整数
@@ -605,7 +605,7 @@ def dealcuo():
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
                 cuo_hudong(cuomin, correctlist, correctids)
             else:
-                if cuomin['pageType'] == 7:  # 表格类错误
+                if cuomin['pageType'] == "7":  # 表格类错误
                     cuo_excel(cuomin, correctlist, correctids)
                 else:
                     send_excel_correct(cuomin['url'])
