@@ -2,6 +2,9 @@
 import requests
 from bs4 import BeautifulSoup
 import conf
+
+
+# 这是8.20改版前的代码
 def get_src(courceid,selectionid,ck,planid):
     cookies = {
         'PLATFORM_INFO__': '151',
@@ -53,7 +56,35 @@ def get_src(courceid,selectionid,ck,planid):
         if src and src.startswith('https://videoadmin.chinahrt.com'):
             # print(src)
             return src
+# 8.20改版后代码
+def get_url(courceid,selectionid,ck,planid):
 
+    headers = {
+        'Accept': '*/*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection': 'keep-alive',
+        'Hrttoken': ck,
+        'Origin': 'https://edu.chinahrt.com',
+        'Referer': 'https://edu.chinahrt.com/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-site',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0',
+        'appid': 'gp6-1',
+        'sec-ch-ua': '"Microsoft Edge";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    params = {
+        'playType': 'VUE',
+        'trainplanId': planid,
+        'courseId': courceid,
+        'sectionId': selectionid,
+    }
+
+    response = requests.get('https://gp.chinahrt.com/gp6/lms/stu/course/playVideo', params=params, headers=headers)
+    return response.json()['data']['playUrl']
 
 if __name__ == '__main__':
     get_src()

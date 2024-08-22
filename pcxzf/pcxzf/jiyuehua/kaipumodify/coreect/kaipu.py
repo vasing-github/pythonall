@@ -588,19 +588,19 @@ def dealcuo():
         for cuomin in list_cuomin:
             print(cuomin['sensitiveWords'])
             print(cuomin['url'])
-            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
-                if cuomin['column'] != '互动交流':
-                    numbers = extract_numbers(cuomin['url'])
-                    # 将提取出的数字转换为整数
-                    numbers = [int(num) for num in numbers]
-                    # 判断 URL 类型并返回结果
-                    if len(numbers) == 1:
-                        cuo_1_argument(numbers, cuomin, correctlist, correctids)
-                    elif len(numbers) == 2:
-                        cuo_2_aruments(numbers, cuomin, correctlist, correctids)
-                    else:
-                        print("未知情况")
-                        send_nosee()
+            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' :  # 表示是文章类型
+
+                numbers = extract_numbers(cuomin['url'])
+                # 将提取出的数字转换为整数
+                numbers = [int(num) for num in numbers]
+                # 判断 URL 类型并返回结果
+                if len(numbers) == 1:
+                    cuo_1_argument(numbers, cuomin, correctlist, correctids)
+                elif len(numbers) == 2:
+                    cuo_2_aruments(numbers, cuomin, correctlist, correctids)
+                else:
+                    print("未知情况")
+                    send_nosee()
 
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
                 cuo_hudong(cuomin, correctlist, correctids)
@@ -779,26 +779,27 @@ if __name__ == '__main__':
     # res_save = getcontent2.savearticnews(res,'下午17:00', '下午5时', bz_gov_id, jid)
     # print(res_save)
 
-    # articleTitle = '附件1：政府信息公开各栏目更新情况统计表.xls'
-    # parent_url = 'http://www.scpc.gov.cn/public/6601841/13818985.html'
-    # parentTitle = '关于2022年二季度政务公开、政府网站与政务新媒体管理、政务信息工作情况的通报'
-    # sensitiveWords = '人民de代表大会第五次会议'
-    # recommendUpdate = '人民代表大会第五次会议'
-    #
-    # url = find_matching_href(parent_url, articleTitle)
-    # print(f'匹配的href: {url}')
-    # if not url.startswith('http'):
-    #     url = 'http://www.scpc.gov.cn' + url
-    # # 截取最后一个斜杠后的文件名
-    # filename = url.rsplit('/', 1)[-1]
-    # path_start = 'www.scpc.gov.cn'
-    # path_excel = url.split(path_start, 1)[-1]
-    # upfile.download_file(url, filename)
-    # numbers = extract_numbers(parent_url)
-    # # 将提取出的数字转换为整数
-    # numbers = [int(num) for num in numbers]
-    # # 获取最后一个数字
-    # last_number = numbers[-1] if numbers else None
-    # upfile.modify_file(filename, sensitiveWords, recommendUpdate)
-    # upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
-    #                   articleTitle, last_number)
+
+# 测试表格类改错
+#     articleTitle = '附件1-2：平昌县十四五规划重大项目表.xls'
+#     parent_url = 'http://www.scpc.gov.cn/public/6601861/13357861.html'
+#     parentTitle = '平昌县国民经济和社会发展第十四个五年规划和2035年远景目标纲要'
+#     sensitiveWords = '十四五规划'
+#     recommendUpdate = '“十四五“规划'
+#     url = find_matching_href(parent_url, articleTitle)
+#     print(f'匹配的href: {url}')
+#     if not url.startswith('http'):
+#         url = 'http://www.scpc.gov.cn' + url
+#     # 截取最后一个斜杠后的文件名
+#     filename = url.rsplit('/', 1)[-1]
+#     path_start = 'www.scpc.gov.cn'
+#     path_excel = url.split(path_start, 1)[-1]
+#     upfile.download_file(url, filename)
+#     numbers = extract_numbers(parent_url)
+#     # 将提取出的数字转换为整数
+#     numbers = [int(num) for num in numbers]
+#     # 获取最后一个数字
+#     last_number = numbers[-1] if numbers else None
+#     upfile.modify_file(filename, sensitiveWords, recommendUpdate)
+#     upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
+#                       articleTitle, last_number)
