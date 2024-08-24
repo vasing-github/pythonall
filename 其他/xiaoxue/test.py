@@ -152,16 +152,16 @@ def learn(s,pointid):
 if __name__ == '__main__':
 
 
-    start = 600
-    add = 600
-    for i in range(1,10):
-        send_300(courseid)
-        # save_detail()
-
-        time.sleep(151)
-        save_record(courseid,start,add)
-        start = start + add
-        print(start)
+    # start = 600
+    # add = 600
+    # for i in range(1,10):
+    #     send_300(courseid)
+    #     # save_detail()
+    #
+    #     time.sleep(151)
+    #     save_record(courseid,start,add)
+    #     start = start + add
+    #     print(start)
 
 
 

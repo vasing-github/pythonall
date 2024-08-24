@@ -454,7 +454,7 @@ def start(resources_dict, last_chapter_id, last_section_id, last_point_id):
                                 print(get_now_point())
 
 
-courseid = '29e27a94f9ed4a58bd457eda29751881___'
+courseid = '17b6399160c2494a83707fa6974bf80c___'
 limitid = '70e50963fdb542308148e480259687f5'
 
 cookies = {

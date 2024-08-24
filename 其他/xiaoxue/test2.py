@@ -5,7 +5,6 @@ import time
 
 from Crypto.Cipher import AES
 
-
 def millisecond_to_time(ms):
     seconds = ms // 1000
     minutes = seconds // 60
