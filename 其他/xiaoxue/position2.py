@@ -244,9 +244,9 @@ def positon_record(sid,uid):
 
 if __name__ == '__main__':
 
-    # user_id = '452597257891'
 
-    user_id = '452588002116'
+    user_id = '452727017746'
+
     first_cource = get_first_cource()
     for cource in first_cource:
         print('大课程：',cource)
