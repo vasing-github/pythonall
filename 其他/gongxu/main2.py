@@ -50,34 +50,51 @@ async def start_learn(ck,planid,userid):
             if selction['study_status'] == '已学完':
                 continue
             recordid, studydoce, src = test_get_recordid.get_study_code_and_recordid(courceid, selction['id'],ck,planid)
-            # time.sleep(2)
+            # take = test_get_recordid.get_study_code_and_recordid(courceid, selction['id'], ck,
+            #                                                                          planid)
             # if study_time < 0.8 * total_time:
-            #     if 0.15 * total_time <40:
-            #         code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.6 * total_time),
-            #                                      userid, planid)
+            #     if 0.15 * total_time < 40:
+            #         code = takerecord.takeRecode2(take,'%.4f' % (0.6 * total_time))
             #     else:
-            #         code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.5 * total_time), userid,planid)
+            #         code = takerecord.takeRecode2(take,'%.4f' % (28))
             # else:
-            #     code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,planid)
-            if selction['study_status'] == '未学习' or study_time == 0:
-                code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], 5, userid, planid)
-            else:
-                if study_time < 0.8 * total_time:
-                    if study_time + 500 < total_time:
-                        code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % ( study_time+500),
-                                                     userid, planid)
-                    else:
-                        code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.9 * total_time), userid,planid)
+            #     code = takerecord.takeRecode2(take,total_time -30)
 
+            # time.sleep(2)
+            if study_time < 0.8 * total_time:
+                if 0.15 * total_time <40:
+                    code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.6 * total_time),
+                                                 userid, planid)
                 else:
-                    code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,planid)
+                    code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.85 * total_time), userid,planid)
+            else:
+                code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,planid)
 
-            await asyncio.sleep(10)
+
+
+
+            # if selction['study_status'] == '未学习' or study_time == 0:
+            #     code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], 28, userid, planid)
+            # else:
+            #     if study_time < 0.8 * total_time:
+            #         if study_time + 28*9 < total_time:
+            #             code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % ( study_time+28*9),
+            #                                          userid, planid)
+            #         else:
+            #             code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.9 * total_time), userid,planid)
+            #     else:
+            #         code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,planid)
+
+
+
+
+
+            await asyncio.sleep(5)
             if code  == '1':
                 break
 
     #如果学完了返回1修改状态，记录时间
-    list_cource = get_cource.get_all_cource(ck, planid)
+    list_cource = get_cource.get_all_cource( ck, planid)
     # 如果 list_cource 为空，返回 True，否则返回 False
     return not list_cource
 
@@ -131,7 +148,7 @@ async def job(task, year):
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid]['time'], '%Y-%m-%d %H:%M:%S')
 
-            if now - time_obj > datetime.timedelta(minutes=5):
+            if now - time_obj > datetime.timedelta(minutes=3):
                 modify_user_stage(1, userid, realname)
                 is_modify_stage =await start_learn(task['cookie'], conf.get_year_planid(year), userid)
 
@@ -142,7 +159,7 @@ async def job(task, year):
         elif user_record[userid]['stage'] == 2:
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid]['time'], '%Y-%m-%d %H:%M:%S')
-            if now - time_obj > datetime.timedelta(minutes=30):
+            if now - time_obj > datetime.timedelta(minutes=3):
                 modify_user_stage(3, userid, realname)
 
                 end_exam(task['cookie'])
@@ -163,7 +180,7 @@ def do_run():
 
 
 if __name__ == '__main__':
-    schedule.every(5).minutes.do(do_run)
+    schedule.every(3).minutes.do(do_run)
     do_run()
     while True:
         # 运行所有可以运行的任务

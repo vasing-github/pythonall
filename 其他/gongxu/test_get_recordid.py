@@ -44,9 +44,21 @@ def get_study_code_and_recordid(courceid,selectionid,ck,planid):
             recordId = re.search(r'recordId = "(.*?)"', script_content)
             studyCode = re.search(r'studyCode = "(.*?)"', script_content)
             if recordId and studyCode:
-                print('recordId:', recordId.group(1))
-                print('studyCode:', studyCode.group(1))
+                # print('recordId:', recordId.group(1))
+                # print('studyCode:', studyCode.group(1))
                 return recordId.group(1),studyCode.group(1),url
+
+# 8.25 测试代码
+    # Find the script tag containing the token
+    # script_tag = soup.find('script', string=lambda text: text and 'token' in text)
+    #
+    # # Extract the token value
+    #
+    # token_match = re.search(r"token:\s*'([^']+)'", script_tag.string)
+    # token = token_match.group(1) if token_match else None
+    #
+    # print("Token:", token)
+    # return token
 
 
 
