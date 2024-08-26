@@ -18,7 +18,7 @@ def get_all_cource(ck, trainplanId):
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Windows"',
     }
-    url = 'https://gp.chinahrt.com/gp6/lms/stu/trainplanCourseHandle/selected_course?platformId=151&trainplanId='+trainplanId+'&curPage=1&pageSize=20&classType&learnFinish&selectCourseClassId'
+    url = 'https://gp.chinahrt.com/gp6/lms/stu/trainplanCourseHandle/selected_course?platformId=151&trainplanId='+trainplanId+'&curPage=1&pageSize=50&classType&learnFinish&selectCourseClassId'
     # print(url)
     response = requests.get(url,headers=headers,verify = False)
     # print(response.text)
@@ -32,6 +32,6 @@ def get_all_cource(ck, trainplanId):
 
 
 if __name__ == '__main__':
-    trainplanId = '6ed7ab2a5e4a42c2b1f950fec0ba1665'
-    ck = 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDMwMTk4ODA2MTg2NjE1QDE1MSIsIm1vYmlsZSI6IjE4MzgxOTcyNDU2IiwidXNlck5hbWUiOiI1MTMwMzAxOTg4MDYxODY2MTUiLCJ1c2VySWQiOiI3NTNmMDRmMS1iN2ZlLTRjNzEtOTczMS04YWZkMzI0MGU5MGYiLCJpYXQiOjE3MjQxNDYxMzksImp0aSI6IjMyOWU1NWU5ODA3ODRmMWI5ZTZjNDMyMWVmOGE0ZjA1In0.5nAMtGPfcFwLFHdiCzCXIxpRDq8KG6EyorSLAwFi4CY'
+    trainplanId = 'b98b59a9f5734ab08c09e98f53fa845e'
+    ck = 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTgzZDU3N2IxZWZjNGY0M2E4YzlAMjc2IiwibW9iaWxlIjoiMTg3MzcyNDE3NDgiLCJ1c2VyTmFtZSI6IjQxMCoqKio0MDI1MjAwNDYyIiwidXNlcklkIjoiOWM5NGRlNjJkN2U4NDkxMzgyNmMyYzViZTE1MjVhNzQiLCJpYXQiOjE3MjQ1NDUxNDEsImp0aSI6IjBhYjA5ZjFiOTA1NDQ1MDVhNzQzZTc0ZDdmMDMzMzg0In0.tXsxIiV5FaYOVvATdp3T9foSKj07G_G01s3fOARKxFM'
     print(get_all_cource(ck,trainplanId))
