@@ -342,8 +342,8 @@ def judgement_news(articles):
 
 
 def deal_information(menu_dup, error_news_dup, len_less_four_list, uptime_more_ninteen, each_more_ninteen):
-    if error_news_dup[0]:
-        len_less_four_list.append(menu_dup)
+    # if error_news_dup[0]:
+    #     len_less_four_list.append(menu_dup)
     if error_news_dup[1]:
         uptime_more_ninteen.append(menu_dup)
     # if len(error_news_dup[2]) > 0:

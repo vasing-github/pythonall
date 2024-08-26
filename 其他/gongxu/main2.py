@@ -64,7 +64,7 @@ async def start_learn(ck,planid,userid):
             else:
                 if study_time < 0.8 * total_time:
                     if study_time + 500 < total_time:
-                        code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % ( study_time+500),
+                        code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (study_time+500),
                                                      userid, planid)
                     else:
                         code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.9 * total_time), userid,planid)
@@ -72,7 +72,7 @@ async def start_learn(ck,planid,userid):
                 else:
                     code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,planid)
 
-            await asyncio.sleep(10)
+            await asyncio.sleep(5)
             if code  == '1':
                 break
 
@@ -131,7 +131,7 @@ async def job(task, year):
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid]['time'], '%Y-%m-%d %H:%M:%S')
 
-            if now - time_obj > datetime.timedelta(minutes=5):
+            if now - time_obj > datetime.timedelta(minutes=3):
                 modify_user_stage(1, userid, realname)
                 is_modify_stage =await start_learn(task['cookie'], conf.get_year_planid(year), userid)
 
@@ -163,7 +163,7 @@ def do_run():
 
 
 if __name__ == '__main__':
-    schedule.every(5).minutes.do(do_run)
+    schedule.every(3).minutes.do(do_run)
     do_run()
     while True:
         # 运行所有可以运行的任务
