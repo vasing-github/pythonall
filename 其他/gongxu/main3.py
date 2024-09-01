@@ -39,15 +39,19 @@ async def start_learn(ck, planid, userid):
 
         for selction in selctions:
             print(courceid, selction['id'])
-
+            exitList = ['2bc16638cb5a4ff8af74600ead46a662','1190963f61614009a2f6120af1c5567e','359fa533ba6c49028778f9b94e1755c7','303cf1cd2e2148a9b99beb9daf39c24d',
+                        '99c7a177bf77475198045803903d65b4','4b959b2650014a799b78547e6078c45d','a7c0705774d748469e8e2ea771b61cad']
+            # if courceid in exitList:
+            #     continue
             study_time = selction['study_time']
             total_time = selction['total_time']
             print(selction['name'])
             print(study_time, total_time, selction['study_status'])
             if selction['study_status'] == '已学完':
                 continue
-            recordid, studydoce, src = test_get_recordid.get_study_code_and_recordid(courceid, selction['id'], ck,
-                                                                                     planid)
+
+            recordid, studydoce, src = test_get_recordid.get_study_code_and_recordid(courceid, selction['id'], ck,planid)
+
             # take = test_get_recordid.get_study_code_and_recordid(courceid, selction['id'], ck,
             #                                                                          planid)
             # if study_time < 0.8 * total_time:
@@ -117,7 +121,11 @@ def add_user_record(userid, realname, year):
     global user_record
     # 获取当前日期和时间
     now = datetime.datetime.now()
-    user_year_list = {}
+
+    if user_record.get(userid) != None:
+        user_year_list = user_record.get(userid)
+    else:
+        user_year_list = {}
     user_year_list[year] = {'stage': 1, 'time': now.strftime("%Y-%m-%d %H:%M:%S"), 'realname': realname}
     user_record[userid] = user_year_list
     save_data()
@@ -132,14 +140,13 @@ def modify_user_stage(stage, userid, realname, year):
 
 async def job(task, year):
     print("开始执行")
-
-    print(task['name'])
+    print(task['name'],year)
     time.sleep(2)
     try:
         userid, realname = getssion.getssion(task['cookie'])
     except Exception as e:
         print('cookie过期', task['name'])
-    if user_record.get(userid) == None or user_record.get(userid).get(year) == None:
+    if user_record.get(userid) == None or user_record[userid].get(year) == None:
         add_user_record(userid, realname, year)
 
         is_modify_stage = await start_learn(task['cookie'], conf.get_year_planid(year), userid)
@@ -150,7 +157,7 @@ async def job(task, year):
     else:
         if user_record[userid][year]['stage'] == 1:
             now = datetime.datetime.now()
-            time_obj = datetime.datetime.strptime(user_record[userid]['time'], '%Y-%m-%d %H:%M:%S')
+            time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
 
             if now - time_obj >= datetime.timedelta(minutes=3):
                 modify_user_stage(1, userid, realname, year)
@@ -160,9 +167,9 @@ async def job(task, year):
                     modify_user_stage(2, userid, realname, year)
 
                     start_exam(task['cookie'])
-        elif user_record[userid]['stage'] == 2:
+        elif user_record[userid][year]['stage'] == 2:
             now = datetime.datetime.now()
-            time_obj = datetime.datetime.strptime(user_record[userid]['time'], '%Y-%m-%d %H:%M:%S')
+            time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
             if now - time_obj >= datetime.timedelta(minutes=3):
                 modify_user_stage(3, userid, realname, year)
 
@@ -174,6 +181,7 @@ async def main():
     for task in conf.cookies:
         for year in task['year']:
             # 创建一个新的协程，并将它添加到任务列表中
+            year = str(year)
             tasks.append(job(task, year))
     # 使用 asyncio.gather 来启动所有的协程
     await asyncio.gather(*tasks)

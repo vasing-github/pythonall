@@ -244,10 +244,7 @@ def positon_record(sid,uid):
 
 if __name__ == '__main__':
 
-
-
-    user_id = '452596416594'
-
+    user_id = '452652007105'
 
     first_cource = get_first_cource()
     for cource in first_cource:
