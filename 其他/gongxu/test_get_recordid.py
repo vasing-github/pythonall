@@ -47,6 +47,7 @@ def get_study_code_and_recordid(courceid,selectionid,ck,planid):
                 # print('recordId:', recordId.group(1))
                 # print('studyCode:', studyCode.group(1))
                 return recordId.group(1),studyCode.group(1),url
+    return '','',url
 
 # 8.25 测试代码
     # Find the script tag containing the token
