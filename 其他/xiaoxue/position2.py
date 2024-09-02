@@ -246,7 +246,7 @@ if __name__ == '__main__':
 
 
 
-    user_id = '452596416594'
+    user_id = '452583887565'
 
 
     first_cource = get_first_cource()
@@ -263,8 +263,8 @@ if __name__ == '__main__':
             extract_resources(node, sources)
             print(sources)
             for source in sources:
-                if a >= 20:
-                    break
+                # if a >= 20:
+                #     break
                 # async_begin(user_id, source)
                 postion(False, source, user_id)
                 postion(True, source, user_id)
