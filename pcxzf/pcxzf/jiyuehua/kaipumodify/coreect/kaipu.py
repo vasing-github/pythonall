@@ -93,6 +93,64 @@ def get_cuomin_list():
     return response.json()['data']['records']
 
 
+def get_secrit():
+    cookies = {
+        'Path': '/',
+        'Path': '/',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Authorization': 'Bearer ' + token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'Path=/; Path=/',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+        'page': {
+            'size': 100,
+            'current': 1,
+        },
+        'check': 1,
+        'resultTypeList': [
+            1,
+            2,
+        ],
+        'dateType': 1,
+        'codeType': 1,
+        'codeTypeVal': [
+            '5119230005',
+        ],
+        'startDate': startDate_str,
+        'endDate': endDate_str,
+        'pageType': '',
+        'reviewType': 0,
+        'protectCode': '5119230005',
+        'custLevel': '1',
+        'unitLevel': 3,
+        'isHandoff': 1,
+    }
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteInfoLeakageMaster/listByDto',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+
+    return response.json()['data']['records']
+
+
 def get_link_use_num(token):
     cookies = {
         'HWWAFSESID': 'b092d732d20af40cfc',
@@ -511,6 +569,22 @@ def extract_numbers(url):
     return numbers
 
 
+def send_secrit_msg(right_type, right_words, url, wrong, title):
+    data = {
+        "msgtype": "markdown",
+        "markdown": {
+            "content": f"自动整改网站隐私泄露，请人工核实。\n\n\n[{title}]({url})\n\n\n号码类型：{right_type}\n\n隐私号码：{wrong}\n\n脱敏号码：{right_words}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+        }
+    }
+    key = conf.key_cs
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+    # 发送HTTP POST请求
+    response = requests.post(url, data=json.dumps(data))
+
+    # 输出响应结果
+    print(response.text)
+
+
 def send_excel_correct(url):
     data = {
         "msgtype": "markdown",
@@ -588,7 +662,8 @@ def dealcuo():
         for cuomin in list_cuomin:
             print(cuomin['sensitiveWords'])
             print(cuomin['url'])
-            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' :  # 表示是文章类型
+            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin[
+                'column'] != '互动交流':  # 表示是文章类型
 
                 numbers = extract_numbers(cuomin['url'])
                 # 将提取出的数字转换为整数
@@ -758,8 +833,131 @@ def find_matching_href(url, target_text):
     return None
 
 
+def tag_secrit_kaipu(sid):
+    cookies = {
+        'Path': '/',
+        'Path': '/',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Authorization': 'Bearer ' + token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'Path=/; Path=/',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+        'idList': [
+            sid,
+        ],
+        'reviewType': 2,
+    }
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteInfoLeakageMaster/updateReviewType',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+
+    print(response.text)
+
+
+def change_secrit_right(s):
+    # 身份证号码的正则表达式（假设是中国的身份证号码）
+    id_card_pattern = r'^\d{15}$|^\d{17}[\dXx]$'
+
+    # 银行卡号码的正则表达式（假设是16到19位数字）
+    bank_card_pattern = r'^\d{16,19}$'
+
+    # 手机号码的正则表达式（假设是中国的手机号）
+    phone_number_pattern = r'^1[3-9]\d{9}$'
+
+    if re.match(id_card_pattern, s):
+        # 身份证中间8位替换为*号
+        return "身份证", s[:6] + '*' * 8 + s[-4:]
+    elif re.match(bank_card_pattern, s):
+        # 银行卡中间4位替换为*号
+        return "银行卡", s[:6] + '*' * 4 + s[-6:]
+    elif re.match(phone_number_pattern, s):
+        # 手机号码中间4位替换为*号
+        return "手机号", s[:3] + '*' * 4 + s[-4:]
+    else:
+        return send_add_code()
+
+
+def send_add_code():
+    data = {
+        "msgtype": "markdown",
+        "markdown": {
+            "content": f"自动整改网站隐私泄露.\n\n\n发现新的隐私泄露类型或文章位置或未知错误，需要登录开普云看数据、加代码\n\n\n<@WuXiaoLong>"
+        }
+    }
+    key = conf.key_cs
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+    # 发送HTTP POST请求
+    response = requests.post(url, data=json.dumps(data))
+
+    # 输出响应结果
+    print(response.text)
+
+
+def deal_secrit_artic(se, wrong, right_words):
+    numbers = extract_numbers(se['url'])
+    # 将提取出的数字转换为整数
+    numbers = [int(num) for num in numbers]
+    # 判断 URL 类型并返回结果
+    if len(numbers) == 1:
+        res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
+        res_save = getcontent2.savearticnews(res, wrong, right_words, bz_gov_id, jid)
+    elif len(numbers) == 2:
+        res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+        res_save = getcontent.saveorupdate(res, wrong, right_words, bz_gov_id, jid)
+    else:
+        print("未知情况")
+        send_add_code()
+
+
+def deal_secrit_hudong(se, wrong, right_words):
+    is_need_up_toke = hudongcontent.secrit_deal(wrong, right_words, se, bz_gov_id, jid)
+    if is_need_up_toke:
+        get_new_bzid_jid()
+        hudongcontent.secrit_deal(wrong, right_words, se, bz_gov_id, jid)
+    # add_to_correct(correctlist, correctids, cuomin)
+
+def deal_secrit():
+    secrits = get_secrit()
+    for se in secrits:
+        print(se['wrongTerms'])
+        print(se['url'])
+        # 使用正则表达式分隔字符串
+        split_strings = re.split(r',', se['wrongTerms'])
+        # 遍历分隔后的字符串
+        for s in split_strings:
+            print(s)
+            right_type, right_words = change_secrit_right(s)
+            if se['pageType'] == 3:
+                deal_secrit_hudong(se, s, right_words)
+                deal_secrit_artic(se, s, right_words)
+                send_secrit_msg(right_type, right_words, se['url'], s, se['title'])
+                tag_secrit_kaipu(se['id'])
+            else:
+                send_add_code()
+
+
 if __name__ == '__main__':
     dealcuo()
+    deal_secrit()
 
     # res = getcontent.getcontent('6603801', '10686931', bz_gov_id, jid)
     # if res['status'] == -9:
@@ -778,7 +976,6 @@ if __name__ == '__main__':
     # print(res)
     # res_save = getcontent2.savearticnews(res,'下午17:00', '下午5时', bz_gov_id, jid)
     # print(res_save)
-
 
 # 测试表格类改错
 #     articleTitle = '附件1-2：平昌县十四五规划重大项目表.xls'

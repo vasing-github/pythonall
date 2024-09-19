@@ -149,25 +149,74 @@ def learn(s,pointid):
         start = start + add
         print(start)
 
+def record():
+    import requests
+
+    cookies = {
+        'dd_sid': 'k0_20662136fb1ad8663e48_2136206666d81afb10eec608070b9299a8c48ad5d4d1',
+        'account': 'oauth_k1%3AnLyw1YhjkUnYtY7w1bsDXbvzfHYXmBSbr%2FnhoncvEd4%2B3bbdT%2FKYxETOclpx0NBIURZlA8xeUt%2FsYJZEJCESdAMHwWP9tD3C6Yx8KjDhpAA%3D',
+        'deviceid': 'NTdlNDE2NzJmMzFhNWE2NmY1_unified',
+        'pub_uid': 'Y8%2BEa6rnfMIGpbCUnj7izw%3D%3D',
+        'dt_s': 'u-23eaf33d-91bc29bb48-213fb66c-657c8d-79e59a61-3499a16f-519c-440c-934f-8227b67e1730',
+        'XSRF-TOKEN': '23d59819-69b1-439a-9d2b-10a7c16701eb',
+        'up_ab': 'y',
+        'preview_ab': 'y',
+        'cna': 'EglfH6gI7ikCAd7XGNB6ziTb',
+        'xlly_s': '1',
+        'doc_atoken': 'NjAyNjAwMjUzBOYQAMoytaGsIEYqiMnHmKfpjlxsdROe',
+        'tfstk': 'fxyZvyDYrOBwe96XhckqYTV0JKDtvAbWo-gjmoqmfV0i51Hqo2zlXEi1XWo45ya6h1UfuWz0JfgGk5N2uuUqhAMihqzUyzJfX5abTszTqfMb3opqmo4AXqsOOlEtHxb5PrWSBlEd6mk1Vjmhm0immdiF-uZtHxbBAKf5UlUysGoUIxjEKmnroxvmiMlnVmDDIjvMte0K-qDmsCYHKcnioIvMsMrnJmDmoNNznRJE7fjyEYHTAwf4j4qiSlqaKhhX6k3eEL2UTb3od2JDnJoTvH4YXL5jr73sNljPdEn3KUeYHtdqsDnEPMSUtX2jo2edq-RvMXjKY4sP4Idx_1nEPM4DMIhs4Du5Ak1..',
+        'isg': 'BFRURlyuzt9LUFqThTfiKAwGJZLGrXiXwWpWxO4wI18J2fMjF71QJvyT3dPBIbDv',
+    }
+
+    headers = {
+        'authority': 'saas.daxue.dingtalk.com',
+        'saassign': '9a765502fc62e06cf07eeb9b85033c28',
+        'x-xsrf-token': '23d59819-69b1-439a-9d2b-10a7c16701eb',
+        'sec-ch-ua-mobile': '?0',
+        'ulcookie': '438c3853d884118a90bf4bd036e12497',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 dingtalk-win/1.0.0 nw(0.14.7) DingTalk(7.0.20-RC.5169101) Mojo/1.0.0 Native AppType(rc) Channel/201200',
+        'isajax': 'true',
+        'saastime': '1725438907213',
+        'accept': 'application/json, text/plain, */*',
+        'bx-v': '2.5.14',
+        'content-type': 'application/json;charset=UTF-8',
+        'sign': '9547830b28b54bd12fbe19622736424e',
+        'sec-ch-ua': '"Chromium";v="91"',
+        # 'cookie': 'dd_sid=k0_20662136fb1ad8663e48_2136206666d81afb10eec608070b9299a8c48ad5d4d1; account=oauth_k1%3AnLyw1YhjkUnYtY7w1bsDXbvzfHYXmBSbr%2FnhoncvEd4%2B3bbdT%2FKYxETOclpx0NBIURZlA8xeUt%2FsYJZEJCESdAMHwWP9tD3C6Yx8KjDhpAA%3D; deviceid=NTdlNDE2NzJmMzFhNWE2NmY1_unified; pub_uid=Y8%2BEa6rnfMIGpbCUnj7izw%3D%3D; dt_s=u-23eaf33d-91bc29bb48-213fb66c-657c8d-79e59a61-3499a16f-519c-440c-934f-8227b67e1730; XSRF-TOKEN=23d59819-69b1-439a-9d2b-10a7c16701eb; up_ab=y; preview_ab=y; cna=EglfH6gI7ikCAd7XGNB6ziTb; xlly_s=1; doc_atoken=NjAyNjAwMjUzBOYQAMoytaGsIEYqiMnHmKfpjlxsdROe; tfstk=f99qvr69-xH4MGM_CiWN4vAMyRXArt0QSd_1jhxGcZbcljBNSa8nDPsjDQSwlUTbCjLs7Q8Mys_mWIOa7HLNCt6cCN8yJeysDIT6af8vxs66QheNjhYtDNixNnKABO0IRFkCHnK-MGWjAR4uE3IUm-srrHtABO07VRcILnLUixkknOmPEGIFSO2Gs0WlcMXgn120ZzbRrNXGiS4uEiIcS520i0-lyGXGSNdyIKyPusmUK9BvV2mCwwxconx2EuC8M3byq3Jl037XmIegILSVMdgGAXGOGCxd9K_P46aOqL4pBdHT_sjR4wir4QfkCNbJeDva65Co2g7IYDPT6slA4wikS5FOGMSPR0t5.; isg=BEJCAf6wkMUzPIyZp9nsQo6Ak0ikE0Ytg6xgToxYKbUL3-ZZdaD9PfPRi9mjj77F',
+        'origin': 'https://saas.daxue.dingtalk.com',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-dest': 'empty',
+        'referer': 'https://saas.daxue.dingtalk.com/dingtalk/pc/detail.jhtml?appId=5488&corpId=dinge855d17bd97359a8f2c783f7214b6d69',
+        'accept-language': 'zh-CN,zh;q=0.9',
+    }
+
+    json_data = {
+        'source': 4,
+        'studyType': 2,
+        'resourceId': '115478547',
+        'packageId': '109869621',
+        'courseId': '110628977',
+        'courseTime': 240,
+        'learnTime': 60,
+        'type': 2,
+    }
+
+    response = requests.post(
+        'https://saas.daxue.dingtalk.com/dingtalk/course/record.jhtml',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+
+    print(response.text)
+
+
 if __name__ == '__main__':
 
 
-    # start = 600
-    # add = 600
-    # for i in range(1,10):
-    #     send_300(courseid)
-    #     # save_detail()
-    #
-    #     time.sleep(151)
-    #     save_record(courseid,start,add)
-    #     start = start + add
-    #     print(start)
+    record()
 
 
 
-    send_300(courseid)
-    # save_detail()
 
-    start = 1800
-    add = 600
-    save_record(courseid, start, add)

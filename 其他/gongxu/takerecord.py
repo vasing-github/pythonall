@@ -1,6 +1,6 @@
 import requests
 import conf
-from pcxzf.pcxzf.other.shizhengfu.text import token
+
 
 
 def taskrecord(recordid,studycode,src,sectionid,studytime, userid,planid):
