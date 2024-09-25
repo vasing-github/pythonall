@@ -296,6 +296,18 @@ def modify_reply(r, bzid, jid, wrong, right):
     print(response.text)
 
 
+def secrit_deal(wrong,right,se, bz_gov_id, jid):
+    message_id, is_shuji = get_message_id(se['url'])
+    res = search_message_by_id(message_id, is_shuji, bz_gov_id, jid)
+    if 'status' in res and res['status'] == -9:
+        return 1
+
+    print(res['data'][0]['replyVOList'][0])
+    modify_mesagee(res['data'][0], bz_gov_id, jid, wrong, right, )
+    time.sleep(2)
+    modify_reply(res['data'][0]['replyVOList'][0], bz_gov_id, jid, wrong,right, )
+    return 0
+
 def start_kaipu(cuomin, bz_gov_id, jid):
     message_id, is_shuji = get_message_id(cuomin['url'])
     res = search_message_by_id(message_id, is_shuji, bz_gov_id, jid)

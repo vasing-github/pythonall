@@ -28,7 +28,7 @@ def search(titlle,bzid):
         'sortField': 'createDate',
         'sortOrder': 'desc',
         'pageIndex': '0',
-        'pageSize': '20',
+        'pageSize': '200',
     }
 
     response = requests.post(
@@ -78,6 +78,20 @@ def get_search_content(id,jid,bzid):
 
     return response.json()
 
+
+def get_url_searched(search_words, bzid):
+    urls = []
+    response = search(search_words, bzid)
+    for artic in response['data']:
+        print(artic['htmlPath'])
+        urls.append(artic['htmlPath'])
+    return urls
+
+
 if __name__ == '__main__':
-    content = search()
-    print(content['data']['article']['id'])
+    content = search('谢江鸿', 'c40c4391-372f-47fd-a80e-65a027f5b940')
+    for artic in content['data']:
+
+        start_index = artic['htmlPath'].find("www.scpc")
+        result_string = artic['htmlPath'][start_index:]
+        print(result_string)
