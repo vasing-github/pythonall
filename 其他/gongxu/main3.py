@@ -72,7 +72,7 @@ async def start_learn(ck, planid, userid):
             #             code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.6 * total_time),
             #                                          userid, planid)
             #         else:
-            #             code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.85 * total_time), userid,planid)
+            #             code  = takerecord.taskrecord(recordid, studydoce, src, selction['id'], '%.4f' % (0.85 * total_time), userid,planid)
             #     else:
             #         code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 30, userid,planid)
 
@@ -159,7 +159,7 @@ async def job(task, year):
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
 
-            if now - time_obj >= datetime.timedelta(minutes=3):
+            if (now - time_obj).total_seconds() >= 170:
                 modify_user_stage(1, userid, realname, year)
                 is_modify_stage = await start_learn(task['cookie'], conf.get_year_planid(year), userid)
 
