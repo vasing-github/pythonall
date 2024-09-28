@@ -152,7 +152,8 @@ async def job(task, year):
         is_modify_stage = await start_learn(task['cookie'], conf.get_year_planid(year), userid)
         if is_modify_stage:
             modify_user_stage(2, userid, realname, year)
-
+            if year == '10' or year == '11' or year == '12' or year == '13' or year == '14':
+                return
             start_exam(task['cookie'])
     else:
         if user_record[userid][year]['stage'] == 1:
@@ -165,9 +166,13 @@ async def job(task, year):
 
                 if is_modify_stage:
                     modify_user_stage(2, userid, realname, year)
-
+                    if year == '10' or year == '11' or year == '12' or year == '13' or year == '14':
+                        return
                     start_exam(task['cookie'])
         elif user_record[userid][year]['stage'] == 2:
+            if year == '10' or year == '11' or year == '12' or year == '13' or year == '14':
+                return
+
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
             if now - time_obj >= datetime.timedelta(minutes=3):
