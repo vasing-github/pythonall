@@ -346,9 +346,13 @@ def test2_study_details():
 if __name__ == '__main__':
 
 
+
     user_id = '452601550745'
     # test_study_details()
     # make_autho()
+
+
+
     first_cource = get_first_cource()
     for cource in first_cource:
         print('大课程：',cource)

@@ -24,7 +24,7 @@ def get_year_planid(year):
     elif year == '11':
         return 'f2c16584e5ef40b5821250309dd9238a'
     elif year == '12':
-        return 'f2c16584e5ef40b5821250309dd9238a'
+        return 'd0af473b813a47758e0a4fffb7053517'
     elif year == '13':
         return '03834387382247f991819b6a610d217d'
     elif year == '14':
@@ -37,6 +37,7 @@ jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
 # 8.25 更新 现在专业课也不需要换符号了
 
 cookies = [
+
 
    {'name': '60那个', 'year': [12,13,22,23],
     'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTExOTAyMTk5MjAyMDcwMTQwQDE1MSIsIm1vYmlsZSI6IjE4ODAwOTU3MDAzIiwidXNlck5hbWUiOiJhbW91cmxqMTIzIiwidXNlcklkIjoiMDk0ZTFiYTYtNWRhNi00MmVkLThhYmYtMDE3NWIwMTI5M2EwIiwiaWF0IjoxNzI3NDAzMDY2LCJqdGkiOiI2YjU4MTY0ZjI3ZGU0NzU0YWMzYmNmMzY0MzAzZDI1ZCJ9.uVBznA_Hsq35p8-9jGtg1euStuccLCyKBiCNCyJ0huo'},
@@ -52,5 +53,6 @@ cookies = [
 
     # {'name': '第五个', 'year': [24],
     #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzIzMTk4OTEwMDE5MTkyQDE1MSIsIm1vYmlsZSI6IjE4MzgyNzAwNzcxIiwidXNlck5hbWUiOiI1MTM3MjMxOTg5MTAwMTkxOTIiLCJ1c2VySWQiOiJwMnMzXzRlZjY5NTBiLTM2MDQtNGQxYS05NzA4LWFjMjk5MWUyNDlhNyIsImlhdCI6MTcyNzE3NjI2MCwianRpIjoiZGNmZWQzZDhkODcxNDMyNGI3OTMxNzYyNThlMzU4ODYifQ.YDAZnJ-VIvLIFOhkwVTA0ncEPH0L_dANTUNcpOrwgdg'},
+
 
 ]
