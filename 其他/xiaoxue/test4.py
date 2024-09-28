@@ -485,11 +485,14 @@ headers = {
 }
 
 
-if __name__ == '__main__':
-    last_chapter_id, last_section_id, last_point_id = get_now_point()
 
-    response = get_all_course_itemid()
-    resources_dict = bs4_get_dic(response)
-    print(resources_dict)
-    start(resources_dict, last_chapter_id, last_section_id, last_point_id)
-    # print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+if __name__ == '__main__':
+    test_study_details()
+
+    # last_chapter_id, last_section_id, last_point_id = get_now_point()
+    #
+    # response = get_all_course_itemid()
+    # resources_dict = bs4_get_dic(response)
+    # print(resources_dict)
+    # start(resources_dict, last_chapter_id, last_section_id, last_point_id)
+    # # print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
