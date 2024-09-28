@@ -172,6 +172,7 @@ async def job(task, year):
         elif user_record[userid][year]['stage'] == 2:
             if year == '10' or year == '11' or year == '12' or year == '13' or year == '14':
                 return
+
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
             if now - time_obj >= datetime.timedelta(minutes=3):

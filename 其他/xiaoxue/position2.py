@@ -303,8 +303,6 @@ def test_study_details():
 
 
 def test2_study_details():
-    import requests
-
     headers = {
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
@@ -346,32 +344,31 @@ def test2_study_details():
 
 if __name__ == '__main__':
 
-
     user_id = '452651017041'
-    test2_study_details()
-    make_autho()
-    # first_cource = get_first_cource()
-    # for cource in first_cource:
-    #     print('大课程：',cource)
-    #     activity_set_id = get_active_id(cource)
-    #     print(activity_set_id)
-    #     nodes = get_fulls(activity_set_id)
-    #     a = 1
-    #
-    #     for node in nodes:
-    #
-    #         sources = []
-    #         extract_resources(node, sources)
-    #         print(sources)
-    #         for source in sources:
-    #             if a >= 20:
-    #                 break
-    #             # async_begin(user_id, source)
-    #             # get_method_position(source, user_id)
-                # postion(False, source, user_id)
-                #  postion(True, source, user_id)
-    #             get_method_position(source, user_id)
-    #             a = a+1
+
+    first_cource = get_first_cource()
+    for cource in first_cource:
+        print('大课程：',cource)
+        activity_set_id = get_active_id(cource)
+        print(activity_set_id)
+        nodes = get_fulls(activity_set_id)
+        a = 1
+
+        for node in nodes:
+
+            sources = []
+            extract_resources(node, sources)
+            print(sources)
+            for source in sources:
+                if a >= 20:
+                    break
+                # async_begin(user_id, source)
+                # get_method_position(source, user_id)
+
+                postion(True, source, user_id)
+                get_method_position(source, user_id)
+                a = a+1
+
     #             # time.sleep(2)
 
 
