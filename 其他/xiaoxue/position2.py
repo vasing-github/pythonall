@@ -344,7 +344,7 @@ def test2_study_details():
 
 if __name__ == '__main__':
 
-    user_id = '452651017041'
+    user_id = '452591324786'
 
     first_cource = get_first_cource()
     for cource in first_cource:
@@ -366,7 +366,7 @@ if __name__ == '__main__':
                 # get_method_position(source, user_id)
 
                 postion(True, source, user_id)
-                get_method_position(source, user_id)
+                # get_method_position(source, user_id)
                 a = a+1
 
     #             # time.sleep(2)

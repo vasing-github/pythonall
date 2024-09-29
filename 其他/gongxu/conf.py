@@ -16,7 +16,7 @@ def get_year_planid(year):
     elif year == '24':
         return '97624af4fdea4442890d4c257dbe83f2'
     elif year == '25':
-        return '7126ee35589148268176f025da0dfcf6'
+        return '6ed7ab2a5e4a42c2b1f950fec0ba1665'
 
 
 
@@ -39,11 +39,11 @@ jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
 
 cookies = [
 
-   {'name': '王菊', 'year': [13,12,11],
-    'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMTI3MTk5MzA5MTkwMjFYQDE1MSIsIm1vYmlsZSI6IjE4MzgwNDEwNDY4IiwidXNlck5hbWUiOiJhMTMwOTA4ODIyMSIsInVzZXJJZCI6ImZmYmU3NThhYjliZTQ3MzFiMTk3ZjhmMGQxOTEzOTlhIiwiaWF0IjoxNzI3NDQyMDI0LCJqdGkiOiJhZWNhNzY1NTY0NzQ0YTRlOTk0MjgyODk3ZGZkMjBjNiJ9.aQhK1kfxIHpoVMU83K9M9TfPZBTfUNPRtwvznCKgekM'},
+   {'name': '王菊', 'year': [25],
+    'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDIyMTk5NjA5MTczMzM0QDE1MSIsIm1vYmlsZSI6IjE3NzYxMjQ0MDI1IiwidXNlck5hbWUiOiJ6ZW5nMTEwMTE0IiwidXNlcklkIjoiMzdhODBiODYtOGQzNS00NTI1LTliYzEtNjg4Y2NmMTM2ODZiIiwiaWF0IjoxNzI3NTE2MDg2LCJqdGkiOiJkNjhhMGQzZjg2YzI0N2FjYjI5Mjc3NWY4OGYxODNjYSJ9.mWYlOkDlVpZbhaZ_fpbhIu9RZyV5xKugnj3lzp1HCAI'},
 
-   # {'name': '60那个', 'year': [12,13,22,23],
-   #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTExOTAyMTk5MjAyMDcwMTQwQDE1MSIsIm1vYmlsZSI6IjE4ODAwOTU3MDAzIiwidXNlck5hbWUiOiJhbW91cmxqMTIzIiwidXNlcklkIjoiMDk0ZTFiYTYtNWRhNi00MmVkLThhYmYtMDE3NWIwMTI5M2EwIiwiaWF0IjoxNzI3NDAzMDY2LCJqdGkiOiI2YjU4MTY0ZjI3ZGU0NzU0YWMzYmNmMzY0MzAzZDI1ZCJ9.uVBznA_Hsq35p8-9jGtg1euStuccLCyKBiCNCyJ0huo'},
+   {'name': '60那个', 'year': [25],
+    'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDIyMTk5NzAzMDQzNzIwQDE1MSIsIm1vYmlsZSI6IjE3MzIzMzA5MTY5IiwidXNlck5hbWUiOiJscXgwMzA0IiwidXNlcklkIjoiNWYxMjZlNGYtODA0ZC00MTgwLThlNDUtZmFkNjczYzk5NGE1IiwiaWF0IjoxNzI3NTE2MTY3LCJqdGkiOiIyY2UwMGVlNDJkNzQ0ZTlhOTJmNTQ2MmQyYmQ4NjE2NCJ9.yVz5CaqYzhB8_35dnYsw0-Q6GkU6KPz0aIQZPeznUvk'},
    #
    #  {'name': '慢刷给20的', 'year': [24],
    #   'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDI1MTk2OTA0MjQwMDEzQDE1MSIsIm1vYmlsZSI6IjEzMTgzNTM1Nzg5IiwidXNlck5hbWUiOiI1MTMwMjUxOTY5MDQyNDAwMTMiLCJ1c2VySWQiOiJwMnM5XzIzNGYzNDc4LTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcyNzQwMzAwOSwianRpIjoiMmE2NWFlZDUzNTAxNDMwYTg5NDc3ZmFmMDllN2VlNGUifQ.tRnmLQb76gffZfIZrTWP3neFuL_AZTfJFiztRVP_86U'},
