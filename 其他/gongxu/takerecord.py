@@ -44,29 +44,31 @@ def taskrecord(recordid,studycode,src,sectionid,studytime, userid,planid):
     return response.json()['status']
 
 def takeRecode2(token,time):
-
     cookies = {
-        'JSESSIONID': 'AE60F152BBDE09F155A5B6B7B9F27B8B',
+        'p_h5_u': '16F1CFCC-428E-40F0-9C1A-7712E951CBFA',
+        'Hm_lvt_69ccfa3777e8e6193e66dde22ab2c896': '1728396152',
+        'JSESSIONID': '89557CA9C9BD211EDA7CE9DAD91831DA',
     }
 
     headers = {
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
-        'Content-Type': 'text/html;charset=UTF-8',
-        # 'Cookie': 'JSESSIONID=AE60F152BBDE09F155A5B6B7B9F27B8B',
+        'Content-Type': 'text/html',
+        # 'Cookie': 'p_h5_u=16F1CFCC-428E-40F0-9C1A-7712E951CBFA; Hm_lvt_69ccfa3777e8e6193e66dde22ab2c896=1728396152; JSESSIONID=89557CA9C9BD211EDA7CE9DAD91831DA',
         'Origin': 'https://videoadmin.chinahrt.com',
-        'Referer': 'https://videoadmin.chinahrt.com/videoPlay/playEncrypt?param=M6FUERTovrwJKhmQd7T7TyNBK%2BVNxhzqSH0PXmorPcZ3rSPEh3uIvka%2FyE3InQ%2F4KQ10ZDPXDfHpXIXR%2BcI5FbEJzxuiNJ27XTKne2kfX8TwXayEpRR%2BBx2qNm6PaNCE53UxECkhSGHXaE2JZNesZcBB1Bq7RHzNHSfUBuJKLjfmarzBgbbLGN2syT6eiq6vwEyaN4d0RseygKNXisXChNY0p7ylVdk4v1dbWewWqZtVdu0J73xZQ7r7FzhTOuZFKAKA5DApDeVet0oKX%2B1T72HaonAl7xEwaRjJS0sISh%2Bx7hh085VbEYnbGOQzwAzt9r1PD1nveiK0F9ElfMXEfEeJyD7Rp3BoP0ox3i7gbmDBdHvIAYusrm%2BSxGJiw0Cwc0%2BSk8b5h7GxnJEpTQXmIReBKmZhOABCb%2BY2hniYaUOl%2FTxpl4WF6VJgWq3%2F1Q8YXijcMrgL52mkVlvg8mqH7cyZbps%2BlrlncBvgPNhLrrOo9kO2k75yQTm0dzRmozuW0%2F5sJFqBNZjYpo5CyZCMYRqV0Q%2FjjPxjz1UGS4QC8vPiIJRYsT1QQu6nnsNRfmS%2B1o4u7rFTctZ6Ls1SaZC7lorRPqUm%2FzT2xlnLpHplMhASbF7nYQDQ8sO19IkBmLv0%2FiDypQkzVpVSNPUQHydQFFRfACVqtJwfAb0xBV3nh8t%2FsyVkl0d8IlLLNAhEDVzSduEBMRYFJ5rH484ILWR9Kw%3D%3D',
+        'Referer': 'https://videoadmin.chinahrt.com/videoPlay/playEncrypt?param=M6FUERTovrwJKhmQd7T7TyNBK%2BVNxhzqSH0PXmorPcZ3rSPEh3uIvka%2FyE3InQ%2F4DeUOXdLAPuFPbuWqM7gto7EJzxuiNJ27XTKne2kfX8TwXayEpRR%2BBx2qNm6PaNCE53UxECkhSGHXaE2JZNesZcBB1Bq7RHzNHSfUBuJKLjfmarzBgbbLGN2syT6eiq6vwEyaN4d0RseygKNXisXChNY0p7ylVdk4v1dbWewWqZuuBDyOjSMk2O24DL5TXVXZXye1%2BqOdFYvD9kO%2Fu%2Bz8Oj81JeICop8ZbzZhMwdpeTR4t90WxoLqIDLXvThch3r497Bog%2F0WEWxJo0Q45XO%2FgnMbH346bgkNOkaJESugyk5g3qKyTh1hrBPKvdUStLHZWf6ATqOukafkePOfTVsE72Wdin2EOP8g71nTG47tn%2FkqZjdlnc5ql%2Bt4TCJov1Mx6c6Nrgir4YLbbwZGklmZ1Dnwwn%2BVRzbLkiALS6FFyYu4brhU3gr%2FLUowarzrA84anZDSZ3MkRcMJ9DVC%2Bd9mFi%2BCJ7Qm5n2W0x8syZAQqbLu%2FBHPS2jN%2F%2BYnFrYVYWaBknTBMgqn%2Fa%2FVKppiSD00vLZDlOnEzQ%2BHt9hibjBB4EIMGcY3OCoKUElK8o%2Fomlz1QidAZXmJy3x6bXBEhbIoMEGHnEgpMK2nE9VKvcCHOAAB%2BNKw5cuPokYJdSJ8LPA%2B',
         'Sec-Fetch-Dest': 'empty',
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'same-origin',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-        'sec-ch-ua': '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0',
+        'X-Requested-With': 'XMLHttpRequest',
+        'sec-ch-ua': '"Microsoft Edge";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Windows"',
     }
 
-    data = '{"token":'+token+',"time":'+time+'}'
+    data = '{"token":"'+token+'","time":'+time+'}'
 
     response = requests.post(
         'https://videoadmin.chinahrt.com/videoPlay/takeRecordByToken',
@@ -75,4 +77,7 @@ def takeRecode2(token,time):
         data=data,
     )
     print(response.text)
-    return response.json()['status']
+    return response.json()['data']
+
+if __name__ == '__main__':
+    takeRecode2('c30c90c834ec12d91f9b764cf4876d33','1230')
