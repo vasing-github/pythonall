@@ -130,16 +130,21 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
 
     print(response.status_code)
     print(response.text)
+    return response.status_code
+
 
 
 if __name__ == '__main__':
-    jid = 'MDM1ZTU2MDEtYjZjMS00NDVlLTk1NDEtMTAxZmJkNTFhZDI0'
-    bz_gov_id = 'fe99cb8e-dfee-426f-a57d-930ce37abd25'
-    filename = 'rBUtImanQZOAAssVAAEAAIN_F5U158.xls'
-    path_excel = '/group3/M00/12/10/rBUtImanQZOAAssVAAEAAIN_F5U158.xls'
-    parentTitle = '平昌县农业农村局2023年度项目支出绩效评价报告'
-    articleTitle = '2024县级财政项目支出绩效评价指标体系.xls'
-    last_number = '13955659'
+    # 要测试表格改错，去kaipu.py
+
+    jid = 'ZjhkZTc3ZWMtNjY4MC00YzEwLTgyODAtZTFlODE2MjFmNmRj'
+    bz_gov_id = '3dee3a65-9bbd-4078-9757-5ca83ccac343'
+    filename = 'rBUtImcErY2AJ8mbAAA1LFxu6Dk97.xlsx'
+    path_excel = 'http://www.scpc.gov.cn/group3/M00/12/73/rBUtImcErY2AJ8mbAAA1LFxu6Dk97.xlsx'
+    parentTitle = '大寨镇2023年部门整体支出绩效评价报告'
+    articleTitle = '部门整体支出绩效目标表.xlsx'
+
+    last_number = '13965387'
     uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
                articleTitle, last_number)
 

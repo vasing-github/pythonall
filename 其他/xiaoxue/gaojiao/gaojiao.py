@@ -90,31 +90,32 @@ def vocation(data):
 
 import conf
 cookies = {
-        '_abfpc': '3e71e827d622b217bb745dbec3adb807f565c21a_2.0',
-        'cna': '99e133751bb47b2866767a1470a8ec28',
-        'UM_distinctid': '19198b16d942b1-0d92e3c190a1f4-4c657b58-1fa400-19198b16d952b7',
-        'sensorsdata2015jssdkcross': '%7B%22distinct_id%22%3A%2219184bb6d9dfbb-0a08a380bcc96e-4c657b58-2073600-19184bb6d9e1353%22%2C%22first_id%22%3A%22%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22identities%22%3A%22eyIkaWRlbnRpdHlfY29va2llX2lkIjoiMTkxODRiYjZkOWRmYmItMGEwOGEzODBiY2M5NmUtNGM2NTdiNTgtMjA3MzYwMC0xOTE4NGJiNmQ5ZTEzNTMifQ%3D%3D%22%2C%22history_login_id%22%3A%7B%22name%22%3A%22%22%2C%22value%22%3A%22%22%7D%2C%22%24device_id%22%3A%2219184bb6d9dfbb-0a08a380bcc96e-4c657b58-2073600-19184bb6d9e1353%22%7D',
-        'Hm_lvt_f0b6b943aec9775d7c6c7020bf856c6b': '1724493578,1724508607,1724843558,1725034501',
-        'UC_SSO_TGC-e5649925-441d-4a53-b525-51a2f1c4e0a8-product': '815f068b-81f9-41de-a79c-59d62a762435',
-        'passport': 'https://core.teacher.vocational.smartedu.cn/p/passport',
-        'u-lastLoginTime': '1727270049690',
-        'u-activeState': '1',
-        'u-mobileState': '0',
-        'u-mobile': '18767151550',
-        'u-preLoginTime': '1727266255916',
-        'u-token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5YWY2YTdkNS03ZWUzLTQ4MTItYjZjYy0zNTM5ODQ4Y2NiYjYiLCJpYXQiOjE3MjcyNzAwNDksInN1YiI6IjYyNzA4NDQ5MDY3MTcyMjQ5NiIsImlzcyI6Imd1b3JlbnQiLCJhdHRlc3RTdGF0ZSI6MCwic3JjIjoid2ViIiwiYWN0aXZlU3RhdGUiOjEsIm1vYmlsZSI6IjE4NzY3MTUxNTUwIiwicGxhdGZvcm1JZCI6IjEzMTQ1ODU0OTgzMzExIiwiYWNjb3VudCI6IjE4NzY3MTUxNTUwIiwiZXhwIjoxNzI3MzA2MDQ5fQ.7MvQH5XIkdrUWuh8X3yOBudcx3z9i7kV_f2uc1kf19k',
-        'u-token-legacy': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5YWY2YTdkNS03ZWUzLTQ4MTItYjZjYy0zNTM5ODQ4Y2NiYjYiLCJpYXQiOjE3MjcyNzAwNDksInN1YiI6IjYyNzA4NDQ5MDY3MTcyMjQ5NiIsImlzcyI6Imd1b3JlbnQiLCJhdHRlc3RTdGF0ZSI6MCwic3JjIjoid2ViIiwiYWN0aXZlU3RhdGUiOjEsIm1vYmlsZSI6IjE4NzY3MTUxNTUwIiwicGxhdGZvcm1JZCI6IjEzMTQ1ODU0OTgzMzExIiwiYWNjb3VudCI6IjE4NzY3MTUxNTUwIiwiZXhwIjoxNzI3MzA2MDQ5fQ.7MvQH5XIkdrUWuh8X3yOBudcx3z9i7kV_f2uc1kf19k',
-        'u-id': '627084490671722496',
-        'u-account': '18767151550',
-        'requestSource': 'teacher.vocational.smartedu.cn',
-        'ufo-nk': '5b6Q6JW+',
-        'u-name': 'web_user_8aM9f8x1',
-        'ufo-urn': 'MTg3NjcxNTE1NTA=',
-        'ufo-un': '5b6Q6JW+',
-        'ufo-id': '627084490671722496',
-        'connect.sid': 's%3A_iSRtm4MUvXzxYiE7NKyAaLHz38wo6ja.cV9CzSMDWiHoXMGgRFmD0Trl%2FIIpF28yuhjZAV%2FEtNI',
-        'CNZZDATA1281062390': '175988450-1727270058-https%253A%252F%252Fteacher.vocational.smartedu.cn%252F%7C1727273978',
-    }
+    '_abfpc': '068558c0127bdfb7a931fe9b532a095106e5f962_2.0',
+    'cna': '6adcc4cd14438a4187f79130a69c05ea',
+    'UM_distinctid': '1917cc355c10-0f630a6fac0afb-4c657b58-240000-1917cc355c2c0',
+    'Hm_lvt_6f8e7b522fd6a613e06b99f5354900b3': '1724376375',
+    'Hm_lvt_f0b6b943aec9775d7c6c7020bf856c6b': '1724375278,1724659636,1724743718,1724915220',
+    'sensorsdata2015jssdkcross': '%7B%22distinct_id%22%3A%221914ec1a1e0846-07a2a8fb27669c8-4c657b58-2359296-1914ec1a1e112cf%22%2C%22first_id%22%3A%22%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22identities%22%3A%22eyIkaWRlbnRpdHlfY29va2llX2lkIjoiMTkxNGVjMWExZTA4NDYtMDdhMmE4ZmIyNzY2OWM4LTRjNjU3YjU4LTIzNTkyOTYtMTkxNGVjMWExZTExMmNmIn0%3D%22%2C%22history_login_id%22%3A%7B%22name%22%3A%22%22%2C%22value%22%3A%22%22%7D%2C%22%24device_id%22%3A%221914ec1a1e0846-07a2a8fb27669c8-4c657b58-2359296-1914ec1a1e112cf%22%7D',
+    'CNZZDATA1281120612': '687623788-1724683340-https%253A%252F%252Fteacher.higher.smartedu.cn%252F%7C1725853243',
+    'CNZZDATA1281062390': '985325964-1724375062-%7C1727332825',
+    'passport': 'https://core.teacher.vocational.smartedu.cn/p/passport',
+    'u-lastLoginTime': '1727599417046',
+    'u-activeState': '1',
+    'u-mobileState': '0',
+    'u-mobile': '18822032270',
+    'requestSource': 'teacher.higher.smartedu.cn',
+    'u-preLoginTime': '1727593874227',
+    'u-token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NzAwNTY4NC03MWQyLTQzZTQtODBlMy0zZWQyOTMyMTUzMjgiLCJpYXQiOjE3Mjc1OTk0MTcsInN1YiI6IjkwMjMzMjY4OTExOTUwMjMzNiIsImlzcyI6Imd1b3JlbnQiLCJhdHRlc3RTdGF0ZSI6MCwic3JjIjoid2ViIiwiYWN0aXZlU3RhdGUiOjEsIm1vYmlsZSI6IjE4ODIyMDMyMjcwIiwicGxhdGZvcm1JZCI6IjEzMTQ1ODU0OTgzMzExIiwiYWNjb3VudCI6IjE4ODIyMDMyMjcwIiwiZXhwIjoxNzI3NjM1NDE3fQ.5BJ6OVYwBSNoPQOO39wSSFeUa5U3lsC1noJ4kvp8Or0',
+    'u-token-legacy': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NzAwNTY4NC03MWQyLTQzZTQtODBlMy0zZWQyOTMyMTUzMjgiLCJpYXQiOjE3Mjc1OTk0MTcsInN1YiI6IjkwMjMzMjY4OTExOTUwMjMzNiIsImlzcyI6Imd1b3JlbnQiLCJhdHRlc3RTdGF0ZSI6MCwic3JjIjoid2ViIiwiYWN0aXZlU3RhdGUiOjEsIm1vYmlsZSI6IjE4ODIyMDMyMjcwIiwicGxhdGZvcm1JZCI6IjEzMTQ1ODU0OTgzMzExIiwiYWNjb3VudCI6IjE4ODIyMDMyMjcwIiwiZXhwIjoxNzI3NjM1NDE3fQ.5BJ6OVYwBSNoPQOO39wSSFeUa5U3lsC1noJ4kvp8Or0',
+    'u-id': '902332689119502336',
+    'u-account': '18822032270',
+    'ufo-nk': '5YiY5a6J5Zu9',
+    'u-name': 'web_user_RrgsHTUA',
+    'ufo-urn': 'MTg4MjIwMzIyNzA=',
+    'ufo-un': '5YiY5a6J5Zu9',
+    'ufo-id': '902332689119502336',
+    'connect.sid': 's%3AR9KbxCk8eGxPZyBSFOueuZOU-ELaYSde.JfMyJp3I1tEj79FJdqMODIs27H%2FVTiwTBlfxGrCMoUs',
+}
 if __name__ == '__main__':
     # i = 44
     # s = '8766909100835389'
@@ -133,7 +134,7 @@ if __name__ == '__main__':
     #             break
     #         time.sleep(20)
 
-    last_vedioid = '877417676198686720'
+    last_vedioid = '877704944898428928'
     dont_change = True
     for big in conf.confdata:
         vocation(big['data'])
