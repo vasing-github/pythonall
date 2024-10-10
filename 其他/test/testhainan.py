@@ -63,7 +63,7 @@ def get_course(chanal):
         'sort': 'id',
         'order': 'desc',
         'page': 1,
-        'rows': 30,
+        'rows': 56,
         'channelId': chanal,
         'topicType': '',
     }
@@ -153,9 +153,9 @@ def get_second(c):
     # response = requests.post('https://www.hngbzx.gov.cn/api/mobile/getCourseCommentList', cookies=cookies, headers=headers, data=data)
 
 cookies = {
-    'token': 'BearereyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6I6r6JOdIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI3NTk1Njg1LCJ1c2VyaWQiOjIyNjE1NiwiaWF0IjoxNzI3NTg4NDg1LCJ1c2VybmFtZSI6Im1sMTUyMDMwNzQ1MjYifQ.JlSgIz2wn21KDZh7jY2ce7GX2We85dpwA6etJW-yN2Q',
-    'refreshToken': 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6I6r6JOdIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI3Njc0ODg1LCJ1c2VyaWQiOjIyNjE1NiwiaWF0IjoxNzI3NTg4NDg1LCJ1c2VybmFtZSI6Im1sMTUyMDMwNzQ1MjYifQ.1eAkSTZY7ReNBvRWuS6atBVPSig3S_nS9b8a1RoETPc',
-    'JSESSIONID': '216A9B94E866B07EE3EFE9F0102E401E',
+    'token': 'BearereyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6ZmI54-N5aauIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4MzUyOTcyLCJ1c2VyaWQiOjMyOTE2MywiaWF0IjoxNzI4MzQ1NzcyLCJ1c2VybmFtZSI6ImN6bjE4ODc2NTYzMjYzIn0.s2daS5Vc5QYPilv2tT2z2NgO3rKMs3-Enw9QpEGvEK8',
+    'refreshToken': 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6ZmI54-N5aauIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4NDMyMTcyLCJ1c2VyaWQiOjMyOTE2MywiaWF0IjoxNzI4MzQ1NzcyLCJ1c2VybmFtZSI6ImN6bjE4ODc2NTYzMjYzIn0.hj_XJJeTVpSMCigPnTNR6DOknxAkiNjK3ZRj8Y_Ma8o',
+    'JSESSIONID': '443370BEBBD5463305DB8B306FA84980',
 }
 
 if __name__ == '__main__':
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     chanal_bixiu = 560
     # chanal_xuanxiuzhuanti = 643
     # chanal_xuanxiukecheng = 51
-    chanal_list = [chanal_zhiding]
+    chanal_list = [chanal_zhiding,chanal_bixiu]
 
     for chanal in chanal_list:
         courses = get_course(chanal)
