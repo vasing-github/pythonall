@@ -40,9 +40,11 @@ async def start_learn(ck, planid, userid):
         for selction in selctions:
             print(courceid, selction['id'])
             exitList = ['2bc16638cb5a4ff8af74600ead46a662','1190963f61614009a2f6120af1c5567e','359fa533ba6c49028778f9b94e1755c7','303cf1cd2e2148a9b99beb9daf39c24d',
-                        '99c7a177bf77475198045803903d65b4','4b959b2650014a799b78547e6078c45d','a7c0705774d748469e8e2ea771b61cad']
-            # if courceid in exitList:
-            #     continue
+                        '99c7a177bf77475198045803903d65b4','4b959b2650014a799b78547e6078c45d','a7c0705774d748469e8e2ea771b61cad','9bf9ff4f-7e45-40c1-861e-833b57a9c6e1',
+                        'ce33fe4340de41999f2d79ed778319b6','e149cd5b91e84cc1bce0a1bbece9349d','ce33fe4340de41999f2d79ed778319b6','a88e9094acd84063895e46399d7ad443',
+                        '45443e93895946b1882bdceb24b9f211','6cf866c6fe65460ab13c0cfe67a62cd8']
+            if courceid in exitList:
+                continue
             study_time = selction['study_time']
             total_time = selction['total_time']
             print(selction['name'])

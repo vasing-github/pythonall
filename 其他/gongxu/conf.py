@@ -12,7 +12,7 @@ def get_year_planid(year):
     elif year == '22':
         return 'be50251f5ca649fa9411ae9b7e0e0083'
     elif year == '23':
-        return 'b34287b27e1142fb9f00d0046e6a9ee9'
+        return '429db59ff85d4cf4935c1f5b5f3f34c8'
     elif year == '24':
         return '97624af4fdea4442890d4c257dbe83f2'
     elif year == '25':
@@ -29,7 +29,7 @@ def get_year_planid(year):
     elif year == '13':
         return '03834387382247f991819b6a610d217d'
     elif year == '14':
-        return '3281756fd5e44257bb9ad443f55843f3'
+        return '578c78426b91414096f0f94d26f335e6'
 
 
 jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
@@ -39,14 +39,14 @@ jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
 
 cookies = [
 
-   {'name': '王菊', 'year': [25],
-    'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDIyMTk5NjA5MTczMzM0QDE1MSIsIm1vYmlsZSI6IjE3NzYxMjQ0MDI1IiwidXNlck5hbWUiOiJ6ZW5nMTEwMTE0IiwidXNlcklkIjoiMzdhODBiODYtOGQzNS00NTI1LTliYzEtNjg4Y2NmMTM2ODZiIiwiaWF0IjoxNzI3NTE2MDg2LCJqdGkiOiJkNjhhMGQzZjg2YzI0N2FjYjI5Mjc3NWY4OGYxODNjYSJ9.mWYlOkDlVpZbhaZ_fpbhIu9RZyV5xKugnj3lzp1HCAI'},
+    {'name': '慢刷给20的', 'year': [24],
+     'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzIzMTk4NzA1MTU3NTAyQDE1MSIsIm1vYmlsZSI6IjE1MjgyNzYzMzY1IiwidXNlck5hbWUiOiI1MTM3MjMxOTg3MDUxNTc1MDIiLCJ1c2VySWQiOiJwMXM1XzI0NmNkNWNjLTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcyODUxNDU5NiwianRpIjoiMmViOTAxZTQzNjkxNGQyMWJmM2I2ZjY4ZDJjZTMzYjEifQ.Euhqho9RiNS-KLG-mxWkAOzq1m4TAlP9plpQD4WPLN4'},
 
-   {'name': '60那个', 'year': [25],
-    'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDIyMTk5NzAzMDQzNzIwQDE1MSIsIm1vYmlsZSI6IjE3MzIzMzA5MTY5IiwidXNlck5hbWUiOiJscXgwMzA0IiwidXNlcklkIjoiNWYxMjZlNGYtODA0ZC00MTgwLThlNDUtZmFkNjczYzk5NGE1IiwiaWF0IjoxNzI3NTE2MTY3LCJqdGkiOiIyY2UwMGVlNDJkNzQ0ZTlhOTJmNTQ2MmQyYmQ4NjE2NCJ9.yVz5CaqYzhB8_35dnYsw0-Q6GkU6KPz0aIQZPeznUvk'},
-   #
-   #  {'name': '慢刷给20的', 'year': [24],
-   #   'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDI1MTk2OTA0MjQwMDEzQDE1MSIsIm1vYmlsZSI6IjEzMTgzNTM1Nzg5IiwidXNlck5hbWUiOiI1MTMwMjUxOTY5MDQyNDAwMTMiLCJ1c2VySWQiOiJwMnM5XzIzNGYzNDc4LTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTcyNzQwMzAwOSwianRpIjoiMmE2NWFlZDUzNTAxNDMwYTg5NDc3ZmFmMDllN2VlNGUifQ.tRnmLQb76gffZfIZrTWP3neFuL_AZTfJFiztRVP_86U'},
+    # {'name': 'chenzhou', 'year': [14, 13],
+    #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDI4MTk4NzA0MDU0NDMzQDE1MSIsIm1vYmlsZSI6IjE1OTA4NDQ3OTk3IiwidXNlck5hbWUiOiI1MTMwMjgxOTg3MDQwNTQ0MzMiLCJ1c2VySWQiOiJwMXM2XzgyNDljMGNiLTllNzQtNGNmNC1hYjcyLTUwODM3Nzc0MjYxZiIsImlhdCI6MTcyODQ2OTc1NSwianRpIjoiZjFlYTc3NWY5OGRkNGRkZmE2NzM0ZmQ0MDllZWM4NzUifQ.YErOKJhVvzGVJet9l1pJfKgi90wikKuI4lkEPvNwP1k'},
+    #
+    # {'name': 'qiao', 'year': [13, 14],
+    #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTExMzI0MTk5NzEyMDcxMzVYQDE1MSIsIm1vYmlsZSI6IjE1NjgxMDMwMzEzIiwidXNlck5hbWUiOiIxNTY4MTAzMDMxMyIsInVzZXJJZCI6ImY1ZWE0NDU5YzZmZTRiMjg4MTg2YjA3M2ExMGNiYjJmIiwiaWF0IjoxNzI4NDY5OTczLCJqdGkiOiIxY2QyOGJmOGZlMWY0MmZmOGI3MjRkOTk3YzRjMTEzMCJ9.K56cuJxxQyIiCFVigjwxdW6o85gPGC1qIG9QTz7I_bI'},
 
 
     # {'name': '两个90的2', 'year': [13, 14],
