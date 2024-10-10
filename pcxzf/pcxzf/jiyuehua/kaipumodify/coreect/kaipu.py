@@ -60,7 +60,7 @@ def get_cuomin_list():
 
     json_data = {
         'page': {
-            'size': 100,
+            'size': 500,
             'current': 1,
         },
         'check': 1,
@@ -644,10 +644,11 @@ def cuo_excel(cuomin, correctlist, correctids):
     last_number = numbers[-1] if numbers else None
 
     upfile.modify_file(filename, sensitiveWords, recommendUpdate)
-    # 这里还有懒更新bzid没写
-    upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
-                      articleTitle, last_number)
 
+    code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+    if code != 200:
+        get_new_bzid_jid()
+        code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
     add_to_correct(correctlist, correctids, cuomin)
 
@@ -662,8 +663,7 @@ def dealcuo():
         for cuomin in list_cuomin:
             print(cuomin['sensitiveWords'])
             print(cuomin['url'])
-            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin[
-                'column'] != '互动交流':  # 表示是文章类型
+            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
 
                 numbers = extract_numbers(cuomin['url'])
                 # 将提取出的数字转换为整数
@@ -978,11 +978,11 @@ if __name__ == '__main__':
     # print(res_save)
 
 # 测试表格类改错
-#     articleTitle = '附件1-2：平昌县十四五规划重大项目表.xls'
-#     parent_url = 'http://www.scpc.gov.cn/public/6601861/13357861.html'
-#     parentTitle = '平昌县国民经济和社会发展第十四个五年规划和2035年远景目标纲要'
-#     sensitiveWords = '十四五规划'
-#     recommendUpdate = '“十四五“规划'
+#     articleTitle = '部门整体支出绩效目标表.xlsx'
+#     parent_url = "http://www.scpc.gov.cn/public/6603501/13965387.html"
+#     parentTitle = '大寨镇2023年部门整体支出绩效评价报告'
+#     sensitiveWords = '建立建全'
+#     recommendUpdate = '建立健全'
 #     url = find_matching_href(parent_url, articleTitle)
 #     print(f'匹配的href: {url}')
 #     if not url.startswith('http'):
@@ -998,5 +998,10 @@ if __name__ == '__main__':
 #     # 获取最后一个数字
 #     last_number = numbers[-1] if numbers else None
 #     upfile.modify_file(filename, sensitiveWords, recommendUpdate)
-#     upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
-#                       articleTitle, last_number)
+#     code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+#     if code != 200:
+#         print("chaoqi")
+#         code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+
+
+
