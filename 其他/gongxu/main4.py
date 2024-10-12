@@ -49,15 +49,18 @@ def start_learn(ck, planid, userid):
 
             token = test_get_recordid.get_study_code_and_recordid2(courceid, selction['id'], ck,planid)
 
-            code = takerecord.takeRecode2(token, '%.4f' % (study_time))
-            time.sleep(1)
-            code = takerecord.takeRecode2(token,'%.4f' % (study_time + 30))
-            time.sleep(1)
-            code = takerecord.takeRecode2(token, '%.4f' % (study_time + 60))
-            time.sleep(1)
-            code = takerecord.takeRecode2(token, '%.4f' % (study_time + 90))
-            time.sleep(1)
-            code = takerecord.takeRecode2(token, '%.4f' % (study_time + 100))
+            takerecord.one_course_ing(token,study_time,total_time)
+
+
+            # code = takerecord.takeRecode2(token, '%.4f' % (study_time))
+            # time.sleep(1)
+            # code = takerecord.takeRecode2(token,'%.4f' % (study_time + 30))
+            # time.sleep(1)
+            # code = takerecord.takeRecode2(token, '%.4f' % (study_time + 60))
+            # time.sleep(1)
+            # code = takerecord.takeRecode2(token, '%.4f' % (study_time + 90))
+            # time.sleep(1)
+            # code = takerecord.takeRecode2(token, '%.4f' % (study_time + 100))
 
             print()
 
@@ -126,7 +129,7 @@ def job(task, year):
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
 
-            if (now - time_obj).total_seconds() >= 170:
+            if (now - time_obj).total_seconds() >= 10:
                 modify_user_stage(1, userid, realname, year)
                 is_modify_stage =  start_learn(task['cookie'], conf.get_year_planid(year), userid)
 

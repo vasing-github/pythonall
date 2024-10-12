@@ -1,3 +1,5 @@
+import time
+
 import requests
 import conf
 
@@ -77,7 +79,46 @@ def takeRecode2(token,time):
         data=data,
     )
     print(response.text)
-    return response.json()['data']
+    return response.json()
+
+
+def one_course_ing(token,study_time,total_time):
+    add = 17
+    for i in range(1000):
+        print(i)
+        res = takeRecode2(token, str(study_time + add * i))
+        time.sleep(1)
+        if res['code'] != "0":
+            res = takeRecode2(token, str(study_time + add * i))
+            return
+        else:
+            if res['data'] != token:
+                token = res['data']
+        if study_time + add * i >= total_time:
+            return
+
 
 if __name__ == '__main__':
-    takeRecode2('c30c90c834ec12d91f9b764cf4876d33','1230')
+    token = 'fd33fc71403281f7252a4fedbddb0cbc'
+    sutytime = 2560
+
+    add = 15
+    for i in range(100):
+        print(i)
+        res = takeRecode2(token, str(sutytime + add * i))
+        time.sleep(1)
+        if res['code'] != "0":
+            res = takeRecode2(token, str(sutytime + add * i))
+        else:
+            if res['data'] != token:
+                token = res['data']
+
+    # takeRecode2(token,str(sutytime))
+    # time.sleep(1)
+    # takeRecode2(token, str(sutytime + 30))
+    # time.sleep(1)
+    # takeRecode2(token, str(sutytime + 60))
+    # time.sleep(1)
+    # takeRecode2(token, str(sutytime + 90))
+    # time.sleep(1)
+    # takeRecode2(token, str(sutytime + 100))

@@ -2,7 +2,6 @@ import time
 
 import requests
 
-from 其他.xiaoxue.test4 import courseid
 
 
 def upload_time(courseid):
@@ -153,9 +152,9 @@ def get_second(c):
     # response = requests.post('https://www.hngbzx.gov.cn/api/mobile/getCourseCommentList', cookies=cookies, headers=headers, data=data)
 
 cookies = {
-    'token': 'BearereyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6ZmI54-N5aauIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4MzUyOTcyLCJ1c2VyaWQiOjMyOTE2MywiaWF0IjoxNzI4MzQ1NzcyLCJ1c2VybmFtZSI6ImN6bjE4ODc2NTYzMjYzIn0.s2daS5Vc5QYPilv2tT2z2NgO3rKMs3-Enw9QpEGvEK8',
-    'refreshToken': 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6ZmI54-N5aauIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4NDMyMTcyLCJ1c2VyaWQiOjMyOTE2MywiaWF0IjoxNzI4MzQ1NzcyLCJ1c2VybmFtZSI6ImN6bjE4ODc2NTYzMjYzIn0.hj_XJJeTVpSMCigPnTNR6DOknxAkiNjK3ZRj8Y_Ma8o',
-    'JSESSIONID': '443370BEBBD5463305DB8B306FA84980',
+    'token': 'BearereyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5p6X54K95q2mIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4NjI2ODA0LCJ1c2VyaWQiOjE2MTc0NywiaWF0IjoxNzI4NjE5NjA0LCJ1c2VybmFtZSI6ImxjdzE5NzUifQ.B_zewm_jRLVPu6cTuhUWvDIdt5z4JZ-zl4FJP_DbEn4',
+    'refreshToken': 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5p6X54K95q2mIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4NzA2MDA0LCJ1c2VyaWQiOjE2MTc0NywiaWF0IjoxNzI4NjE5NjA0LCJ1c2VybmFtZSI6ImxjdzE5NzUifQ.H8CezZS8HmZ_b9ceEiMuHPPua-5bT5B4wdWJP_qq1cE',
+    'JSESSIONID': '2B5AA183F9EA570165EC574DA77A1785',
 }
 
 if __name__ == '__main__':
