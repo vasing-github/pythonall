@@ -47,10 +47,11 @@ def start_learn(ck, planid, userid):
                 continue
 
             token = test_get_recordid.get_study_code_and_recordid2(courceid, selction['id'], ck, planid)
-
-            # qm.add_item((study_time, total_time, token))
+            if qm.get_queue_size() >= 5:
+                time.sleep(10)
+            qm.add_item((study_time, total_time, token))
             print()
-            time.sleep(4)
+            time.sleep(3)
 
 
         # 如果学完了返回1修改状态，记录时间
@@ -144,12 +145,19 @@ def job(task, year):
 
                 end_exam(task['cookie'])
 
+def check_stages():
+    for user_id, stages in user_record.items():
+        for stage_info in stages.values():
+            if stage_info['stage'] == 1:
+                return False
+    return True
 
 if __name__ == '__main__':
-
-    for task in conf.cookies:
-        for year in task['year']:
-            year = str(year)
-            job(task, year)
-
+    while True:
+        for task in conf.cookies:
+            for year in task['year']:
+                year = str(year)
+                job(task, year)
+        if check_stages():
+            break
     qm.stop_threads()

@@ -83,7 +83,7 @@ def takeRecode2(token,time):
 
 
 def one_course_ing(token,study_time,total_time):
-    add = 17
+    add = 16
     for i in range(1000):
         print(i)
         res = takeRecode2(token, str(study_time + add * i))

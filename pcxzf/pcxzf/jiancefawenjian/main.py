@@ -112,7 +112,7 @@ def start_main():
     gongkainianbao.startMain()
     jigouzhineng.startMain()
     zhengce.startMain()
-    jicengzwgk.startMain()
+    # jicengzwgk.startMain()
 
     # 给表格增加一些注释
     end_excel()

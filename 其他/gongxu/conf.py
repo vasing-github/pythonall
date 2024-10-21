@@ -6,7 +6,7 @@
 
 def get_year_planid(year):
     if year == '20':
-        return '1d53989388a4433f9f4ed1805979261b'
+        return '5fb4b2eade5141b891a30cd9c9e91fe7'
     elif year == '21':
         return 'd6a6717bac9a480b9cbb54ae1235a2b9'
     elif year == '22':
@@ -14,7 +14,7 @@ def get_year_planid(year):
     elif year == '23':
         return 'f36328414cc64617b7af2c2c7631c5af'
     elif year == '24':
-        return '2c039658ec0140aeb502fa9043c6e104'
+        return '544c9e6b12a94335b896c21316825824'
     elif year == '25':
         return '6ed7ab2a5e4a42c2b1f950fec0ba1665'
 
@@ -23,13 +23,13 @@ def get_year_planid(year):
     elif year == '10':
         return '1370cbdf39fb435394654ccf788600c2'
     elif year == '11':
-        return '3a16aa61464f4a62a682e6e84ce36f6f'
+        return '5258ec0b99a94586b5186c55cdac5c5c'
     elif year == '12':
-        return '87a29c458dbe44429251e59e83af2017'
+        return 'e6f87975aa7d483589689c6e0db15417'
     elif year == '13':
-        return 'b294daaee7ad43f1b842f54aa44a9765'
+        return '03834387382247f991819b6a610d217d'
     elif year == '14':
-        return '5ca56397f2b64f47b7539363bcf6dd49'
+        return '578c78426b91414096f0f94d26f335e6'
 
 
 jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
@@ -40,11 +40,10 @@ jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
 cookies = [
 
 
-    {'name': '5年专业课', 'year': [10,11,12,13,14],
-     'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiMTIwMTA3MTk4NjAzMjk1MTNYQDc3IiwibW9iaWxlIjoiMTM4MjEzMjYzMzkiLCJ1c2VyTmFtZSI6IndlaTMyOSIsInVzZXJJZCI6InAwczZfMmQ1NDRhYTEtNTNlMy00YjdjLTg3MTAtMDc3NTA2YzczMTNmIiwiaWF0IjoxNzI4NzAzMjg4LCJqdGkiOiJlOTUyNmI4ZGRjNzA0MGUwODYyYmNkZjJlMWVkY2M2ZiJ9.-f6i8Q43rpbq7fLSmzEGakcnmn3ItxI7SoRyKnakCTQ'},
+    {'name': 'neimenggu', 'year': [14],
+     'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNDIwNjg0MTk4OTA1MDY5MDMyQDE1MSIsIm1vYmlsZSI6IjEzNjQ3NjQwNTQxIiwidXNlck5hbWUiOiI0MjA2ODQxOTg5MDUwNjkwMzIiLCJ1c2VySWQiOiJwMnMzX2ViM2YyMzg0LTBmMmQtNGJiZi1hOGJkLTM4NzU3NDBlMzQ4YSIsImlhdCI6MTcyOTIzMTY0MSwianRpIjoiYWZlZWNiNzNiOGIyNDA3NGE4ODg1ZTkxOWZjYTdmYzAifQ.Em0Ljd6V-BC6qJiZfgxEYemR6d9bR68SGrJaq1ptldU'},
 
-     # {'name': '3年公需3年专业', 'year': [23,22,21,13,12,11],
-     #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiMTIwMTAxMTk4MDAzMjI1MDY4QDc3IiwibW9iaWxlIjoiMTM4MjEyMjAyMDMiLCJ1c2VyTmFtZSI6ImN6eTY2MTk2NzIwIiwidXNlcklkIjoiYjcyOTIyOGI2OTA3NGNjMDgzNTAyMjY0NGVmODMzODYiLCJpYXQiOjE3Mjg3MDM2MDYsImp0aSI6ImZhYjgyZWUwYzE4MTQ3MWU4ZWE5MDEwMWNlZGRjMmFmIn0.fgoI1xsRerFepwLv52VbKipHGDK8FDYuTuXKqRIcgKc'},
-
+     # {'name': '3年公需3年专业', 'year': [14,13],
+     #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiMzcwODI4MTk5MDAzMDExNjgzQDE1MSIsIm1vYmlsZSI6IjE1MjgxMDg0NTM3IiwidXNlck5hbWUiOiJUaW1jYzUxODMwIiwidXNlcklkIjoiZTAyZDY5OGZiNTU4NDNiNTkxZTJmMTkyNGVmNjI5ZDAiLCJpYXQiOjE3Mjg4MjI3MDAsImp0aSI6IjNlMjE2NmQ2MGQ0MjRmMzZhNjc1NWY2ZDBkOWVlYTQ4In0.79F0RwkAOOeilhwrydNUldABAJear-TZwLnujOa448o'},
 
 ]

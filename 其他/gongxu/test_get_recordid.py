@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 def get_study_code_and_recordid(courceid,selectionid,ck,planid):
     # 注意这里，如果是专业课就把获取html请求 改为 /   如果是学公需就是-
     url = gethtml.get_url(courceid,selectionid,ck,planid)
-    print(url)
+    # print(url)
     cookies = {
         'JSESSIONID': '94B5F0D142D88EFE3E6DC4DF1376764F',
     }

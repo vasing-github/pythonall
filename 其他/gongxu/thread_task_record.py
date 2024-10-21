@@ -1,9 +1,9 @@
-
 import queue
 import threading
 import time
 
 import takerecord
+
 
 class QueueManager:
     def __init__(self, num_threads):
@@ -33,22 +33,24 @@ class QueueManager:
         for thread in self.threads:
             thread.join()
 
-    def process_item(self,item):
+    def get_queue_size(self):
+        return self.q.qsize()
+
+    def process_item(self, item):
         # print(item)
         takerecord.takeRecode2(item[2], '%.4f' % (item[0]))
         time.sleep(1)
-        takerecord.takeRecode2(item[2], '%.4f' % (item[0]+30))
+        takerecord.takeRecode2(item[2], '%.4f' % (item[0] + 30))
         time.sleep(1)
         takerecord.takeRecode2(item[2], '%.4f' % (item[0] + 60))
-        time.sleep(1)
-        takerecord.takeRecode2(item[2], '%.4f' % (item[0] + 90))
-        time.sleep(1)
-        takerecord.takeRecode2(item[2], '%.4f' % (item[0] + 100))
-
+        # time.sleep(1)
+        # takerecord.takeRecode2(item[2], '%.4f' % (item[0] + 90))
+        # time.sleep(1)
+        # takerecord.takeRecode2(item[2], '%.4f' % (item[0] + 100))
 
 
 # 使用示例
-qm = QueueManager(num_threads=2)
+qm = QueueManager(num_threads=3)
 # for i in range(10):
 #     queue_manager.add_item(f"Task {i}")
 

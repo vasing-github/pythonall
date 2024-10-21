@@ -318,6 +318,7 @@ def startMain():
             print(menu)
             if key == '平昌县人民政府办公室':
                 continue
+
             if menu == '统计信息':
                 # 收集统计信息的所有发文时间
                 tj_final_dic[key] = get_all_tj_time(href, tj_time_list, key, menu, no_content_list)

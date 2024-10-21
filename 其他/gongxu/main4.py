@@ -144,7 +144,7 @@ def job(task, year):
 
             now = datetime.datetime.now()
             time_obj = datetime.datetime.strptime(user_record[userid][year]['time'], '%Y-%m-%d %H:%M:%S')
-            if now - time_obj >= datetime.timedelta(minutes=3):
+            if (now - time_obj).total_seconds() >= 10:
                 modify_user_stage(3, userid, realname, year)
 
                 end_exam(task['cookie'])
