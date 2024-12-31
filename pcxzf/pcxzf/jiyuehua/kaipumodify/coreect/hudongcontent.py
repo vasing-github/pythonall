@@ -28,9 +28,11 @@ def get_message_id(url):
 
     # Find the element containing the message ID
     message_id_element = soup.find("td", class_="nr")
-
+    if message_id_element == None:
+        return None,None
     # Extract the message ID
     message_id = message_id_element.text.strip()
+
 
     # Print the extracted message ID
     print("Message ID:", message_id)
@@ -298,6 +300,8 @@ def modify_reply(r, bzid, jid, wrong, right):
 
 def secrit_deal(wrong,right,se, bz_gov_id, jid):
     message_id, is_shuji = get_message_id(se['url'])
+    if message_id == None:
+        return 2
     res = search_message_by_id(message_id, is_shuji, bz_gov_id, jid)
     if 'status' in res and res['status'] == -9:
         return 1

@@ -130,7 +130,7 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
 
     print(response.status_code)
     print(response.text)
-    return response.status_code
+    return response.json()
 
 
 

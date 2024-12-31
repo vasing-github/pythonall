@@ -208,9 +208,15 @@ def savearticnews(content, wrong, right,bz_id,jid):
                                                                               content['data']['article'].get(
                                                                                   'title') else None,
 
-        'subTitle': content['data']['article']['subTitle'].replace(wrong, right) if content['data']['article']['subTitle'] else content['data']['article']['subTitle'],
+        'subTitle': content['data']['article']['subTitle'].replace(wrong, right) if content and content.get('data') and
+                                                                              content['data'].get('article') and
+                                                                              content['data']['article'].get(
+                                                                                  'subTitle') else None,
 
-        'shortTitle': content['data']['article']['shortTitle'].replace(wrong, right) if content['data']['article']['shortTitle'] else content['data']['article']['shortTitle'],
+        'shortTitle': content['data']['article']['shortTitle'].replace(wrong, right) if content and content.get('data') and
+                                                                              content['data'].get('article') and
+                                                                              content['data']['article'].get(
+                                                                                  'shortTitle') else None,
         'author': content['data']['article']['author'],
         'responsibilityEditor': content['data']['article']['responsibilityEditor'],
         'resources': content['data']['article']['resources'],

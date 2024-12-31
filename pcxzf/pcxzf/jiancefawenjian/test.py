@@ -1,5 +1,6 @@
 import time
 import conf
+import requests
 from threed_record import qm
 from send import sendszpc
 
@@ -31,5 +32,57 @@ def testqm():
 def testsendszpc():
     sendszpc.main()
 
+
+def testliuyan():
+    import requests
+
+    cookies = {
+        'rhts.session.id': '2016d806-4340-445b-94fe-36034b4d6e41',
+    }
+
+    headers = {
+        'Accept': '*/*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        # 'Content-Length': '0',
+        # 'Cookie': 'rhts.session.id=2016d806-4340-445b-94fe-36034b4d6e41',
+        'Origin': 'http://124.115.216.182:8181',
+        'Proxy-Connection': 'keep-alive',
+        'Referer': 'http://124.115.216.182:8181/index',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+
+    response = requests.post('http://124.115.216.182:8181/sys/hint/refreshHint', cookies=cookies, headers=headers,
+                             verify=False)
+    print(response.text)
+
+def testgethint():
+    import requests
+
+    cookies = {
+        'rhts.session.id': '2016d806-4340-445b-94fe-36034b4d6e41',
+    }
+
+    headers = {
+        'Accept': '*/*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        # 'Cookie': 'rhts.session.id=2016d806-4340-445b-94fe-36034b4d6e41',
+        'Origin': 'http://124.115.216.182:8181',
+        'Proxy-Connection': 'keep-alive',
+        'Referer': 'http://124.115.216.182:8181/train/train/list/1',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+
+    data = {
+        'stime': '26',
+    }
+
+    response = requests.post('http://124.115.216.182:8181/sys/hint/getHint', cookies=cookies, headers=headers,
+                             data=data, verify=False)
+    print(response.text)
 if __name__ == '__main__':
-    testqm()
+    # testqm()
+    testliuyan()
+    # testgethint()

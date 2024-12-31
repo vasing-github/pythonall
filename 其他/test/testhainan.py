@@ -152,9 +152,9 @@ def get_second(c):
     # response = requests.post('https://www.hngbzx.gov.cn/api/mobile/getCourseCommentList', cookies=cookies, headers=headers, data=data)
 
 cookies = {
-    'token': 'BearereyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5p6X54K95q2mIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4NjI2ODA0LCJ1c2VyaWQiOjE2MTc0NywiaWF0IjoxNzI4NjE5NjA0LCJ1c2VybmFtZSI6ImxjdzE5NzUifQ.B_zewm_jRLVPu6cTuhUWvDIdt5z4JZ-zl4FJP_DbEn4',
-    'refreshToken': 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5p6X54K95q2mIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI4NzA2MDA0LCJ1c2VyaWQiOjE2MTc0NywiaWF0IjoxNzI4NjE5NjA0LCJ1c2VybmFtZSI6ImxjdzE5NzUifQ.H8CezZS8HmZ_b9ceEiMuHPPua-5bT5B4wdWJP_qq1cE',
-    'JSESSIONID': '2B5AA183F9EA570165EC574DA77A1785',
+    'token': 'BearereyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5p2O5bCU6LSkIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI5NTkyMjk1LCJ1c2VyaWQiOjE1MDY4MywiaWF0IjoxNzI5NTg1MDk1LCJ1c2VybmFtZSI6InNzczY1MjMwMjI4In0.TusNJfR5RMdduaZixuLI0O4eLhYoo-aMVsOVGmHJVnU',
+    'refreshToken': 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi5p2O5bCU6LSkIiwicm9sZSI6bnVsbCwiZXhwIjoxNzI5NjcxNDk1LCJ1c2VyaWQiOjE1MDY4MywiaWF0IjoxNzI5NTg1MDk1LCJ1c2VybmFtZSI6InNzczY1MjMwMjI4In0.bowYZ19RvXFpeIDhOWxBPUzfn_oV0-eJ0qfbhZg5LH8',
+    'JSESSIONID': 'DD80456645ED9B60B5E7C4E85BDB26F5',
 }
 
 if __name__ == '__main__':

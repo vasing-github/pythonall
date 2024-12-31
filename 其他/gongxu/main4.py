@@ -147,6 +147,7 @@ def job(task, year):
             if (now - time_obj).total_seconds() >= 10:
                 modify_user_stage(3, userid, realname, year)
 
+
                 end_exam(task['cookie'])
 
 

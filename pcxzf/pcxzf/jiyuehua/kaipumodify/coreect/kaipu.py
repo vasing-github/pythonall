@@ -500,7 +500,7 @@ def kaipucorrect(ids):
         headers=headers,
         json=json_data,
     )
-    print(response.text)
+    print("开普云标记", response.text)
 
 
 def get_new_bzid_jid():
@@ -516,6 +516,7 @@ def add_to_correct(correctlist, correctids, cuomin):
     correctids.append(cuomin['id'])
     correctlist.append((cuomin['sensitiveWords'], cuomin['recommendUpdate'], cuomin['snapshotNew'], cuomin['url'],
                         cuomin['parentUrl'], cuomin['pageTypeMeaning'], cuomin['parentTitle']))
+    kaipucorrect(correctids)
 
 
 def cuo_1_argument(numbers, cuomin, correctlist, correctids):
@@ -529,7 +530,8 @@ def cuo_1_argument(numbers, cuomin, correctlist, correctids):
     print(res_save)
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
-    add_to_correct(correctlist, correctids, cuomin)
+    else:
+        add_to_correct(correctlist, correctids, cuomin)
 
 
 def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
@@ -540,10 +542,11 @@ def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
     res_save = getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0],
                                        bz_gov_id,
                                        jid)
-    print(res_save)
+    # print(res_save)
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
-    add_to_correct(correctlist, correctids, cuomin)
+    else:
+        add_to_correct(correctlist, correctids, cuomin)
 
 
 def cuo_hudong(cuomin, correctlist, correctids):
@@ -589,7 +592,7 @@ def send_excel_correct(url):
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f" 附件类错误暂需人工修改。\n\n\n{url}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+            "content": f" PDF,Word附件类错误暂需人工修改。\n\n\n{url}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
         }
     }
 
@@ -599,7 +602,7 @@ def send_excel_correct(url):
     response = requests.post(url, data=json.dumps(data))
 
     # 输出响应结果
-    print(response.text)
+    # print(response.text)
 
 
 def send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate):
@@ -645,12 +648,15 @@ def cuo_excel(cuomin, correctlist, correctids):
 
     upfile.modify_file(filename, sensitiveWords, recommendUpdate)
 
-    code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-    if code != 200:
+    res = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+    if res["status"] != 0:
         get_new_bzid_jid()
         code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-    send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
-    add_to_correct(correctlist, correctids, cuomin)
+    elif res["desc"] == "源文件不存在！":
+        print("==============================================\n")
+    else:
+        send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
+        add_to_correct(correctlist, correctids, cuomin)
 
 
 def dealcuo():
@@ -661,7 +667,7 @@ def dealcuo():
         correctlist = []
         correctids = []
         for cuomin in list_cuomin:
-            print(cuomin['sensitiveWords'])
+            print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
             print(cuomin['url'])
             if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
 
@@ -684,9 +690,10 @@ def dealcuo():
                     cuo_excel(cuomin, correctlist, correctids)
                 else:
                     send_excel_correct(cuomin['url'])
-            time.sleep(2)
-        send_correct_msg(correctlist)
-        kaipucorrect(correctids)
+            print("\n")
+            # time.sleep(2)
+        # send_correct_msg(correctlist)
+        # kaipucorrect(correctids)
 
 
 def send_nosee():
@@ -929,11 +936,12 @@ def deal_secrit_artic(se, wrong, right_words):
 
 
 def deal_secrit_hudong(se, wrong, right_words):
-    is_need_up_toke = hudongcontent.secrit_deal(wrong, right_words, se, bz_gov_id, jid)
-    if is_need_up_toke:
+    res = hudongcontent.secrit_deal(wrong, right_words, se, bz_gov_id, jid)
+    if res:
         get_new_bzid_jid()
         hudongcontent.secrit_deal(wrong, right_words, se, bz_gov_id, jid)
     # add_to_correct(correctlist, correctids, cuomin)
+
 
 def deal_secrit():
     secrits = get_secrit()
