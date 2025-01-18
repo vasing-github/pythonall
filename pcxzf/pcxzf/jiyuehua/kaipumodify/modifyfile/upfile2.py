@@ -27,10 +27,11 @@ def download_file(url, local_filename):
 
 
 
-def modify_file_xls(file_path, wrong, right):
+def modify_file_xls(file_path, unique_replacements_list):
     # 打开xls文件
     workbook_xls = xlrd.open_workbook(file_path, formatting_info=True)
     workbook_copy = copy(workbook_xls)
+
 
     # 遍历所有的sheet
     for sheet_index in range(workbook_xls.nsheets):
@@ -41,18 +42,21 @@ def modify_file_xls(file_path, wrong, right):
         for row in range(sheet_xls.nrows):
             for col in range(sheet_xls.ncols):
                 cell_value = sheet_xls.cell_value(row, col)
-                if isinstance(cell_value, str) and wrong in cell_value:
-                    new_value = cell_value.replace(wrong, right)
-                    sheet_copy.write(row, col, new_value)
-                    print(
-                        f"Sheet '{sheet_xls.name}' 中的单元格 '{row + 1},{col + 1}' 的值已从 '{cell_value}' 替换为 '{new_value}'")
+
+                for i in unique_replacements_list:
+
+                    if isinstance(cell_value, str) and i["sensitiveWords"] in cell_value:
+                        new_value = cell_value.replace(i["sensitiveWords"], i["recommendUpdate"])
+                        sheet_copy.write(row, col, new_value)
+                        print(
+                            f"Sheet '{sheet_xls.name}' 中的单元格 '{row + 1},{col + 1}' 的值已从 '{cell_value}' 替换为 '{new_value}'")
 
     # 保存修改后的xls文件
     workbook_copy.save(file_path)
     print(f"文件 '{file_path}' 已成功修改并保存")
 
 
-def modify_file_xlsx(file_path, wrong, right):
+def modify_file_xlsx(file_path, unique_replacements_list):
     # 加载工作簿
     workbook = load_workbook(file_path)
 
@@ -63,35 +67,38 @@ def modify_file_xlsx(file_path, wrong, right):
         # 遍历所有的单元格
         for row in sheet.iter_rows():
             for cell in row:
-                if isinstance(cell.value, str) and wrong in cell.value:
-                    new_value = cell.value.replace(wrong, right)
-                    cell.value = new_value
-                    print(f"Sheet '{sheet_name}' 中的单元格 '{cell.coordinate}' 的值已从 '{wrong}' 替换为 '{right}'")
+                for i in unique_replacements_list:
+                    if isinstance(cell.value, str) and i["sensitiveWords"] in cell.value:
+                        new_value = cell.value.replace(i["sensitiveWords"], i["recommendUpdate"])
+                        cell.value = new_value
+                        print(f"Sheet '{sheet_name}' 中的单元格 '{cell.coordinate}' 的值已从 '{wrong}' 替换为 '{right}'")
 
     # 保存修改后的工作簿
     workbook.save(file_path)
     print(f"文件 '{file_path}' 已成功修改并保存")
 
 
-def modify_file_doc(file_path, wrong, right):
+def modify_file_doc(file_path, unique_replacements_list):
     # 加载文档
     doc = Document(file_path)
 
     # 遍历所有段落
     for para in doc.paragraphs:
-        if wrong in para.text:
-            new_text = para.text.replace(wrong, right)
-            para.text = new_text
-            print(f"段落中的文本已从 '{wrong}' 替换为 '{right}'")
+        for i in unique_replacements_list:
+            if i["sensitiveWords"] in para.text:
+                new_text = para.text.replace(i["sensitiveWords"], i["recommendUpdate"])
+                para.text = new_text
+                print(f"段落中的文本已从 '{i['sensitiveWords']}' 替换为 '{i['recommendUpdate']}'")
 
     # 遍历所有表格
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
-                if wrong in cell.text:
-                    new_text = cell.text.replace(wrong, right)
-                    cell.text = new_text
-                    print(f"表格中的单元格文本已从 '{wrong}' 替换为 '{right}'")
+                for i in unique_replacements_list:
+                    if i["sensitiveWords"] in cell.text:
+                        new_text = cell.text.replace(i["sensitiveWords"], i["recommendUpdate"])
+                        cell.text = new_text
+                        print(f"表格中的单元格文本已从 '{i['sensitiveWords']}' 替换为 '{i['recommendUpdate']}'")
 
     # 保存修改后的文档
     doc.save(file_path)
@@ -100,18 +107,28 @@ def modify_file_doc(file_path, wrong, right):
 
 
 
-def modify_file(filename, wrong, right):
+def modify_file(filename, item):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(script_dir, filename)
 
     _, file_extension = os.path.splitext(file_path)
+
+    unique_replacements = {}
+    for item in replacements:
+        key = (item['sensitiveWords'], item['recommendUpdate'])
+        if key not in unique_replacements:
+            unique_replacements[key] = item
+
+    # 将字典转换为列表
+    unique_replacements_list = list(unique_replacements.values())
+
     if file_extension == '.xls':
-        modify_file_xls(file_path, wrong, right)
+        modify_file_xls(file_path, unique_replacements_list)
     elif file_extension == '.xlsx':
-        modify_file_xlsx(file_path, wrong, right)
+        modify_file_xlsx(file_path, unique_replacements_list)
     elif file_extension == '.doc' or file_extension == '.docx':
-        modify_file_doc(file_path, wrong, right)
+        modify_file_doc(file_path, unique_replacements_list)
 
 
 def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, content_id):
@@ -196,18 +213,30 @@ if __name__ == '__main__':
     # else:
     #     print(f"文件路径存在: {file_path}")
 
-    import os
-    from docx import Document
+    # 假设你的列表是这样的
+    # 假设你的列表是这样的
+    replacements = [
+        {'wrong': 'wrong1', 'right': 'right1', 'other_key': 'value1'},
+        {'wrong': 'wrong2', 'right': 'right2', 'other_key': 'value2'},
+        {'wrong': 'wrong1', 'right': 'right1', 'other_key': 'value3'},
+        {'wrong': 'wrong3', 'right': 'right3', 'other_key': 'value4'},
+        {'wrong': 'wrong2', 'right': 'right2', 'other_key': 'value5'}
+    ]
 
-    file_path = r'G:\project\python\pcxzf\pcxzf\jiyuehua\kaipumodify\modifyfile\rBUtImVppYOAOT6xAAougODx0mE912.docx'
-    if not os.path.exists(file_path):
-        print(f"文件路径不存在: {file_path}")
-    else:
-        print(f"文件路径存在: {file_path}")
-        try:
-            doc = Document(file_path)
-            print("文件加载成功")
-        except Exception as e:
-            print(f"加载文件时出错: {e}")
+    # 使用字典来存储不重复的错敏词和推荐词
+    unique_replacements = {}
+    for item in replacements:
+        key = (item['wrong'], item['right'])
+        if key not in unique_replacements:
+            unique_replacements[key] = item
+
+    # 将字典转换为列表
+    unique_replacements_list = list(unique_replacements.values())
+
+    # 打印结果
+    for item in unique_replacements_list:
+        print(item)
+
+
 
 
