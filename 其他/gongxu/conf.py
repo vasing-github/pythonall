@@ -12,11 +12,11 @@ def get_year_planid(year):
     elif year == '22':
         return 'be50251f5ca649fa9411ae9b7e0e0083'
     elif year == '23':
-        return 'b34287b27e1142fb9f00d0046e6a9ee9'
+        return '429db59ff85d4cf4935c1f5b5f3f34c8'
     elif year == '24':
         return '97624af4fdea4442890d4c257dbe83f2'
     elif year == '25':
-        return '6c542e64c3d84bd59598977fab6c9258'
+        return '6ed7ab2a5e4a42c2b1f950fec0ba1665'
     elif year == '26':
         return '429db59ff85d4cf4935c1f5b5f3f34c8'
 
@@ -44,16 +44,11 @@ cookies = [
     # {'name': 'yaodaimade', 'year': [20,21,22],
     #   'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDMwMTk4OTExMDY4NTMwQDE1MSIsIm1vYmlsZSI6IjE3ODI4ODcxNTIwIiwidXNlck5hbWUiOiJoZWFueWluZzA4MDEyNSIsInVzZXJJZCI6Ijc4MDdhNTQ1N2I3OTRlYzg5MWFjYzg0ZTliMzY4NTE1IiwiaWF0IjoxNzM1NjEyMDA1LCJqdGkiOiI2M2I5MTVjOWU0MDQ0NjdkOTRmNTNmNzgyODdlY2E2YyJ9.xfXXJ-jp7kkt1KsRY_8E8R_mF-dNeBrsntCGqZeuMw0'},
     #
+
     {'name': 'yaodaimade', 'year': [25],
      'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiMTUyNzIyMTk5ODAxMjIxODE4QDQxIiwibW9iaWxlIjoiMTU1OTg3MjUwNzQiLCJ1c2VyTmFtZSI6IlJKWDEyMzQ1IiwidXNlcklkIjoiMzA5ZDUwYmI1NGE5NDk3ZmFkNmVmMTg2NDE4OGE5MDYiLCJpYXQiOjE3MzYyNjM0MzIsImp0aSI6IjNkZTI3YmY2MTNmOTQ2YjNiNThlZGZhMWRkYjRmYTJlIn0.YAb41zJW6Z8fenwtzK7SColaLPUV0-KnpxULahVRrO0'},
     #
     # {'name': 'yaodaimade', 'year': [26],
     #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDI4MTk2OTEyMjgxNjgyQDE1MSIsIm1vYmlsZSI6IjEzNjI5MDcwMjA1IiwidXNlck5hbWUiOiI1MTMwMjgxOTY5MTIyODE2ODIiLCJ1c2VySWQiOiJwMXM2XzIzMGJiYjU4LTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTczNjE0Nzk2MCwianRpIjoiMmZhNTAxNzRkZGU1NDEyNWI4MjQ0MTJlZDk1NzQ4MjQifQ.G27kaSr2bfcsZ-on-ZeQsEE0MUejzhzaozZMi2Bm0Qg'},
-    #
-    # {'name': 'yaoda2imade', 'year': [24],
-    #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDI2MTk3NzA3MjYzNDAxQDE1MSIsIm1vYmlsZSI6IjE4MDg2OTM4OTQ3IiwidXNlck5hbWUiOiI1MTMwMjYxOTc3MDcyNjM0MDEiLCJ1c2VySWQiOiJwMHMzXzIzN2RkYzU2LTkyYmUtMTFlMy1iNzdjLWQ0YWU1MjZjNjk1YiIsImlhdCI6MTczNTY1MzM5MCwianRpIjoiNGQ3Zjg5YjllZTM5NDkzYjlkZTk0YTJkYzE0ZWI0YjkifQ._soY4M0XkOw3267rdd5V60tlga5R7vOqMCmTYj9RGUM'},
-
-    # {'name': '2ge', 'year': [23, 24],
-    #  'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzNzAxMTk5NDAzMTAxNjE0QDE1MSIsIm1vYmlsZSI6IjE3NzI2NTU2ODYxIiwidXNlck5hbWUiOiI1MTM3MDExOTk0MDMxMDE2MTQiLCJ1c2VySWQiOiIwYzQ4ZTljOC1kOTQ3LTQ2NDItYjAzMi0zYTMyZTgxNjllNzIiLCJpYXQiOjE3MzU2MjEzMjcsImp0aSI6IjMwOTFmMDQzMTQxMDQ4Y2E5OTc1YzgwMGFlMjliMzI4In0.59U-QLM8JiHs_ucG0jeGoC9vd4StEpXvvyo1CMCUAxY'},
 
 ]

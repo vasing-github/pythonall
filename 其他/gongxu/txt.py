@@ -1,1 +1,2 @@
-record_user = {"452546ac-d3ce-44ed-a6ad-55db63c6556c": {"23": {"stage": 3, "time": "2025-01-06 13:36:13", "realname": "杨蕾"}}, "eef95338ac48489d96e14aa0c428e1ca": {"25": {"stage": 3, "time": "2025-01-06 17:08:29", "realname": "谢丽平"}}, "p1s6_230bbb58-92be-11e3-b77c-d4ae526c695b": {"26": {"stage": 3, "time": "2025-01-06 17:50:37", "realname": "袁拥军"}}, "309d50bb54a9497fad6ef1864188a906": {"25": {"stage": 3, "time": "2025-01-08 00:56:20", "realname": "任嘉欣"}}}
+
+record_user = {}
