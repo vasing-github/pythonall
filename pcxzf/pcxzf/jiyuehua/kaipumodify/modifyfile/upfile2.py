@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
-import time
-from datetime import datetime
 
+from datetime import datetime
+import pypandoc
 import pytz
 import requests
 import xlrd
@@ -22,7 +22,7 @@ def download_file(url, local_filename):
             file.write(chunk)
 
     print(f"文件已下载并保存为: {file_path}")
-    time.sleep(5)
+    # time.sleep(5)
     return file_path
 
 
@@ -71,14 +71,14 @@ def modify_file_xlsx(file_path, unique_replacements_list):
                     if isinstance(cell.value, str) and i["sensitiveWords"] in cell.value:
                         new_value = cell.value.replace(i["sensitiveWords"], i["recommendUpdate"])
                         cell.value = new_value
-                        print(f"Sheet '{sheet_name}' 中的单元格 '{cell.coordinate}' 的值已从 '{wrong}' 替换为 '{right}'")
+                        print(f"Sheet '{sheet_name}' 中的单元格 '{cell.coordinate}' 的值已从 '{i["sensitiveWords"]}' 替换为 '{i["recommendUpdate"]}'")
 
     # 保存修改后的工作簿
     workbook.save(file_path)
     print(f"文件 '{file_path}' 已成功修改并保存")
 
 
-def modify_file_doc(file_path, unique_replacements_list):
+def modify_file_docx(file_path, unique_replacements_list):
     # 加载文档
     doc = Document(file_path)
 
@@ -115,10 +115,10 @@ def modify_file(filename, item):
     _, file_extension = os.path.splitext(file_path)
 
     unique_replacements = {}
-    for item in replacements:
-        key = (item['sensitiveWords'], item['recommendUpdate'])
+    for i in item:
+        key = (i['sensitiveWords'], i['recommendUpdate'])
         if key not in unique_replacements:
-            unique_replacements[key] = item
+            unique_replacements[key] = i
 
     # 将字典转换为列表
     unique_replacements_list = list(unique_replacements.values())
@@ -127,8 +127,18 @@ def modify_file(filename, item):
         modify_file_xls(file_path, unique_replacements_list)
     elif file_extension == '.xlsx':
         modify_file_xlsx(file_path, unique_replacements_list)
-    elif file_extension == '.doc' or file_extension == '.docx':
+    elif  file_extension == '.docx':
+        modify_file_docx(file_path, unique_replacements_list)
+    elif file_extension == '.doc' :
         modify_file_doc(file_path, unique_replacements_list)
+
+def modify_file_doc(file_path_old, unique_replacements_list):
+    file_path_new = file_path_old.replace('.doc', '.docx')
+    pypandoc.convert_file(file_path_old, 'docx', outputfile=file_path)
+    modify_file_docx(file_path_new, unique_replacements_list)
+
+
+
 
 
 def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, content_id):
@@ -215,28 +225,9 @@ if __name__ == '__main__':
 
     # 假设你的列表是这样的
     # 假设你的列表是这样的
-    replacements = [
-        {'wrong': 'wrong1', 'right': 'right1', 'other_key': 'value1'},
-        {'wrong': 'wrong2', 'right': 'right2', 'other_key': 'value2'},
-        {'wrong': 'wrong1', 'right': 'right1', 'other_key': 'value3'},
-        {'wrong': 'wrong3', 'right': 'right3', 'other_key': 'value4'},
-        {'wrong': 'wrong2', 'right': 'right2', 'other_key': 'value5'}
-    ]
-
-    # 使用字典来存储不重复的错敏词和推荐词
-    unique_replacements = {}
-    for item in replacements:
-        key = (item['wrong'], item['right'])
-        if key not in unique_replacements:
-            unique_replacements[key] = item
-
-    # 将字典转换为列表
-    unique_replacements_list = list(unique_replacements.values())
-
-    # 打印结果
-    for item in unique_replacements_list:
-        print(item)
-
+    file_path = r'E:\project\python\pythonall\pcxzf\pcxzf\jiyuehua\kaipumodify\modifyfile\rBUtImVMSiuAZDo0AAEgAJLOc_Y290.doc'
+    docx_path = modify_file_doc(file_path,None)
+    print(f"文件已转换为: {docx_path}")
 
 
 

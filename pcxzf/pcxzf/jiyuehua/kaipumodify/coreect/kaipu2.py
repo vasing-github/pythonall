@@ -638,7 +638,7 @@ def make_gongdan_xlsx(cuomin):
     ws.append([formatted_time,cuomin['url'],cuomin['snapshotNew'],cuomin['sensitiveWords'],cuomin['recommendUpdate'],cuomin['articleTitle'],cuomin['parentUrl'],cuomin['parentTitle']])
     wb.save(relative_path)
 
-def cuo_excel(cuomin, item):
+def cuo_excel_word(cuomin, item):
     articleTitle = cuomin['articleTitle']
     parent_url = cuomin['parentUrl']
     parentTitle = cuomin['parentTitle']
@@ -711,13 +711,13 @@ def dealcuo():
     if kaipu_waitrefix != 0:
 
         list_cuomin = get_cuomin_list()
-        # correctlist = []
-        # correctids = []
+
         result_dic = deal_cuomin_list(list_cuomin)
         for url , item in result_dic.items():
-            # print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
-            print(url)
+
             cuomin = item[0]
+            print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
+            print(url)
             if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
 
                 numbers = extract_numbers(url)
@@ -739,10 +739,10 @@ def dealcuo():
                 except Exception as e:
                     print(f"An error occurred: {e}")
 
-            elif cuomin['pageType'] == "7":  # 表格类错误
-                cuo_excel(cuomin, item)
-            elif cuomin['pageType'] == "6":  # word类错误
-                cuo_word(cuomin, correctlist, correctids)
+            elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6":  # 表格类错误
+                cuo_excel_word(cuomin, item)
+            # elif cuomin['pageType'] == "6":  # word类错误
+            #     cuo_word(cuomin, correctlist, correctids)
             else:
                 send_excel_correct(cuomin['url'])
             print("\n")
