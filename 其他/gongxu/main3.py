@@ -104,7 +104,7 @@ async def start_learn(ck, planid, userid):
                         code = takerecord.taskrecord(recordid, studydoce, src, selction['id'], total_time - 20, userid,
                                                      planid)
                 print()
-                await asyncio.sleep(2)
+                # await asyncio.sleep(2)
                 # if code  == '1':
                 #     break
 
@@ -154,7 +154,7 @@ def modify_user_stage(stage, userid, realname, year):
 async def job(task, year):
     print("开始执行")
     print(task['name'],year)
-    time.sleep(2)
+    # time.sleep(2)
     try:
         userid, realname = getssion.getssion(task['cookie'])
     except Exception as e:
