@@ -674,18 +674,22 @@ def cuo_excel_word(cuomin, item):
     # 获取最后一个数字
     last_number = numbers[-1] if numbers else None
 
-    upfile2.modify_file(filename, item)
+    is_doc = upfile2.modify_file(filename, item)
+    if is_doc:
+        return
 
     res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-    if res['desc'] == "参数传递有误！":
+
+    if res["status"] == 404:
+        get_new_bzid_jid()
+        upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+    elif res['desc'] == "参数传递有误！":
         return
 
     elif res["desc"] == "源文件不存在！":
         print("==============================================\n")
         return
-    elif res["status"] != 1:
-        get_new_bzid_jid()
-        code = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+
 
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
     add_2_excel_kaipu(item)
@@ -741,14 +745,10 @@ def dealcuo():
 
             elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6":  # 表格类错误
                 cuo_excel_word(cuomin, item)
-            # elif cuomin['pageType'] == "6":  # word类错误
-            #     cuo_word(cuomin, correctlist, correctids)
             else:
                 send_excel_correct(cuomin['url'])
             print("\n")
-            # time.sleep(2)
-        # send_correct_msg(correctlist)
-        # kaipucorrect(correctids)
+
 
 def cuo_word(cuomin, correctlist, correctids):
     articleTitle = cuomin['articleTitle']

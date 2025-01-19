@@ -2,7 +2,7 @@
 import os
 
 from datetime import datetime
-import pypandoc
+
 import pytz
 import requests
 import xlrd
@@ -71,7 +71,7 @@ def modify_file_xlsx(file_path, unique_replacements_list):
                     if isinstance(cell.value, str) and i["sensitiveWords"] in cell.value:
                         new_value = cell.value.replace(i["sensitiveWords"], i["recommendUpdate"])
                         cell.value = new_value
-                        print(f"Sheet '{sheet_name}' 中的单元格 '{cell.coordinate}' 的值已从 '{i["sensitiveWords"]}' 替换为 '{i["recommendUpdate"]}'")
+                        print(f"Sheet '{sheet_name}' 中的单元格 '{cell.coordinate}' 的值已从 '{i['sensitiveWords']}' 替换为 '{i['recommendUpdate']}'")
 
     # 保存修改后的工作簿
     workbook.save(file_path)
@@ -130,7 +130,9 @@ def modify_file(filename, item):
     elif  file_extension == '.docx':
         modify_file_docx(file_path, unique_replacements_list)
     elif file_extension == '.doc' :
-        modify_file_doc(file_path, unique_replacements_list)
+        # modify_file_doc(file_path, unique_replacements_list)
+        return 1
+    return 0
 
 def modify_file_doc(file_path_old, unique_replacements_list):
     file_path_new = file_path_old.replace('.doc', '.docx')
