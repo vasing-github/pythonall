@@ -75,11 +75,14 @@ jczwgk_area_comp_dic = {
 
 cookie = '7ca8fc0d-df02-4dae-ab66-d48255e18897'
 
-kaipu_area = '5119230005'
-kaipu_cust_password = 'gPMVQsFEv2EeGOCuhua3ZKEJYtPSYIod94HM341mnctbt6gl72Yl2QvzwUngHgOH4AaWXE1K3MIA1cu02+VpsW7U+2ncYyG8fArt6u9xSm+Zgh+34UfWu3EhMT24MhOVokS2A17Mdnvs6AG6ich2DndAAXd7b0LQvXUUAfV4kGo='
+kaipu_area = '5119020013'
+kaipu_cust_password = 'c4Sl468WEn1sYVRLzvv6Wm72ZuHo3olY6zqPpmYbOmWuimvx9UI85oeINEW35MRRS7BXZA2kmNsRqqctkYZRJ/8saQfOBTqSYBcRF3WuwFOvfwNeZbNcBwy9xWAa2FUG7rTWFBpL4ExWtBsaSM/tQk8RXPDcqSFiYNWXgyIGJSA='
 
-jiyuehua_user = '吴晓龙'
-jiyuehua_password= 'b49037e8b238ad33c49609278d31f57663465a45f9300f6cbd56a7db33b92e9ddddacf6bcca7132ca1f4430f9341cda48353fb745c0dfc18966cceb21dd86224a7ca44c61b7a5a19c920bcce7c2aead056be2447d6587596aefa477a8bc64a59cc1f2a0121dae27edb5581e0a5201175c31204a2cf8bdb27baf5c56765953e37'
+jiyuehua_user = '刘海波'
+jiyuehua_password= '3527fb9de00f56fc72d96e72d78cfc0d75975a61f140225ac73bcf5257ed55c10aaa1e837d5e667030336f8fc4509b336a93e86850d785c99f8fcfdfee77fdb29a36f8a2a5e67409aa61dcff2304f393957f53be953f2b0916a13dac540b6d396566d4bd1511ccd7e66190f267cf89f3ac0dca7265dc3f32084f5a811497e678'
+jiyuehua_bz_govb_SHIROJSESSIONID ="b" #这个东西没用，只是要注意巴州区登录是b，平昌登录是c,并且后面获取文章内容等请求都要修改参数，
+jiyuehua_port = 82 # 这个东西也没用，但是不同账号请求的端口不一样，应该是服务器的分布式问题。巴州区是82端口，平昌是83端口
+
 
 proxies = None
 def getproxies(up = False):

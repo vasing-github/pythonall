@@ -6,12 +6,11 @@ import sys
 import time
 from datetime import datetime, timedelta
 from io import BytesIO
-import one_argument_article
+
 import hudongcontent
 import requests
 from bs4 import BeautifulSoup
-from collections import defaultdict
-import two_argument_article
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 获取项目的根目录
 project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
@@ -23,7 +22,7 @@ import kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import getcontent2, getcontent
-from kaipumodify.modifyfile import upfile2
+from kaipumodify.modifyfile import upfile
 
 
 
@@ -70,7 +69,7 @@ def get_cuomin_list():
         'dataState': True,
         'dateType': 1,
         'codeType': 1,
-        'custCode': conf.kaipu_area,
+        'custCode': '5119230005',
         'startDate': startDate_str,
         'endDate': endDate_str,
         'rectifyStatus': 0,
@@ -80,7 +79,7 @@ def get_cuomin_list():
         'resultType': '',
         'pageType': '',
         'recommendUpdateList': [],
-        'protectCode': conf.kaipu_area,
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -132,13 +131,13 @@ def get_secrit():
         'dateType': 1,
         'codeType': 1,
         'codeTypeVal': [
-            conf.kaipu_area,
+            '5119230005',
         ],
         'startDate': startDate_str,
         'endDate': endDate_str,
         'pageType': '',
         'reviewType': 0,
-        'protectCode': conf.kaipu_area,
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -186,8 +185,8 @@ def get_link_use_num(token):
         'urlType': '',
         'checkType': '',
         'siteInfo': '',
-        'siteCustCode': conf.kaipu_area,
-        'protectCode': conf.kaipu_area,
+        'siteCustCode': '5119230005',
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -242,11 +241,11 @@ def get_out_link(token):
         'endDate': endDate_str,
         'codeType': 1,
         'codeTypeVal': [
-            conf.kaipu_area,
+            '5119230005',
         ],
         'pageType': '',
         'reviewType': '',
-        'protectCode': conf.kaipu_area,
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -289,7 +288,7 @@ def get_yinsi_num(token):
         'check': 1,
         'codeType': 1,
         'codeTypeVal': [
-            conf.kaipu_area,
+            '5119230005',
         ],
         'resultTypeList': [
             1,
@@ -304,7 +303,7 @@ def get_yinsi_num(token):
         },
         'pageType': '',
         'reviewType': 0,
-        'protectCode': conf.kaipu_area,
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -323,8 +322,8 @@ def get_yinsi_num(token):
 def start_search():
     print(endDate_str)
     cookies = {
-        'HWWAFSESID': 'cba5c76094419b2ace',
-        'HWWAFSESTIME': '1737293707742',
+        'HWWAFSESID': '40854762319bc867f7',
+        'HWWAFSESTIME': '1703639525975',
     }
 
     headers = {
@@ -352,13 +351,13 @@ def start_search():
         'check': 1,
         'codeType': 1,
         'dataState': True,
-        'custCode': conf.kaipu_area,
+        'custCode': '5119230005',
         'dateType': 1,
         'startDate': startDate_str,
         'endDate': endDate_str,
         'rectifyStatus': '',
         'searchBox': '',
-        'protectCode': conf.kaipu_area,
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -442,7 +441,7 @@ def get_kaipu_uptime(token):
         'dataState': True,
         'dateType': 1,
         'codeType': 1,
-        'custCode': conf.kaipu_area,
+        'custCode': '5119230005',
         'startDate': startDate_str,
         'endDate': endDate_str,
         'rectifyStatus': 0,
@@ -452,7 +451,7 @@ def get_kaipu_uptime(token):
         'resultType': '',
         'pageType': '',
         'recommendUpdateList': [],
-        'protectCode': conf.kaipu_area,
+        'protectCode': '5119230005',
         'custLevel': '1',
         'unitLevel': 3,
         'isHandoff': 1,
@@ -515,12 +514,6 @@ def get_new_bzid_jid():
     bz_gov_id, jid = dealtext.jiyue_token()
 
 
-def add_2_excel_kaipu(item):
-    __kaipu_cuo_list = []
-    for cuomin in item:
-        __kaipu_cuo_list.append(cuomin['id'])
-    kaipucorrect(__kaipu_cuo_list)
-
 def add_to_correct(correctlist, correctids, cuomin):
     correctids.append(cuomin['id'])
     correctlist.append((cuomin['sensitiveWords'], cuomin['recommendUpdate'], cuomin['snapshotNew'], cuomin['url'],
@@ -528,41 +521,43 @@ def add_to_correct(correctlist, correctids, cuomin):
     kaipucorrect(correctids)
 
 
-def cuo_1_argument(numbers, cuomin, item):
-    res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
-
+def cuo_1_argument(numbers, cuomin, correctlist, correctids):
+    res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
     if res['status'] == -9:
         get_new_bzid_jid()
-        res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
-    res_save = one_argument_article.savearticnews(res, item, bz_gov_id, jid)
+        res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
+    res_save = getcontent2.savearticnews(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0],
+                                         bz_gov_id,
+                                         jid)
     print(res_save)
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
     else:
-        add_2_excel_kaipu(item)
+        add_to_correct(correctlist, correctids, cuomin)
 
 
-def cuo_2_aruments(numbers, cuomin, item):
-    # res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-    res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+def cuo_2_aruments(numbers, cuomin, correctlist, correctids):
+    res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
     if res['status'] == -9:
         get_new_bzid_jid()
-        res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-    res_save = two_argument_article.saveorupdate(res, item,bz_gov_id, jid)
-
+        res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+    res_save = getcontent.saveorupdate(res, cuomin['sensitiveWords'], cuomin['recommendUpdate'].split('|')[0],
+                                       bz_gov_id,
+                                       jid)
+    # print(res_save)
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
     else:
-        add_2_excel_kaipu(item)
+        add_to_correct(correctlist, correctids, cuomin)
 
 
-def cuo_hudong(cuomin, item):
+def cuo_hudong(cuomin, correctlist, correctids):
     is_need_up_toke = hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
     if is_need_up_toke:
         get_new_bzid_jid()
         hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
-    # add_to_correct(correctlist, correctids, cuomin)
-    add_2_excel_kaipu(item)
+    add_to_correct(correctlist, correctids, cuomin)
+
 
 def extract_numbers(url):
     # 用斜杠截取 URL
@@ -638,7 +633,7 @@ def make_gongdan_xlsx(cuomin):
     ws.append([formatted_time,cuomin['url'],cuomin['snapshotNew'],cuomin['sensitiveWords'],cuomin['recommendUpdate'],cuomin['articleTitle'],cuomin['parentUrl'],cuomin['parentTitle']])
     wb.save(relative_path)
 
-def cuo_excel_word(cuomin, item):
+def cuo_excel(cuomin, correctlist, correctids):
     articleTitle = cuomin['articleTitle']
     parent_url = cuomin['parentUrl']
     parentTitle = cuomin['parentTitle']
@@ -653,7 +648,7 @@ def cuo_excel_word(cuomin, item):
     print(f'匹配的href: {url}')
     if url == None or url != cuomin['url']:  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
         make_gongdan_xlsx(cuomin)
-        add_2_excel_kaipu(item)
+        add_to_correct(correctlist, correctids, cuomin)
         return
     # 截取最后一个斜杠后的文件名
     filename = url.rsplit('/', 1)[-1]
@@ -661,7 +656,7 @@ def cuo_excel_word(cuomin, item):
     path_excel = url.split(path_start, 1)[-1]
     filepath = None
     try:
-        filepath = upfile2.download_file(url, filename)
+        filepath = upfile.download_file(url, filename)
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -674,40 +669,21 @@ def cuo_excel_word(cuomin, item):
     # 获取最后一个数字
     last_number = numbers[-1] if numbers else None
 
-    is_doc = upfile2.modify_file(filename, item)
-    if is_doc:
-        return
+    upfile.modify_file(filename, sensitiveWords, recommendUpdate)
 
-    res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-
-    if res["status"] == 404:
-        get_new_bzid_jid()
-        upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-    elif res['desc'] == "参数传递有误！":
+    res = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+    if res['desc'] == "参数传递有误！":
         return
 
     elif res["desc"] == "源文件不存在！":
         print("==============================================\n")
         return
-
+    elif res["status"] != 1:
+        get_new_bzid_jid()
+        code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
 
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
-    add_2_excel_kaipu(item)
-
-
-def deal_cuomin_list(list_cuomin):
-    # 创建一个默认字典，值为列表
-    result_dict = defaultdict(list)
-
-    # 遍历list，将每个元素添加到result_dict中
-    for item in list_cuomin:
-        url = item['url']
-        result_dict[url].append(item)
-
-    # 将默认字典转换为普通字典
-    result_dict = dict(result_dict)
-    return  result_dict
-
+    add_to_correct(correctlist, correctids, cuomin)
 
 
 def dealcuo():
@@ -715,40 +691,42 @@ def dealcuo():
     if kaipu_waitrefix != 0:
 
         list_cuomin = get_cuomin_list()
-
-        result_dic = deal_cuomin_list(list_cuomin)
-        for url , item in result_dic.items():
-
-            cuomin = item[0]
+        correctlist = []
+        correctids = []
+        for cuomin in list_cuomin:
             print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
-            print(url)
+            print(cuomin['url'])
             if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
 
-                numbers = extract_numbers(url)
+                numbers = extract_numbers(cuomin['url'])
                 # 将提取出的数字转换为整数
                 numbers = [int(num) for num in numbers]
                 # 判断 URL 类型并返回结果
                 if len(numbers) == 1:
-                    cuo_1_argument(numbers, cuomin, item)
+                    cuo_1_argument(numbers, cuomin, correctlist, correctids)
                 elif len(numbers) == 2:
-                    cuo_2_aruments(numbers, cuomin, item)
+                    cuo_2_aruments(numbers, cuomin, correctlist, correctids)
                 else:
                     print("未知情况")
                     send_nosee()
 
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
                 try:
-                    # cuo_hudong(cuomin, item)
-                    pass
+                    cuo_hudong(cuomin, correctlist, correctids)
                 except Exception as e:
                     print(f"An error occurred: {e}")
 
-            elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6":  # 表格类错误
-                cuo_excel_word(cuomin, item)
             else:
-                send_excel_correct(cuomin['url'])
+                if cuomin['pageType'] == "7":  # 表格类错误
+                    cuo_excel(cuomin, correctlist, correctids)
+                elif cuomin['pageType'] == "6":  # word类错误
+                    cuo_word(cuomin, correctlist, correctids)
+                else:
+                    send_excel_correct(cuomin['url'])
             print("\n")
-
+            # time.sleep(2)
+        # send_correct_msg(correctlist)
+        # kaipucorrect(correctids)
 
 def cuo_word(cuomin, correctlist, correctids):
     articleTitle = cuomin['articleTitle']
@@ -774,7 +752,7 @@ def cuo_word(cuomin, correctlist, correctids):
     path_excel = url.split(path_start, 1)[-1]
     filepath = None
     try:
-        filepath = upfile2.download_file(url, filename)
+        filepath = upfile.download_file(url, filename)
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -787,9 +765,9 @@ def cuo_word(cuomin, correctlist, correctids):
     # 获取最后一个数字
     last_number = numbers[-1] if numbers else None
 
-    upfile2.modify_file(filename, sensitiveWords, recommendUpdate)
+    upfile.modify_file(filename, sensitiveWords, recommendUpdate)
 
-    res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+    res = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
     if res['desc'] == "参数传递有误！":
         return
 
@@ -798,7 +776,7 @@ def cuo_word(cuomin, correctlist, correctids):
         return
     if res["status"] != 1:
         get_new_bzid_jid()
-        code = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+        code = upfile.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
 
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
     add_to_correct(correctlist, correctids, cuomin)
