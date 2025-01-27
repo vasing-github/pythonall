@@ -23,7 +23,7 @@ def get_first_cource():
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36',
     }
 
-    response = requests.get('https://s-file-1.ykt.cbern.com.cn/teach/api_static/trains/2024sqpx.json', headers=headers)
+    response = requests.get('https://s-file-1.ykt.cbern.com.cn/teach/api_static/trains/2025hjpx.json', headers=headers)# 这里是第一处以后需要改的，2025sjpx，2026hjpx
     print(response.json()['train_course_ids'])
     return response.json()['train_course_ids']
 
@@ -344,7 +344,7 @@ def test2_study_details():
 
 if __name__ == '__main__':
 
-    user_id = '452652491982'
+    user_id = '452545164599'
 
     first_cource = get_first_cource()
     for cource in first_cource:

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from kaipumodify.cfg import text
-from kaipumodify.loginwz import getjsseion
+from bazhouqu.kaipumodify.cfg import text
+from bazhouqu.kaipumodify.loginwz import getjsseion
 import os
-from kaipumodify.cfg import conf
+from bazhouqu.kaipumodify.cfg import conf
 token = text.token
 # wait_fix = text.wait_fix
 # text_yinsi_num = text.text_yinsi_num

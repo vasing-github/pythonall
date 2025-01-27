@@ -1,5 +1,5 @@
 from datetime import datetime
-from jiyuehua.kaipumodify.cfg import conf
+from nanjiang.kaipumodify.cfg import conf
 import requests
 
 

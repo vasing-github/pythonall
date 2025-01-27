@@ -1,6 +1,6 @@
 import base64
 import json
-from bazhouqu.kaipumodify.cfg import conf
+from nanjiang.kaipumodify.cfg import conf
 import requests
 import os
 def hello():

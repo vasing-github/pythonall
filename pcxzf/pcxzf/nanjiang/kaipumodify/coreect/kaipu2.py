@@ -17,13 +17,13 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
 # 将项目根目录添加到 sys.path
 sys.path.append(project_root)
-from jiyuehua.kaipumodify.cfg import dealtext
-from jiyuehua.kaipumodify.cfg import conf
-import jiyuehua.kaipumodify.cfg.text as text
+from nanjiang.kaipumodify.cfg import dealtext
+from nanjiang.kaipumodify.cfg import conf
+import nanjiang.kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import getcontent2, getcontent
-from jiyuehua.kaipumodify.modifyfile import upfile2
+from nanjiang.kaipumodify.modifyfile import upfile2
 
 
 

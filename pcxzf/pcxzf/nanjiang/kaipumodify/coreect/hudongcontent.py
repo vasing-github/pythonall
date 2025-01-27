@@ -9,7 +9,7 @@ sys.path.append(project_root)
 import requests
 
 from bs4 import BeautifulSoup
-import bazhouqu.kaipumodify.cfg.text as text
+import nanjiang.kaipumodify.cfg.text as text
 
 token = text.token
 

@@ -167,7 +167,7 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
     file_path = os.path.join(script_dir, file_name)
 
     files = {
-        'siteId': (None, '6787191'),
+        'siteId': (None, conf.jiyuehua_siteid),
         'sessionId': (None, bz_gov_id),
         'type': (None, 'application/vnd.ms-excel'),
         'title': (None, parent_t),

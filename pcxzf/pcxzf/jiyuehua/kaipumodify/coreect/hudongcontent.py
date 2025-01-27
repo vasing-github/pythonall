@@ -9,7 +9,7 @@ sys.path.append(project_root)
 import requests
 
 from bs4 import BeautifulSoup
-import kaipumodify.cfg.text as text
+import jiyuehua.kaipumodify.cfg.text as text
 
 token = text.token
 
@@ -57,7 +57,7 @@ def search_message_by_id(message_id, is_shuji, bz_gov_id, jid):
     cookies = {
         'msgsubmitjsessionid': 'Y2Q3NTQ4ZTEtMTY5My00NzllLTliM2YtNzQ2ODI2NjE2ZDNj',
         'authenticatecenterjsessionid': jid,
-        'bz_govc_SHIROJSESSIONID': bz_gov_id,
+        conf.jiyuehua_bzgov_shriojid: bz_gov_id,
         'historyCookie': '%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
     }
 
@@ -65,8 +65,8 @@ def search_message_by_id(message_id, is_shuji, bz_gov_id, jid):
         'Accept': 'application/json, text/javascript, */*; q=0.01',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
-        # 'Cookie': 'msgsubmitjsessionid=Y2Q3NTQ4ZTEtMTY5My00NzllLTliM2YtNzQ2ODI2NjE2ZDNj; authenticatecenterjsessionid=NTA2N2Y2ZDgtZGQ0YS00ZjFkLWE1YzgtYjcyYjBiYWM1OWQz; bz_govc_SHIROJSESSIONID=c1fe79d0-4665-4908-b249-a8a13f86a598; historyCookie=%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
-        'Referer': 'http://10.15.3.133:83/index;JSESSIONID=9cadc447-8ab6-4315-b0f9-a31ffa1314de?s=1716965667820&siteId=',
+        # 'Cookie': 'msgsubmitjsessionid=Y2Q3NTQ4ZTEtMTY5My00NzllLTliM2YtNzQ2ODI2NjE2ZDNj; authenticatecenterjsessionid=NTA2N2Y2ZDgtZGQ0YS00ZjFkLWE1YzgtYjcyYjBiYWM1OWQz; conf.jiyuehua_bzgov_shriojid=c1fe79d0-4665-4908-b249-a8a13f86a598; historyCookie=%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
+        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/index;JSESSIONID=9cadc447-8ab6-4315-b0f9-a31ffa1314de?s=1716965667820&siteId=',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -92,7 +92,7 @@ def search_message_by_id(message_id, is_shuji, bz_gov_id, jid):
         'ed': '',
     }
 
-    response = requests.get('http://10.15.3.133:83/messageBoard/getPage', params=params, cookies=cookies,
+    response = requests.get('http://10.15.3.133:'+conf.jiyuehua_port+'/messageBoard/getPage', params=params, cookies=cookies,
                             headers=headers, verify=False)
 
     return response.json()
@@ -116,7 +116,7 @@ def modify_mesagee(m, bzid, jid, wrong, right):
     cookies = {
         'msgsubmitjsessionid': 'Y2Q3NTQ4ZTEtMTY5My00NzllLTliM2YtNzQ2ODI2NjE2ZDNj',
         'authenticatecenterjsessionid': jid,
-        'bz_govc_SHIROJSESSIONID': bzid,
+        conf.jiyuehua_bzgov_shriojid: bzid,
         'historyCookie': '%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
     }
 
@@ -125,9 +125,9 @@ def modify_mesagee(m, bzid, jid, wrong, right):
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        # 'Cookie': 'msgsubmitjsessionid=Y2Q3NTQ4ZTEtMTY5My00NzllLTliM2YtNzQ2ODI2NjE2ZDNj; authenticatecenterjsessionid=NTA2N2Y2ZDgtZGQ0YS00ZjFkLWE1YzgtYjcyYjBiYWM1OWQz; bz_govc_SHIROJSESSIONID=c1fe79d0-4665-4908-b249-a8a13f86a598; historyCookie=%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:83',
-        'Referer': 'http://10.15.3.133:83/messageBoard/modify?id=13943256&&columnId=6790321&isOpen=true&_=1716974937394',
+        # 'Cookie': 'msgsubmitjsessionid=Y2Q3NTQ4ZTEtMTY5My00NzllLTliM2YtNzQ2ODI2NjE2ZDNj; authenticatecenterjsessionid=NTA2N2Y2ZDgtZGQ0YS00ZjFkLWE1YzgtYjcyYjBiYWM1OWQz; conf.jiyuehua_bzgov_shriojid=c1fe79d0-4665-4908-b249-a8a13f86a598; historyCookie=%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8',
+        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
+        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/messageBoard/modify?id=13943256&&columnId=6790321&isOpen=true&_=1716974937394',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -226,7 +226,7 @@ def modify_mesagee(m, bzid, jid, wrong, right):
     }
 
     response = requests.post(
-        'http://10.15.3.133:83/messageBoard/modifySave',
+        'http://10.15.3.133:'+conf.jiyuehua_port+'/messageBoard/modifySave',
         params=params,
         cookies=cookies,
         headers=headers,
@@ -240,7 +240,7 @@ def modify_reply(r, bzid, jid, wrong, right):
     cookies = {
         'historyCookie': '%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B7%B4%E4%B8%AD%E5%B8%82%E7%BB%8F%E6%B5%8E%E5%92%8C%E4%BF%A1%E6%81%AF%E5%8C%96%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E9%98%B2%E6%B1%9B%E6%8A%97%E6%97%B1%E6%8C%87%E6%8C%A5%E9%83%A8',
         'authenticatecenterjsessionid': jid,
-        'bz_govc_SHIROJSESSIONID': bzid,
+        conf.jiyuehua_bzgov_shriojid: bzid,
     }
 
     headers = {
@@ -248,9 +248,9 @@ def modify_reply(r, bzid, jid, wrong, right):
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        # 'Cookie': 'historyCookie=%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B7%B4%E4%B8%AD%E5%B8%82%E7%BB%8F%E6%B5%8E%E5%92%8C%E4%BF%A1%E6%81%AF%E5%8C%96%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E9%98%B2%E6%B1%9B%E6%8A%97%E6%97%B1%E6%8C%87%E6%8C%A5%E9%83%A8; authenticatecenterjsessionid=ZTIyMDgzMWYtNGEzNS00MGU1LThmZWEtMGJjZGZlMWFjODcx; bz_govc_SHIROJSESSIONID=25b7de0f-8d36-4ba7-91f5-268ac7ca6773',
-        'Origin': 'http://10.15.3.133:83',
-        'Referer': 'http://10.15.3.133:83/messageBoard/updateReply?id=510578&&columnId=6790321&isOpen=true&_=1717493851031',
+        # 'Cookie': 'historyCookie=%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%B0%E8%8D%89%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E6%96%B0%E5%8D%8E%E7%A4%BE%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E9%9D%92%E4%BA%91%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%B7%B4%E5%B1%B1%E5%A4%A9%E9%A6%99%E8%8A%B1%E6%A4%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B7%B4%E4%B8%AD%E5%B8%82%E7%BB%8F%E6%B5%8E%E5%92%8C%E4%BF%A1%E6%81%AF%E5%8C%96%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E9%98%B2%E6%B1%9B%E6%8A%97%E6%97%B1%E6%8C%87%E6%8C%A5%E9%83%A8; authenticatecenterjsessionid=ZTIyMDgzMWYtNGEzNS00MGU1LThmZWEtMGJjZGZlMWFjODcx; conf.jiyuehua_bzgov_shriojid=25b7de0f-8d36-4ba7-91f5-268ac7ca6773',
+        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
+        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/messageBoard/updateReply?id=510578&&columnId=6790321&isOpen=true&_=1717493851031',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -288,7 +288,7 @@ def modify_reply(r, bzid, jid, wrong, right):
         '_': '0.0782943084828458',
     }
     response = requests.post(
-        'http://10.15.3.133:83/messageBoard/reply',
+        'http://10.15.3.133:'+conf.jiyuehua_port+'/messageBoard/reply',
         params=params,
         cookies=cookies,
         headers=headers,

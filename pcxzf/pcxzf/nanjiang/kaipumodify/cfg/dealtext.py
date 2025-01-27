@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from jiyuehua.kaipumodify.cfg import text
-from jiyuehua.kaipumodify.loginwz import getjsseion
+from nanjiang.kaipumodify.cfg import text
+from nanjiang.kaipumodify.loginwz import getjsseion
 import os
-from jiyuehua.kaipumodify.cfg import conf
+from nanjiang.kaipumodify.cfg import conf
 token = text.token
 # wait_fix = text.wait_fix
 # text_yinsi_num = text.text_yinsi_num

@@ -1,12 +1,12 @@
 from datetime import datetime
-
+from bazhouqu.kaipumodify.cfg import conf
 import requests
 
 
 def getcontent(organId, contentId, bzid, jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        'bz_govb_SHIROJSESSIONID': bzid,
+        conf.jiyuehua_bzgov_shriojid: bzid,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%99%E9%95%87%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%87%AA%E7%84%B6%E8%B5%84%E6%BA%90%E5%92%8C%E8%A7%84%E5%88%92%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%86%9C%E4%B8%9A%E5%86%9C%E6%9D%91%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%B4%A2%E6%94%BF%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E7%A4%BA%E8%8C%83%E5%B9%BC%E5%84%BF%E5%9B%AD%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B1%9F%E5%8F%A3%E6%B0%B4%E4%B9%A1%E6%B0%B4%E5%88%A9%E9%A3%8E%E6%99%AF%E5%8C%BA%E5%BB%BA%E8%AE%BE%E7%AE%A1%E7%90%86%E5%B1%80%2C%E5%8E%BF%E5%86%9C%E4%B8%9A%E5%86%9C%E6%9D%91%E5%B1%80',
     }
 
@@ -28,9 +28,9 @@ def getcontent(organId, contentId, bzid, jid):
         'dataType': 'JSON',
         '_': '1715850503020',
     }
-
+    url = 'http://10.15.3.133:' + conf.jiyuehua_port + '/public/content/getPublicContent'
     response = requests.get(
-        'http://10.15.3.133:82/public/content/getPublicContent',
+        url,
         params=params,
         cookies=cookies,
         headers=headers,
@@ -51,7 +51,7 @@ def get_current_time():
 def saveorupdate(content,item,  bzid, jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        'bz_govb_SHIROJSESSIONID': bzid,
+         conf.jiyuehua_bzgov_shriojid: bzid,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
     }
 
@@ -61,8 +61,8 @@ def saveorupdate(content,item,  bzid, jid):
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:83',
-        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
+        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
+        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -193,7 +193,7 @@ def saveorupdate(content,item,  bzid, jid):
     }
 
     response = requests.post(
-        'http://10.15.3.133:83/public/content/saveOrUpdate',
+        'http://10.15.3.133:'+conf.jiyuehua_port+'/public/content/saveOrUpdate',
         params=params,
         cookies=cookies,
         headers=headers,
@@ -208,7 +208,7 @@ def saveorupdate(content,item,  bzid, jid):
 def saveorupdate2(content, wrong_words, right, bzid, jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        'bz_govb_SHIROJSESSIONID': bzid,
+         conf.jiyuehua_bzgov_shriojid: bzid,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
     }
 
@@ -218,8 +218,8 @@ def saveorupdate2(content, wrong_words, right, bzid, jid):
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:83',
-        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
+        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
+        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -350,7 +350,7 @@ def saveorupdate2(content, wrong_words, right, bzid, jid):
     }
 
     response = requests.post(
-        'http://10.15.3.133:83/public/content/saveOrUpdate',
+        'http://10.15.3.133:'+conf.jiyuehua_port+'/public/content/saveOrUpdate',
         params=params,
         cookies=cookies,
         headers=headers,

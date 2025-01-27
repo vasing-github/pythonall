@@ -1,5 +1,5 @@
 import requests
-from jiyuehua.kaipumodify.cfg import conf
+from nanjiang.kaipumodify.cfg import conf
 def getcontent(id,bzid,jid):
     cookies = {
         'authenticatecenterjsessionid': jid,

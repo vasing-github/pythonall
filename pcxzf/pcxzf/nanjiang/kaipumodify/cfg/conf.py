@@ -16,19 +16,19 @@ import datetime
 
 cookie = '7ca8fc0d-df02-4dae-ab66-d48255e18897'
 
-kaipu_area = '5119020013'
-kaipu_cust_password = 'c4Sl468WEn1sYVRLzvv6Wm72ZuHo3olY6zqPpmYbOmWuimvx9UI85oeINEW35MRRS7BXZA2kmNsRqqctkYZRJ/8saQfOBTqSYBcRF3WuwFOvfwNeZbNcBwy9xWAa2FUG7rTWFBpL4ExWtBsaSM/tQk8RXPDcqSFiYNWXgyIGJSA='
+kaipu_area = '5119220006'
+kaipu_cust_password = 'bV5SS5l9XkWtVpBq9TwOSKLeeE2k/oidpgzVypzRAXOwKznO3THnC7t5TeBtlUEYiDnH71x+h2kd8DqNtAgny3k5tJWtVLpQ3p7Go8Cl9+W10GrjZz99Im/capE86DqAz2PG0aAjjYNhPXiCCOv3QA/+zhGY4tGYPG8VWilWP88='
 
-jiyuehua_user = '刘海波'
-jiyuehua_password= '3527fb9de00f56fc72d96e72d78cfc0d75975a61f140225ac73bcf5257ed55c10aaa1e837d5e667030336f8fc4509b336a93e86850d785c99f8fcfdfee77fdb29a36f8a2a5e67409aa61dcff2304f393957f53be953f2b0916a13dac540b6d396566d4bd1511ccd7e66190f267cf89f3ac0dca7265dc3f32084f5a811497e678'
-jiyuehua_port = '82' # 这个东西也没用，但是不同账号请求的端口不一样，应该是服务器的分布式问题。巴州区是82端口，平昌是83端口
-jiyuehua_bzgov_shriojid = 'bz_govb_SHIROJSESSIONID' #这个东西没用，只是要注意巴州区登录是b，平昌登录是c,并且后面获取文章内容等请求都要修改参数，
-jiyuehua_httpstart = 'http://www.bzqzf.gov.cn'
-jiyuehua_pathstart = 'www.bzqzf.gov.cn'
+jiyuehua_user = '南江县政府办'
+jiyuehua_password= '05c028e63d348deaf3e6666b52fee6f2e5b6b8147dee108ef28c1912f248128f862c4d2250f282c67f60ca92677236a05127bb70242bd44ed0cf496cbd8fe9ef5918fb2ab3ff73638514500a9d5d089df35e1fdce5ee6927fb8f533ccca627df21fad6ebfeb2fd1c02fd87115af22aec0aa75431bb74b1682808d2d24ccad07a'
+jiyuehua_port = '83' # 这个东西也没用，但是不同账号请求的端口不一样，应该是服务器的分布式问题。巴州区是82端口，平昌是83端口
+jiyuehua_bzgov_shriojid = 'bz_govc_SHIROJSESSIONID' #这个东西没用，只是要注意巴州区登录是b，平昌登录是c,并且后面获取文章内容等请求都要修改参数，
+jiyuehua_httpstart = 'http://www.scnj.gov.cn'
+jiyuehua_pathstart = 'www.scnj.gov.cn'
 jiyuehua_siteid = '6787291'
 
 # 测试小群的key
-key_cs = 'ed7d0b07-57e3-4c1c-a8ca-e8d0c7850401'
+key_cs = '80aecfd9-ee46-4f37-8148-00329b65d284'
 
 proxies = None
 def getproxies(up = False):

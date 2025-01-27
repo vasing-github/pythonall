@@ -1,9 +1,9 @@
+
 import requests
-from jiyuehua.kaipumodify.cfg import conf
 def getcontent(id,bzid,jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        conf.jiyuehua_bzgov_shriojid: bzid,
+        'bz_govc_SHIROJSESSIONID': bzid,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
     }
 
@@ -12,7 +12,7 @@ def getcontent(id,bzid,jid):
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=articleNews&columnId=6790051&id=13650431&isOpen=true&_=1716191454907',
+        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=articleNews&columnId=6790051&id=13650431&isOpen=true&_=1716191454907',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -26,7 +26,7 @@ def getcontent(id,bzid,jid):
     }
 
     response = requests.get(
-        'http://10.15.3.133:'+conf.jiyuehua_port+'/articleNews/getArticleContent',
+        'http://10.15.3.133:83/articleNews/getArticleContent',
         params=params,
         cookies=cookies,
         headers=headers,
@@ -39,7 +39,7 @@ def getcontent(id,bzid,jid):
 def savearticnews2(content, wrong_words, right,bz_id,jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        conf.jiyuehua_bzgov_shriojid: bz_id,
+        'bz_govc_SHIROJSESSIONID': bz_id,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
     }
 
@@ -49,8 +49,8 @@ def savearticnews2(content, wrong_words, right,bz_id,jid):
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
-        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=articleNews&columnId=6789801&id=13448751&isOpen=true&_=1716193031308',
+        'Origin': 'http://10.15.3.133:83',
+        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=articleNews&columnId=6789801&id=13448751&isOpen=true&_=1716193031308',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -159,7 +159,7 @@ def savearticnews2(content, wrong_words, right,bz_id,jid):
     }
 
     response = requests.post(
-        'http://10.15.3.133:'+conf.jiyuehua_port+'/articleNews/saveArticleNews',
+        'http://10.15.3.133:83/articleNews/saveArticleNews',
         params=params,
         cookies=cookies,
         headers=headers,
@@ -169,33 +169,10 @@ def savearticnews2(content, wrong_words, right,bz_id,jid):
 
     return response.json()
 
-def muti_argument_replace(content,item, str):
-
-    # 遍历列表并替换
-    if content and content.get('data') and content['data'].get('article') and content['data']['article'].get(str):
-        new_argu = content['data']['article'][str]
-        for replacement in item:
-            wrong = replacement['sensitiveWords']
-            right = replacement['recommendUpdate'].split('|')[0]
-            new_argu = new_argu.replace(wrong, right)
-    else:
-        return None
-
-    return new_argu
-
-def repalce_content(content,item):
-    new_argu = content['data']['content']
-    for replacement in item:
-        wrong = replacement['sensitiveWords']
-        right = replacement['recommendUpdate'].split('|')[0]
-        new_argu = new_argu.replace(wrong, right)
-    return new_argu
-
-
-def savearticnews(content,item, bz_id,jid):
+def savearticnews(content, wrong, right,bz_id,jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        conf.jiyuehua_bzgov_shriojid: bz_id,
+        'bz_govc_SHIROJSESSIONID': bz_id,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
     }
 
@@ -205,8 +182,8 @@ def savearticnews(content,item, bz_id,jid):
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
-        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=articleNews&columnId=6789801&id=13448751&isOpen=true&_=1716193031308',
+        'Origin': 'http://10.15.3.133:83',
+        'Referer': 'http://10.15.3.133:83/todolist/showDetail?typeCode=articleNews&columnId=6789801&id=13448751&isOpen=true&_=1716193031308',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -226,11 +203,20 @@ def savearticnews(content,item, bz_id,jid):
         'siteId': content['data']['article']['siteId'] if content and content.get('data') and content['data'].get(
             'article') and content['data']['article'].get('siteId') else None,
 
+        'title': content['data']['article']['title'].replace(wrong, right) if content and content.get('data') and
+                                                                              content['data'].get('article') and
+                                                                              content['data']['article'].get(
+                                                                                  'title') else None,
 
-        'title':muti_argument_replace(content, item, 'title'),
-        'subTitle': muti_argument_replace(content, item, 'subTitle'),
+        'subTitle': content['data']['article']['subTitle'].replace(wrong, right) if content and content.get('data') and
+                                                                              content['data'].get('article') and
+                                                                              content['data']['article'].get(
+                                                                                  'subTitle') else None,
 
-        'shortTitle': muti_argument_replace(content, item, 'shortTitle'),
+        'shortTitle': content['data']['article']['shortTitle'].replace(wrong, right) if content and content.get('data') and
+                                                                              content['data'].get('article') and
+                                                                              content['data']['article'].get(
+                                                                                  'shortTitle') else None,
         'author': content['data']['article']['author'],
         'responsibilityEditor': content['data']['article']['responsibilityEditor'],
         'resources': content['data']['article']['resources'],
@@ -243,8 +229,8 @@ def savearticnews(content,item, bz_id,jid):
         'isUnderline': '0',
         'isTilt': '0',
         'titleColor': '',
-        'remarks': muti_argument_replace(content, item, 'remarks'),
-        'content': repalce_content(content, item),
+        'remarks': content['data']['article']['remarks'].replace(wrong, right) if content['data']['article']['remarks'] else content['data']['article']['remarks'],
+        'content': content['data']['content'].replace(wrong, right),
         'isPublish': '1',
         'publishDate': content['data']['article']['publishDate'],
         'typeCode': content['data']['article']['typeCode'],
@@ -303,7 +289,7 @@ def savearticnews(content,item, bz_id,jid):
     }
 
     response = requests.post(
-        'http://10.15.3.133:'+conf.jiyuehua_port+'/articleNews/saveArticleNews',
+        'http://10.15.3.133:83/articleNews/saveArticleNews',
         params=params,
         cookies=cookies,
         headers=headers,

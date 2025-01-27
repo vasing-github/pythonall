@@ -17,13 +17,13 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
 # 将项目根目录添加到 sys.path
 sys.path.append(project_root)
-from kaipumodify.cfg import dealtext
-from kaipumodify.cfg import conf
-import kaipumodify.cfg.text as text
+from bazhouqu.kaipumodify.cfg import dealtext
+from bazhouqu.kaipumodify.cfg import conf
+import bazhouqu.kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
 import getcontent2, getcontent
-from kaipumodify.modifyfile import upfile2
+from bazhouqu.kaipumodify.modifyfile import upfile2
 
 
 
@@ -63,7 +63,7 @@ def get_cuomin_list():
 
     json_data = {
         'page': {
-            'size': 500,
+            'size': 2000,
             'current': 1,
         },
         'check': 1,
@@ -648,7 +648,7 @@ def cuo_excel_word(cuomin, item):
     url = find_matching_href(parent_url, articleTitle)
 
     if url != None and not url.startswith('http'):
-        url = 'http://www.scpc.gov.cn' + url
+        url = conf.jiyuehua_httpstart + url
 
     print(f'匹配的href: {url}')
     if url == None or url != cuomin['url']:  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
@@ -657,7 +657,7 @@ def cuo_excel_word(cuomin, item):
         return
     # 截取最后一个斜杠后的文件名
     filename = url.rsplit('/', 1)[-1]
-    path_start = 'www.scpc.gov.cn'
+    path_start = conf.jiyuehua_pathstart
     path_excel = url.split(path_start, 1)[-1]
     filepath = None
     try:
