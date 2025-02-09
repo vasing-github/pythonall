@@ -7,7 +7,7 @@ project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
 # 将项目根目录添加到 sys.path
 sys.path.append(project_root)
 import requests
-
+from jiyuehua.kaipumodify.cfg import conf
 from bs4 import BeautifulSoup
 import jiyuehua.kaipumodify.cfg.text as text
 

@@ -2,7 +2,7 @@
 import os
 
 from datetime import datetime
-
+from jiyuehua.kaipumodify.cfg import conf
 import pytz
 import requests
 import xlrd

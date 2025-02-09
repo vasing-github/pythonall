@@ -637,7 +637,12 @@ def make_gongdan_xlsx(cuomin):
     row = ws.max_row
     ws.append([formatted_time,cuomin['url'],cuomin['snapshotNew'],cuomin['sensitiveWords'],cuomin['recommendUpdate'],cuomin['articleTitle'],cuomin['parentUrl'],cuomin['parentTitle']])
     wb.save(relative_path)
-
+def remove_protocol(url):
+    # 如果URL为空或None，直接返回
+    if not url:
+        return url
+    # 分割协议和后面的部分，取最后一部分（即去除协议）
+    return url.split('://', 1)[-1]
 def cuo_excel_word(cuomin, item):
     articleTitle = cuomin['articleTitle']
     parent_url = cuomin['parentUrl']
@@ -651,7 +656,7 @@ def cuo_excel_word(cuomin, item):
         url = conf.jiyuehua_httpstart + url
 
     print(f'匹配的href: {url}')
-    if url == None or url != cuomin['url']:  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
+    if url is None or remove_protocol(url) != remove_protocol(cuomin.get('url')):  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
         make_gongdan_xlsx(cuomin)
         add_2_excel_kaipu(item)
         return
@@ -737,11 +742,11 @@ def dealcuo():
                     send_nosee()
 
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
-                try:
-                    # cuo_hudong(cuomin, item)
-                    pass
-                except Exception as e:
-                    print(f"An error occurred: {e}")
+                # try:
+                    cuo_hudong(cuomin, item)
+
+                # except Exception as e:
+                #     print(f"An error occurred: {e}")
 
             elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6":  # 表格类错误
                 cuo_excel_word(cuomin, item)
