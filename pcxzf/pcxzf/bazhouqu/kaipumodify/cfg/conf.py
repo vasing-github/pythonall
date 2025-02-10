@@ -27,6 +27,8 @@ jiyuehua_httpstart = 'http://www.bzqzf.gov.cn'
 jiyuehua_pathstart = 'www.bzqzf.gov.cn'
 jiyuehua_siteid = '6787291'
 
+## 巴州区和南江更新文章时classIds，updateDate不要填，否则服务器验证不通过，在saveOrUpdate方法里面
+
 # 测试小群的key
 key_cs = 'ed7d0b07-57e3-4c1c-a8ca-e8d0c7850401'
 

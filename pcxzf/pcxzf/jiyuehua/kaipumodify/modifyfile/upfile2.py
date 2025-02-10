@@ -9,13 +9,18 @@ import xlrd
 from openpyxl import load_workbook
 from xlutils.copy import copy
 from docx import Document
+import pypandoc
+import subprocess
+
+import sys
+from pathlib import Path
 
 def download_file(url, local_filename):
     response = requests.get(url, stream=True, verify=False)
     response.raise_for_status()
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, local_filename)
+    file_path = os.path.join(script_dir, 'downloadfile',local_filename)
 
     with open(file_path, 'wb') as file:
         for chunk in response.iter_content(chunk_size=8192):
@@ -110,7 +115,7 @@ def modify_file_docx(file_path, unique_replacements_list):
 def modify_file(filename, item):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    file_path = os.path.join(script_dir, filename)
+    file_path = os.path.join(script_dir, 'downloadfile',filename)
 
     _, file_extension = os.path.splitext(file_path)
 
@@ -130,14 +135,20 @@ def modify_file(filename, item):
     elif  file_extension == '.docx':
         modify_file_docx(file_path, unique_replacements_list)
     elif file_extension == '.doc' :
-        # modify_file_doc(file_path, unique_replacements_list)
-        return 1
+        modify_file_doc(file_path, unique_replacements_list)
+        # return 1
     return 0
 
 def modify_file_doc(file_path_old, unique_replacements_list):
-    file_path_new = file_path_old.replace('.doc', '.docx')
-    pypandoc.convert_file(file_path_old, 'docx', outputfile=file_path)
-    modify_file_docx(file_path_new, unique_replacements_list)
+    try:
+        output = doc_to_docx(file_path_old)
+        print(f"转换成功！文件保存至：{output}")
+        print(f"文件大小：{os.path.getsize(output) / 1024:.2f} KB")
+    except Exception as e:
+        print(f"错误：{str(e)}")
+    # file_path_new = file_path_old.replace('.doc', '.docx')
+    # pypandoc.convert_file(file_path_old, 'docx', outputfile=file_path)
+    modify_file_docx(output, unique_replacements_list)
 
 
 
@@ -154,7 +165,7 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
         'Accept': '*/*',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
-        'Origin': 'http://10.15.3.133:83',
+        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
         'Referer': 'http://10.15.3.133:83/fileCenter/uploadPage?uploadType=1&s=0.1754363371550416&isOpen=true&_=1722305351088',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0',
     }
@@ -164,12 +175,12 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
     formatted_time = current_time.strftime('%a %b %d %Y %H:%M:%S GMT%z (中国标准时间)')
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, file_name)
+    file_path = os.path.join(script_dir, 'downloadfile',file_name)
 
     files = {
         'siteId': (None, conf.jiyuehua_siteid),
         'sessionId': (None, bz_gov_id),
-        'type': (None, 'application/vnd.ms-excel'),
+        'type': (None, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'),
         'title': (None, parent_t),
         'contentId': (None, content_id),
         'filePath': (None, path_excel),
@@ -182,7 +193,7 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
     }
 
     response = requests.post(
-        'http://10.15.3.133:83/content/updateFileByPath',
+        'http://10.15.3.133:'+conf.jiyuehua_port+'/content/updateFileByPath',
         cookies=cookies,
         headers=headers,
         files=files,
@@ -195,40 +206,82 @@ def uploadfile(jid, bz_gov_id, file_name, path_excel, parent_t, article_t, conte
 
 
 
+
+def get_libreoffice_path():
+    """自动获取各平台的LibreOffice路径"""
+    if sys.platform == 'win32':
+        # Windows默认安装路径（可能需要根据实际安装位置调整）
+        paths = [
+            r"E:\soft3\libreoffice\program\soffice.exe"
+        ]
+    else:  # Linux/macOS
+        paths = ["/usr/bin/libreoffice"]
+
+    for path in paths:
+        if os.path.exists(path):
+            return path
+    raise FileNotFoundError("未找到LibreOffice，请确认已安装并添加到系统路径")
+
+
+def doc_to_docx(file_path):
+    """跨平台doc转docx（使用LibreOffice）"""
+    # 验证输入文件
+    if not os.path.isfile(file_path):
+        raise FileNotFoundError(f"输入文件不存在: {file_path}")
+
+    # 准备输出路径
+    output_dir = os.path.dirname(file_path)
+    output_path = Path(file_path).with_suffix('.docx')
+
+    # 构建命令行参数
+    command = [
+        get_libreoffice_path(),
+        "--headless",
+        "--convert-to", "docx",
+        "--outdir", output_dir,
+        file_path
+    ]
+
+    try:
+        # 执行转换（超时60秒）
+        result = subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=60
+        )
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("文档转换超时，请检查文件是否损坏")
+
+    # 检查转换结果
+    if result.returncode != 0:
+        error_msg = result.stderr.decode('utf-8', errors='ignore')
+        raise RuntimeError(f"转换失败: {error_msg}")
+
+    if not output_path.exists():
+        available_files = "\n".join(os.listdir(output_dir))
+        raise FileNotFoundError(
+            f"输出文件未生成，目录中存在：\n{available_files}"
+        )
+
+    return str(output_path)
+
+
+
+
 if __name__ == '__main__':
-    # 要测试表格改错，去kaipu.py
 
-    # jid = 'ZjhkZTc3ZWMtNjY4MC00YzEwLTgyODAtZTFlODE2MjFmNmRj'
-    # bz_gov_id = '3dee3a65-9bbd-4078-9757-5ca83ccac343'
-    # filename = 'rBUtImcErY2AJ8mbAAA1LFxu6Dk97.xlsx'
-    # path_excel = 'http://www.scpc.gov.cn/group3/M00/12/73/rBUtImcErY2AJ8mbAAA1LFxu6Dk97.xlsx'
-    # parentTitle = '大寨镇2023年部门整体支出绩效评价报告'
-    # articleTitle = '部门整体支出绩效目标表.xlsx'
-    #
-    # last_number = '13965387'
-    # uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle,
-    #            articleTitle, last_number)
+    # 测试您的文件路径（Windows环境）
+    file_path = r'G:\project\python\pcxzf\pcxzf\bazhouqu\kaipumodify\modifyfile\downloadfile\rBUtIWeQhPaAHVkEAAXkAGN_bdk908.doc'
 
+    try:
+        output = doc_to_docx(file_path)
+        print(f"转换成功！文件保存至：{output}")
+        print(f"文件大小：{os.path.getsize(output) / 1024:.2f} KB")
+    except Exception as e:
+        print(f"错误：{str(e)}")
 
-    # 示例调用  测试修改word附件
-    # file_path = r'G:\project\python\pcxzf\pcxzf\jiyuehua\kaipumodify\modifyfile\rBUtImVppYOAOT6xAAougODx0mE912.docx'
-    # wrong = '拔付'
-    # right = '拨付'
-    # modify_file_doc(file_path, wrong, right)
-
-
-    # import os
-    #
-    # file_path = r'G:\project\python\pcxzf\pcxzf\jiyuehua\kaipumodify\modifyfile\rBUtImVppYOAOT6xAAougODx0mE912.doc'
-    # if not os.path.exists(file_path):
-    #     print(f"文件路径不存在: {file_path}")
-    # else:
-    #     print(f"文件路径存在: {file_path}")
-
-    # 假设你的列表是这样的
-    # 假设你的列表是这样的
-    file_path = r'E:\project\python\pythonall\pcxzf\pcxzf\jiyuehua\kaipumodify\modifyfile\rBUtImVMSiuAZDo0AAEgAJLOc_Y290.doc'
-    docx_path = modify_file_doc(file_path,None)
+    docx_path = modify_file_doc(output,None)
     print(f"文件已转换为: {docx_path}")
 
 

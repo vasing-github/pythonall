@@ -48,11 +48,11 @@ def get_current_time():
     return formatted_time
 
 
-def saveorupdate(content,item,  bzid, jid):
+def saveorupdate(content, item, bzid, jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-         conf.jiyuehua_bzgov_shriojid: bzid,
-        'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
+        conf.jiyuehua_bzgov_shriojid: bzid,
+
     }
 
     headers = {
@@ -61,8 +61,9 @@ def saveorupdate(content,item,  bzid, jid):
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
-        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=public_content&columnId='+str(content['data']['organId'])+'&id='+str(content['data']['contentId'])+'&isOpen=true&_=1716198448001',
+        'Origin': 'http://10.15.3.133:' + conf.jiyuehua_port,
+        'Referer': 'http://10.15.3.133:' + conf.jiyuehua_port + '/todolist/showDetail?typeCode=public_content&columnId=' + str(
+            content['data']['organId']) + '&id=' + str(content['data']['contentId']) + '&isOpen=true&_=1716198448001',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -76,7 +77,8 @@ def saveorupdate(content,item,  bzid, jid):
     data = {
         'siteId': content['data']['siteId'],
         'id': content['data']['id'],
-        'summarize': content['data']['summarize'],
+        'summarize': correct_string(content['data']['summarize'], item) if content['data']['summarize'] else
+        content['data']['summarize'],
         'organId': content['data']['organId'],
         'contentId': content['data']['contentId'],
         'type': content['data']['type'],
@@ -84,23 +86,23 @@ def saveorupdate(content,item,  bzid, jid):
         'sortNum': content['data']['sortNum'],
         'attachSavedName': content['data']['attachSavedName'],
         'attachRealName': content['data']['attachRealName'],
-        # 'attachSize': content['data']['attachSize'],
+        'attachSize': content['data']['attachSize'],
         'catId': content['data']['catId'],
         'indexNum': content['data']['indexNum'],
         'fileNum': content['data']['fileNum'],
-        'classIds': content['data']['classIds'],
+        'classIds': '',
         'parentClassIds': content['data']['parentClassIds'],
-        # 'classNames': content['data']['siteId'],
+        'classNames': content['data']['siteId'],
         'synColumnIds': content['data']['synColumnIds'],
-        # 'synColumnNames': content['data']['siteId'],
+        'synColumnNames': content['data']['synColumnNames'],
         'synOrganCatIds': content['data']['synOrganCatIds'],
-        # 'synOrganCatNames': content['data']['siteId'],
+        'synOrganCatNames': content['data']['synOrganCatNames'],
         'synMsgCatIds': content['data']['synMsgCatIds'],
-        # 'synMsgCatNames': content['data']['siteId'],
-        # 'effective': content['data']['siteId'],
+        'synMsgCatNames': content['data']['synMsgCatNames'],
+        'effective': content['data']['effective'],
         'effectiveDate': content['data']['effectiveDate'],
         'repealDate': content['data']['repealDate'],
-        # 'writtenDate': content['data']['siteId'],
+        'writtenDate': content['data']['writtenDate'],
         'title': correct_string(content['data']['title'], item),
         'keyWords': content['data']['keyWords'],
         'publishDate': content['data']['publishDate'],
@@ -115,59 +117,59 @@ def saveorupdate(content,item,  bzid, jid):
         content['data']['remarks'],
         'sortDate': content['data']['sortDate'],
         'hit': content['data']['hit'],
-        # 'link': content['data']['isTop'],
+        'link': content['data']['link'],
         'catName': content['data']['catName'],
         'organName': content['data']['organName'],
-        # 'process':content['data']['isTop'],
-        # 'counts': content['data']['isTop'],
+        'process': content['data']['process'],
+        'counts': content['data']['counts'],
         'isInvalid': content['data']['isInvalid'],
         'invalidReason': content['data']['invalidReason'],
-        # 'filePath': content['data']['isTop'],
-        # 'relContentId': content['data']['isTop'],
-        # 'attribute': content['data']['isTop'],
-        # 'titleColor': content['data']['isTop'],
+        'filePath': content['data']['filePath'],
+        'relContentId': content['data']['relContentId'],
+        'attribute': content['data']['attribute'],
+        'titleColor': content['data']['titleColor'],
         'isBold': content['data']['isBold'],
         'isUnderline': content['data']['isUnderline'],
         'isTilt': content['data']['isTilt'],
         'subTitle': content['data']['subTitle'],
-        # 'article': content['data']['isTop'],
+        'article': content['data']['article'],
         'isAllowComments': content['data']['isAllowComments'],
         'videoStatus': content['data']['videoStatus'],
-        # 'oldSchemaId': content['data']['isTop'],
-        # 'logStr': content['data']['isTop'],
+        'oldSchemaId': content['data']['oldSchemaId'],
+        'logStr': content['data']['logStr'],
         'referedNews': content['data']['referedNews'],
         'referNews': content['data']['referNews'],
         'explainType': content['data']['explainType'],
-        # 'relContentIds':content['data']['isTop'],
-        # 'relLink': content['data']['isTop'],
-        # 'relContentTitles':content['data']['isTop'],
+        'relContentIds': content['data']['relContentIds'],
+        'relLink': content['data']['relLink'],
+        'relContentTitles': content['data']['relContentTitles'],
         'isPush': content['data']['isPush'],
-        # 'invalidType': content['data']['isTop'],
-        # 'invalidFileType': content['data']['isTop'],
-        'updateDate': get_current_time(),
+        'invalidType': content['data']['invalidType'],
+        'invalidFileType': content['data']['invalidFileType'],
+        'updateDate': '',
         'readFileType': content['data']['readFileType'],
-        # 'relInfo': content['data']['isTop'],
+        'relInfo': content['data']['relInfo'],
         'topTitle': content['data']['topTitle'],
-        # 'relExplainType': content['data']['relExplainType'],
-        # 'explainId': content['data']['isPush'],
-        # 'isSpecial': content['data']['isPush'],
+        'relExplainType': content['data']['relExplainType'],
+        'explainId': content['data']['explainId'],
+        'isSpecial': content['data']['isSpecial'],
         'themeNote': content['data']['themeNote'],
         'wordDocName': content['data']['wordDocName'],
         'wordDocPath': content['data']['wordDocPath'],
         'pdfDocName': content['data']['pdfDocName'],
         'pdfDocPath': content['data']['pdfDocPath'],
         'publishDepartment': content['data']['publishDepartment'],
-        # 'startDate': content['data']['isPush'],
-        # 'endDate': content['data']['isPush'],
+        'startDate': content['data']['startDate'],
+        'endDate': content['data']['endDate'],
         'publicYear': content['data']['publicYear'],
-        # 'organCode': content['data']['isPush'],
+        'organCode': content['data']['organCode'],
         'imageLink': content['data']['imageLink'],
         'regNo': content['data']['regNo'],
         'pubMode': content['data']['pubMode'],
         'pubRange': content['data']['pubRange'],
-        # 'abolishDate': content['data']['isPush'],
-        # 'writeDate': content['data']['isPush'],
-        # 'regDate': content['data']['isPush'],
+        'abolishDate': content['data']['abolishDate'],
+        'writeDate': content['data']['writeDate'],
+        'regDate': content['data']['regDate'],
         'pubOrg': content['data']['pubOrg'],
         'cateCode': content['data']['cateCode'],
         'appendixPath': content['data']['appendixPath'],
@@ -177,41 +179,37 @@ def saveorupdate(content,item,  bzid, jid):
         'explainTitles': content['data']['explainTitles'],
         'explainLinks': content['data']['explainLinks'],
         'docExplainRelateJson': content['data']['docExplainRelateJson'],
-        # 'pushStatus': '',
-        # 'sourcesInfoId': '',
-        # 'sourcesClassId': '',
-        # 'opeStatus': '',
-        # 'ectLevel': '',
-        # 'resClassifyArray': '',
+        'pushStatus': content['data']['pushStatus'],
+        'sourcesInfoId': content['data']['sourcesInfoId'],
+        'sourcesClassId': content['data']['sourcesClassId'],
+        'opeStatus': content['data']['opeStatus'],
+        'ectLevel': content['data']['ectLevel'],
+        'resClassifyArray': content['data']['resClassifyArray'],
         'isNormalPolicy': content['data']['isNormalPolicy'],
-        # 'policyPushStatus': '',
-        # 'valid': '',
+        'policyPushStatus': content['data']['policyPushStatus'],
+        'valid': content['data']['valid'],
         'isCurSite': content['data']['isCurSite'],
-        # 'domain': '',
-        # 'policyCash': '',
+        'domain': content['data']['domain'],
+        'policyCash': content['data']['policyCash'],
         'remoteContent': content['data']['content'],
     }
 
     response = requests.post(
-        'http://10.15.3.133:'+conf.jiyuehua_port+'/public/content/saveOrUpdate',
+        'http://10.15.3.133:' + conf.jiyuehua_port + '/public/content/saveOrUpdate',
         params=params,
         cookies=cookies,
         headers=headers,
         data=data,
         verify=False,
     )
-    print(response.request.url)
-    print(response.request.headers)
-    print(response.request.body)
 
     return response.json()
-
 
 
 def saveorupdate2(content, wrong_words, right, bzid, jid):
     cookies = {
         'authenticatecenterjsessionid': jid,
-         conf.jiyuehua_bzgov_shriojid: bzid,
+        conf.jiyuehua_bzgov_shriojid: bzid,
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
     }
 
@@ -221,8 +219,8 @@ def saveorupdate2(content, wrong_words, right, bzid, jid):
         'Connection': 'keep-alive',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         # 'Cookie': 'authenticatecenterjsessionid=ODU3OWEyNWYtZmUxMS00NDI4LTllN2UtZjIyN2FlNGQyZTQ0; bz_govc_SHIROJSESSIONID=3f0fb94f-46d9-49d8-b40b-2becc90873a9; historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%A1%8C%E6%94%BF%E5%AE%A1%E6%89%B9%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E6%B0%B4%E5%88%A9%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%85%AC%E5%AE%89%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%B8%8D%E5%8A%A8%E4%BA%A7%E7%99%BB%E8%AE%B0%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E5%B1%80%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%8E%BF%E5%8D%AB%E7%94%9F%E5%81%A5%E5%BA%B7%E5%B1%80%2C%E5%9B%9B%E5%B7%9D%E6%B3%93%E6%BA%90%E5%B8%B8%E9%9D%92%E5%85%AC%E7%94%A8%E4%BA%8B%E4%B8%9A%E9%9B%86%E5%9B%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%9B%BD%E7%BD%91%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BE%9B%E7%94%B5%E5%85%AC%E5%8F%B8',
-        'Origin': 'http://10.15.3.133:'+conf.jiyuehua_port,
-        'Referer': 'http://10.15.3.133:'+conf.jiyuehua_port+'/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
+        'Origin': 'http://10.15.3.133:' + conf.jiyuehua_port,
+        'Referer': 'http://10.15.3.133:' + conf.jiyuehua_port + '/todolist/showDetail?typeCode=public_content&columnId=6602061&id=13939642&isOpen=true&_=1716198448001',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         'X-Requested-With': 'XMLHttpRequest',
     }
@@ -248,8 +246,8 @@ def saveorupdate2(content, wrong_words, right, bzid, jid):
         'catId': content['data']['catId'],
         'indexNum': content['data']['indexNum'],
         'fileNum': content['data']['fileNum'],
-        'classIds': content['data']['classIds'],
-        'parentClassIds': content['data']['parentClassIds'],
+        # 'classIds': content['data']['classIds'],
+        # 'parentClassIds': content['data']['parentClassIds'],
         # 'classNames': content['data']['siteId'],
         'synColumnIds': content['data']['synColumnIds'],
         # 'synColumnNames': content['data']['siteId'],
@@ -353,7 +351,7 @@ def saveorupdate2(content, wrong_words, right, bzid, jid):
     }
 
     response = requests.post(
-        'http://10.15.3.133:'+conf.jiyuehua_port+'/public/content/saveOrUpdate',
+        'http://10.15.3.133:' + conf.jiyuehua_port + '/public/content/saveOrUpdate',
         params=params,
         cookies=cookies,
         headers=headers,
@@ -362,7 +360,6 @@ def saveorupdate2(content, wrong_words, right, bzid, jid):
     )
 
     return response.json()
-
 
 
 def correct_string2(content, wrong_list, correct):
@@ -377,6 +374,7 @@ def correct_string2(content, wrong_list, correct):
     for wrong in wrong_list:
         content = content.replace(wrong, correct)
     return content
+
 
 def correct_string(content, item):
     for replacement in item:
@@ -393,6 +391,4 @@ def modify(organId, contentId, wrong, right):
 
 
 if __name__ == '__main__':
-    content = getcontent()
-    # print(content['data']['content'])
-    saveorupdate(content)
+    pass

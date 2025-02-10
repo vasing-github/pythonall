@@ -174,8 +174,8 @@ def get_finaly_code(url, jid):
     cookies = session.cookies.get_dict()
 
     # 打印bz_govc_SHIROJSESSIONID
-    print(f'bz_govc_SHIROJSESSIONID: {cookies.get("bz_govc_SHIROJSESSIONID")}')
-    return cookies.get("bz_govc_SHIROJSESSIONID")
+    print(f'bz_govb_SHIROJSESSIONID: {cookies.get(conf.jiyuehua_bzgov_shriojid)}')
+    return cookies.get(conf.jiyuehua_bzgov_shriojid)
 
 
 def base64_api(img):

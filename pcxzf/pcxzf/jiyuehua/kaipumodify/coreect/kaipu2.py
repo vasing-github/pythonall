@@ -27,6 +27,7 @@ from jiyuehua.kaipumodify.modifyfile import upfile2
 
 
 
+
 token = text.token
 
 bz_gov_id = text.bz_gov_id
@@ -543,7 +544,7 @@ def cuo_1_argument(numbers, cuomin, item):
 
 
 def cuo_2_aruments(numbers, cuomin, item):
-    # res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+
     res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
     if res['status'] == -9:
         get_new_bzid_jid()
@@ -681,7 +682,7 @@ def cuo_excel_word(cuomin, item):
 
     is_doc = upfile2.modify_file(filename, item)
     if is_doc:
-        return
+        path_excel = path_excel+'x'
 
     res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
 
@@ -742,11 +743,11 @@ def dealcuo():
                     send_nosee()
 
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
-                # try:
-                    cuo_hudong(cuomin, item)
-
-                # except Exception as e:
-                #     print(f"An error occurred: {e}")
+                try:
+                    # cuo_hudong(cuomin, item)
+                    pass
+                except Exception as e:
+                    print(f"An error occurred: {e}")
 
             elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6":  # 表格类错误
                 cuo_excel_word(cuomin, item)
