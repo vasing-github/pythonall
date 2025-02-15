@@ -108,11 +108,11 @@ def make_new_excel():
 
 def start_main():
     # 填充法定主动公开内容超期情况
-    fadingzhudonggongkaineirong.startMain()
-    gongkainianbao.startMain()
-    jigouzhineng.startMain()
-    zhengce.startMain()
-    # jicengzwgk.startMain()
+    # fadingzhudonggongkaineirong.startMain()
+    # gongkainianbao.startMain()
+    # jigouzhineng.startMain()
+    # zhengce.startMain()
+    jicengzwgk.startMain()
 
     # 给表格增加一些注释
     end_excel()

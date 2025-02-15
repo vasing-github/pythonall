@@ -25,8 +25,8 @@ jiyuehua_port = '83' # 这个东西也没用，但是不同账号请求的端口
 jiyuehua_bzgov_shriojid = 'bz_govc_SHIROJSESSIONID' #这个东西没用，只是要注意巴州区登录是b，平昌登录是c,并且后面获取文章内容等请求都要修改参数，南江是c
 jiyuehua_httpstart = 'http://www.scnj.gov.cn'
 jiyuehua_pathstart = 'www.scnj.gov.cn'
-jiyuehua_siteid = '6787291' #haimeigai
-
+jiyuehua_siteid = '6787171'
+jiyuehua_upfile_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 # 测试小群的key
 key_cs = '80aecfd9-ee46-4f37-8148-00329b65d284'
 

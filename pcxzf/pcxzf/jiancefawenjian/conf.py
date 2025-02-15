@@ -246,14 +246,14 @@ def getproxies(up=False):
     global proxies  # 在函数内部修改全局变量，需要声明 global
     if up or proxies is None:
         # 提取代理API接口，获取1个代理IP
-        api_url = "https://dps.kdlapi.com/api/getdps/?secret_id=o6zqx71jh7hiii663qrt&num=1&signature=ae5jtj55np18yfpsjrra5gagd1ljuymx&pt=1&sep=1&transferip=1"
+        api_url = "https://dps.kdlapi.com/api/getdps/?secret_id=ogsq2949aa37recirws7&signature=46yif7scn2bueuoj85mkowbgq2p6rl7h&num=1&pt=1&sep=1&transferip=1"
 
         # 获取API接口返回的代理IP
         proxy_ip = requests.get(api_url, verify=False).text
 
         # 用户名密码认证(私密代理/独享代理)
-        username = "d4348123377"
-        password = "vas962464"
+        username = "d4036946853"
+        password = "zn1ehshu"
         proxies = {
             "http": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy_ip},
             "https": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy_ip}
@@ -284,8 +284,4 @@ def make_request_get(url, params=None, proxies=None):
 
 
 if __name__ == '__main__':
-    pass
-    # url_test = 'http://www.ccgp-sichuan.gov.cn/freecms/site/sichuan/ggxx/info/2023/8a69c8b18c0bd8aa018c1dd48e712503.html?noticeType=00102'
-    # response = make_request_get(url_test)
-    # print(response.status_code)
-    # print(response.text)
+    getproxies(True)

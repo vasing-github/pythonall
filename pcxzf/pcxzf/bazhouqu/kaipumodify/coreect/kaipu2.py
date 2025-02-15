@@ -748,7 +748,7 @@ def dealcuo():
                 except Exception as e:
                     print(f"An error occurred: {e}")
 
-            elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6":  # 表格类错误
+            elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6" or cuomin['pageType'] == "9":  # 表格类错误
                 cuo_excel_word(cuomin, item)
             else:
                 send_excel_correct(cuomin['url'])
