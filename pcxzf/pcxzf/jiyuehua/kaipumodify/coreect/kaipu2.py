@@ -22,7 +22,6 @@ from jiyuehua.kaipumodify.cfg import conf
 import jiyuehua.kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
-import getcontent2, getcontent
 from jiyuehua.kaipumodify.modifyfile import upfile2
 
 
@@ -682,23 +681,70 @@ def cuo_excel_word(cuomin, item):
     is_doc = upfile2.modify_file(filename, item)
     if is_doc:
         path_excel = path_excel+'x'
+    if "oldfiles" in url: #这里表示是老文件，没法调用替换接口，要先上传一个新文件，再把内容中附件路径改了
+        deal_oldfiles(numbers,filename,url)
+    else:
+        res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
 
-    res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+        if res["status"] == 404:
+            get_new_bzid_jid()
+            upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+        elif res['desc'] == "参数传递有误！":
+            return
 
-    if res["status"] == 404:
-        get_new_bzid_jid()
-        upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-    elif res['desc'] == "参数传递有误！":
-        return
-
-    elif res["desc"] == "源文件不存在！":
-        print("==============================================\n")
-        return
+        elif res["desc"] == "源文件不存在！":
+            print("==============================================\n")
+            return
 
 
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
     add_2_excel_kaipu(item)
 
+
+def deal_oldfiles(numbers,filename,url):
+    columnId = ''
+    if len(numbers) == 1:
+        res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
+        if res['status'] == -9:
+            get_new_bzid_jid()
+            res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
+        columnId = res['data']['article']['columnId']
+        new_file_url = upfile2.upload_new_file(jid, bz_gov_id, filename, columnId)
+
+        res_save = one_argument_article.savearticnews(res, get_item_argument(url,new_file_url), bz_gov_id, jid)
+    elif len(numbers) == 2:
+        res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+        if res['status'] == -9:
+            get_new_bzid_jid()
+            res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+
+        new_file_url = upfile2.upload_new_file(jid, bz_gov_id, filename, '0')
+
+        res_save = two_argument_article.saveorupdate(res, get_item_argument(url,new_file_url), bz_gov_id, jid)
+
+def get_item_argument(url,new_file_url):
+    item = [
+        {
+            "sensitiveWords": extract_url_path(url),  # 必须字段，原始敏感词
+            "recommendUpdate": new_file_url,  # 必须字段，修正词+附加信息
+        }
+    ]
+    return item
+def extract_url_path(url):
+    """
+    从URL中提取以/oldfiles开头的路径部分
+
+    :param url: 完整URL地址
+    :return: 以/oldfiles开头的路径部分
+    """
+    # 使用正则表达式匹配路径
+    pattern = r'/oldfiles/.*'
+    match = re.search(pattern, url)
+
+    if match:
+        return match.group()
+    else:
+        raise ValueError("URL中未找到/oldfiles开头的路径")
 
 def deal_cuomin_list(list_cuomin):
     # 创建一个默认字典，值为列表

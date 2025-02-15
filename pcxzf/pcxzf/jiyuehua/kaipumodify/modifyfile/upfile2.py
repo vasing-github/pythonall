@@ -15,6 +15,45 @@ import fitz
 import sys
 from pathlib import Path
 
+
+def upload_new_file(jid, bz_gov_id, filename, columnId):
+    cookies = {
+        'authenticatecenterjsessionid': jid,
+        'bz_govc_SHIROJSESSIONID': bz_gov_id,
+    }
+
+    headers = {
+        'Accept': '*/*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection': 'keep-alive',
+        # 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryi3TLT1PsLfm0Pa9i',
+        'Origin': f'http://10.15.3.133:{conf.jiyuehua_port}',
+        'Referer': f'http://10.15.3.133:{conf.jiyuehua_port}/ewebeditor/ewebeditor.htm?id=content&instanceid=content&style=Lstandard3&cusdir=/{conf.jiyuehua_siteid}/{columnId}&savepathfilename=d_savepathfilename&titleimage=1&extcss=/pageStyle/getCssByColumn/{columnId}&fixwidth=1078px',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0'
+    }
+
+    url = f'http://10.15.3.133:{conf.jiyuehua_port}/ewebeditor/jsp/upload.jsp?style=Lstandard3&cusdir=/{conf.jiyuehua_siteid}/{columnId}&skey=&h=10.15.3.133&o=http://10.15.3.133:{conf.jiyuehua_port}&action=mfu&type=file&blockflag=end'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, 'downloadfile', filename)
+    if not os.path.isfile(file_path):
+        raise FileNotFoundError(f"待上传文件不存在: {file_path}")
+
+    try:
+        with open(file_path, 'rb') as f:
+            files = {
+                'uploadfile': (filename, f, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                'originalfilename': (None, filename)
+            }
+            response = requests.post(url, cookies=cookies, headers=headers, files=files, verify=False)
+    except IOError as e:
+        raise RuntimeError(f"无法读取文件 {file_path}: {str(e)}")
+
+    print(f"响应状态码: {response.status_code}")
+
+    print(response.text)
+    return response.json()['url']
+
+
 def download_file(url, local_filename):
     response = requests.get(url, stream=True, verify=False)
     response.raise_for_status()
