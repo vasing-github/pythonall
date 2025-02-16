@@ -391,7 +391,7 @@ def send_msg(cuomin, yinsi_num, outnum, kai_link_use_num, uptime=None):
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f" 检测到开普云有新错敏<font color=\"warning\">{cuomin}</font>条\n\n隐私泄露<font color=\"warning\">{yinsi_num}</font>条\n\n外链暗链<font color=\"warning\">{outnum}</font>条\n\n链接不可用<font color=\"warning\">{kai_link_use_num}</font>条\n\n\n开普检测时间：{uptime}\n\n机器人检测时间：{current_time}\n<@WuXiaoLong>\n"
+            "content": f" 检测到开普云有新错敏<font color=\"warning\">{cuomin}</font>条\n\n隐私泄露<font color=\"warning\">{yinsi_num}</font>条\n\n外链暗链<font color=\"warning\">{outnum}</font>条\n\n链接不可用<font color=\"warning\">{kai_link_use_num}</font>条\n\n\n开普检测时间：{uptime}\n\n机器人检测时间：{current_time}\n<@{conf.send_person[0]}>\n"
         }
     }
 
@@ -539,6 +539,8 @@ def cuo_1_argument(numbers, cuomin, item):
         send_nopage(cuomin['url'])
     else:
         add_2_excel_kaipu(item)
+        for cuomin in item:
+            make_xlsx(cuomin, conf.send_modified)
 
 
 def cuo_2_aruments(numbers, cuomin, item):
@@ -553,6 +555,8 @@ def cuo_2_aruments(numbers, cuomin, item):
         send_nopage(cuomin['url'])
     else:
         add_2_excel_kaipu(item)
+        for cuomin in item:
+            make_xlsx(cuomin, conf.send_modified)
 
 
 def cuo_hudong(cuomin, item):
@@ -562,6 +566,8 @@ def cuo_hudong(cuomin, item):
         hudongcontent.start_kaipu(cuomin, bz_gov_id, jid)
     # add_to_correct(correctlist, correctids, cuomin)
     add_2_excel_kaipu(item)
+    for cuomin in item:
+        make_xlsx(cuomin, conf.send_modified)
 
 def extract_numbers(url):
     # 用斜杠截取 URL
@@ -582,7 +588,7 @@ def send_secrit_msg(right_type, right_words, url, wrong, title):
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f"自动整改网站隐私泄露，请人工核实。\n\n\n[{title}]({url})\n\n\n号码类型：{right_type}\n\n隐私号码：{wrong}\n\n脱敏号码：{right_words}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+            "content": f"自动整改网站隐私泄露，请人工核实。\n\n\n[{title}]({url})\n\n\n号码类型：{right_type}\n\n隐私号码：{wrong}\n\n脱敏号码：{right_words}\n\n\n<@{conf.send_person[1]}>\n<@{conf.send_person[0]}>"
         }
     }
     key = conf.key_cs
@@ -598,7 +604,7 @@ def send_excel_correct(url):
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f" PDF,Word附件类错误暂需人工修改。\n\n\n{url}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+            "content": f" 压缩包附件类错误暂需人工修改。\n\n\n{url}\n\n\n<@{conf.send_person[1]}>\n<@{conf.send_person[0]}>"
         }
     }
 
@@ -615,7 +621,7 @@ def send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommen
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f" 本次网站改错包含表格附件修改，需人工**重点**核实\n\n\n[{articleTitle}]({parent_url})\n\n\n错敏词：{sensitiveWords}\n\n推荐词：{recommendUpdate}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+            "content": f" 本次网站改错包含附件修改，需人工**重点**核实\n\n\n[{articleTitle}]({parent_url})\n\n\n错敏词：{sensitiveWords}\n\n推荐词：{recommendUpdate}\n\n\n<@{conf.send_person[1]}>\n<@{conf.send_person[0]}>"
         }
     }
 
@@ -627,8 +633,61 @@ def send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommen
     # 输出响应结果
     print(response.text)
 
-def make_gongdan_xlsx(cuomin):
-    relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', conf.send_gongdan_xlsx)
+
+
+
+def count_today_rows(xlsx_name):
+    """
+    统计今天新增的Excel行数
+
+    :param xlsx_name: 文件名（不含路径）
+    :return: 今日新增行数
+    """
+    # 获取文件路径（与写入逻辑保持一致）
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', xlsx_name)
+
+    try:
+        # 加载工作簿（优化：只读模式提升性能）
+        wb = load_workbook(relative_path, read_only=True)
+        ws = wb.active
+
+        # 获取今天日期对象和字符串
+        today = datetime.now().date()
+        today_str = today.strftime("%Y-%m-%d")
+
+        # 统计计数器
+        today_count = 0
+
+        # 逐行扫描（优化：使用iter_rows减少内存占用）
+        for row in ws.iter_rows(min_row=1, values_only=True):
+            # 第一列为时间字符串（格式：2023-10-08 14:30）
+            time_str = row[0]
+
+            # 空值跳过保护
+            if not time_str:
+                continue
+
+            # 切割日期部分
+            try:
+                date_part = str(time_str).split()[0]  # 兼容可能存在的非字符串类型
+                if date_part == today_str:
+                    today_count += 1
+            except IndexError:
+                continue  # 格式异常行跳过
+
+        return today_count
+
+    except FileNotFoundError:
+        print(f"文件 {relative_path} 不存在")
+        return 0
+    except Exception as e:
+        print(f"读取异常: {str(e)}")
+        return 0
+
+
+def make_xlsx(cuomin,xlsx_name):
+    relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', xlsx_name)
     current_time = datetime.now()  # 格式化时间，精确到分钟
     formatted_time = current_time.strftime("%Y-%m-%d %H:%M")
     wb = load_workbook(relative_path)
@@ -656,7 +715,7 @@ def cuo_excel_word(cuomin, item):
 
     print(f'匹配的href: {url}')
     if url is None or remove_protocol(url) != remove_protocol(cuomin.get('url')):  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
-        make_gongdan_xlsx(cuomin)
+        make_xlsx(cuomin,conf.send_gongdan_xlsx)
         add_2_excel_kaipu(item)
         return
     # 截取最后一个斜杠后的文件名
@@ -699,6 +758,8 @@ def cuo_excel_word(cuomin, item):
 
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
     add_2_excel_kaipu(item)
+    for cuomin in item:
+        make_xlsx(cuomin, conf.send_modified)
 
 
 def deal_oldfiles(numbers,filename,url):
@@ -799,67 +860,126 @@ def dealcuo():
             else:
                 send_excel_correct(cuomin['url'])
             print("\n")
+    send_all()
 
+def send_all():
+    remaining = start_search()
+    gongdan = count_today_rows(conf.send_gongdan_xlsx)
+    modify = count_today_rows(conf.send_modified)
 
-def cuo_word(cuomin, correctlist, correctids):
-    articleTitle = cuomin['articleTitle']
-    parent_url = cuomin['parentUrl']
-    parentTitle = cuomin['parentTitle']
-    sensitiveWords = cuomin['sensitiveWords']
-    recommendUpdate = cuomin['recommendUpdate']
+    _all = remaining+gongdan+modify
 
-    url = find_matching_href(parent_url, articleTitle)
+    send_card(remaining,gongdan,modify,_all)
+    if gongdan != 0:
+        send_excel(conf.send_gongdan_xlsx)
+    if modify != 0:
+        send_excel(conf.send_modified)
 
-    if url != None and not url.startswith('http') :
-        url = 'http://www.scpc.gov.cn' + url
+def send_excel(xlsxname):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', xlsx_name)
+    # filename = os.path.join(subdirectory_path, conf.correct_name + formatted_date + '.xlsx')
+    # wb.save(filename)
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
 
-    print(f'匹配的href: {url}')
-    if url == None or url != cuomin['url']:  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
-        make_gongdan_xlsx(cuomin)
-        add_to_correct(correctlist, correctids, cuomin)
-        return
+    # 加载现有的Excel文件
+    wb = load_workbook(relative_path)
+    # 获取活动工作表
 
-    # 截取最后一个斜杠后的文件名
-    filename = url.rsplit('/', 1)[-1]
-    path_start = 'www.scpc.gov.cn'
-    path_excel = url.split(path_start, 1)[-1]
-    filepath = None
-    try:
-        filepath = upfile2.download_file(url, filename)
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    # 将工作簿保存到一个字节流中
+    output = BytesIO()
+    wb.save(output)
+    base_filename = os.path.basename(relative_path)
 
-    if filepath == None:
-        return
+    # 准备发送文件，确保只使用文件名
+    files = {"file": (base_filename, output.getvalue())}
+    # 准备发送文件
 
-    numbers = extract_numbers(parent_url)
-    # 将提取出的数字转换为整数
-    numbers = [int(num) for num in numbers]
-    # 获取最后一个数字
-    last_number = numbers[-1] if numbers else None
+    response = requests.post(
+        'https://qyapi.weixin.qq.com/cgi-bin/webhook/upload_media?key=' + conf.key_cs + '&type=file',
+        files=files)
 
-    upfile2.modify_file(filename, sensitiveWords, recommendUpdate)
+    print(response.text)
 
-    res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
-    if res['desc'] == "参数传递有误！":
-        return
+    # 检查是否有'media_id'在响应中
+    if 'media_id' in response.json():
+        # 发送消息
+        headers = {"Content-Type": "application/json"}
+        message = {
+            "msgtype": "file",
+            "file": {
+                "media_id": response.json()["media_id"]
+            }
+        }
+        response = requests.post(url, headers=headers, json=message)
 
-    elif res["desc"] == "源文件不存在！":
-        print("==============================================\n")
-        return
-    if res["status"] != 1:
-        get_new_bzid_jid()
-        code = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
+        # 输出响应结果
+        print(response.text)
+    else:
+        print("No media_id in response")
 
-    send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
-    add_to_correct(correctlist, correctids, cuomin)
+def send_card(remaining,gongdan,modify,_all):
+    tittle = '网站自动改错成功'
+    desc_color = 3
 
+    # 定义要发送的消息内容
+    #
+    data = {
+        "msgtype": "template_card",
+        "template_card": {
+            "card_type": "text_notice",
+            "source": {
+                "icon_url": "https://wework.qpic.cn/wwpic/252813_jOfDHtcISzuodLa_1629280209/0",
+                "desc": "政府网站自动改错",
+                "desc_color": desc_color
+            },
+            "main_title": {
+                "title": tittle,
+                # "desc": "网址更新情况"
+            },
+            "emphasis_content": {
+                "title": _all,
+                "desc": "今日改错"
+            },
+            "quote_area": {
+                "type": 2,
+                "appid": 'wx818b6787d83f80cc',
+                "pagepath": "PAGEPATH",
+                # "title": "本次更新细节",
+                "quote_text": f"已成功修改：{modify}条\n需人工处理：{remaining}条\n需提交工单：{gongdan}条"
+            },
+            "sub_title_text": "点击卡片进入数字平昌小程序，参与积分活动换取精美礼品！",
 
+            "jump_list": [
+
+                {
+                    "type": 2,
+                    "appid": "wx818b6787d83f80cc",
+                    "pagepath": "PAGEPATH",
+                    "title": "跳转小程序"
+                }
+            ],
+            "card_action": {
+                "type": "2",
+                "appid": "wx818b6787d83f80cc",
+                "pagepath": "PAGEPATH"
+            }
+        }
+    }
+
+    # 定义企业微信机器人的webhook地址
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + conf.key_cs + '&debug=1'
+
+    # 发送HTTP POST请求
+    response = requests.post(url, data=json.dumps(data))
+
+    # 输出响应结果
+    print(response.text)
 def send_nosee():
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f" 检测到开普云有新类型错敏，机器人无法修改，请人工核实。\n<@WuXiaoLong>\n"
+            "content": f" 检测到开普云有新类型错敏，机器人无法修改，请人工核实。\n<@{conf.send_person[0]}>\n"
         }
     }
 
@@ -876,7 +996,7 @@ def send_nopage(url):
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f" 检测到无效静态页，请人工核实是否放入回收站。\n\n\n{url}\n\n\n<@WuXiaoLong>\n<@MingFengWangBaoNing>"
+            "content": f" 检测到无效静态页，请人工核实是否放入回收站。\n\n\n{url}\n\n\n<@{conf.send_person[1]}>\n<@{conf.send_person[0]}>"
         }
     }
 
@@ -1068,7 +1188,7 @@ def send_add_code():
     data = {
         "msgtype": "markdown",
         "markdown": {
-            "content": f"自动整改网站隐私泄露.\n\n\n发现新的隐私泄露类型或文章位置或未知错误，需要登录开普云看数据、加代码\n\n\n<@WuXiaoLong>"
+            "content": f"自动整改网站隐私泄露.\n\n\n发现新的隐私泄露类型或文章位置或未知错误，需要登录开普云看数据、加代码\n\n\n<@{conf.send_person[0]}>"
         }
     }
     key = conf.key_cs
