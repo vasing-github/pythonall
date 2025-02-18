@@ -877,10 +877,10 @@ def send_all():
 
 def send_excel(xlsxname):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', xlsx_name)
+    relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', xlsxname)
     # filename = os.path.join(subdirectory_path, conf.correct_name + formatted_date + '.xlsx')
     # wb.save(filename)
-    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + conf.key_cs
 
     # 加载现有的Excel文件
     wb = load_workbook(relative_path)
