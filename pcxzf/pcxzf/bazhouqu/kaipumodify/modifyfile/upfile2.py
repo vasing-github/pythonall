@@ -316,7 +316,7 @@ def modify_file_pdf(file_path, unique_replacements_list):
             sensitive_word = replacement["sensitiveWords"]
             new_word = replacement["recommendUpdate"]
             smart_replace(page,sensitive_word,new_word)
-    temp_file = input_file.replace(".pdf", "_temp.pdf")
+    temp_file = file_path.replace(".pdf", "_temp.pdf")
     doc.save(temp_file, garbage=4, deflate=True)
     doc.close()
 
@@ -448,10 +448,6 @@ def doc_to_docx(file_path):
         )
 
     return str(output_path)
-
-
-import fitz
-
 
 def find_and_replace_text(input_file, output_file, old_text, new_text):
     doc = fitz.open(input_file)

@@ -14,7 +14,7 @@ def get_year_planid(year):
     elif year == '23':
         return '429db59ff85d4cf4935c1f5b5f3f34c8'
     elif year == '24':
-        return '0bfc0819d26944b19d29b70197efedff'
+        return '6ed7ab2a5e4a42c2b1f950fec0ba1665'
     elif year == '25':
         return '578417f9da7b4a448af9525b927e9da6'
     elif year == '26':
@@ -42,7 +42,7 @@ jessionid = '2FBFE1F6184436312EB4751C84A2FE13'
 cookies = [
 
     {'name': 'diyige', 'year': [24],
-      'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzODI1MTk5MzAxMDQxNjQ1QDE0NyIsIm1vYmlsZSI6IjE4MjE1NTUyMjY5IiwidXNlck5hbWUiOiJ3ZW5kb25nbWVpMTIzIiwidXNlcklkIjoiN2JkZTQ0NzQtNmNhMC00YTYzLWFiODItN2ExYWUzYWJmNTA5IiwiaWF0IjoxNzM5NzczNTM3LCJqdGkiOiJkZTIzMWZmZWI4MGU0NmJhYWY0ZTdlNzVjZmE5MTEzNSJ9.YQk--bfLm0Ym7PmBw4__pPYb99C-A-fgm8NWRmGo2O0'},
+      'cookie': 'eyJhbGciOiJIUzI1NiJ9.eyJzeXN0ZW0iOiJncDUiLCJpZGVudGl0eUlkIjoiNTEzMDIxMTk5NTEyMDE4MDY3QDE1MSIsIm1vYmlsZSI6IjE4NDgyMTkyNjEwIiwidXNlck5hbWUiOiI1MTMwMjExOTk1MTIwMTgwNjciLCJ1c2VySWQiOiI3ZTE3OTc1Yy02NDJmLTRhODktYTVkOS03ZWVlODFjYzQyYjYiLCJpYXQiOjE3NDAwNDAyNDcsImp0aSI6IjBkZTdhNTNhNGZmZjQzZWE4YWJhZDZhMjdiYjIyZmQyIn0.HnSP3rFKLAjikP5VoGPxli0haFdFW8Sxp-xWIcRN4tU'},
     
 
     # {'name': 'er', 'year': [14,13,12],
