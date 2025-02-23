@@ -720,6 +720,8 @@ def cuo_excel_word(cuomin, item):
         return
     # 截取最后一个斜杠后的文件名
     filename = url.rsplit('/', 1)[-1]
+    if 'fileName=' in filename:
+        filename = filename.split('fileName=', 1)[-1]
     path_start = conf.jiyuehua_pathstart
     path_excel = url.split(path_start, 1)[-1]
     filepath = None

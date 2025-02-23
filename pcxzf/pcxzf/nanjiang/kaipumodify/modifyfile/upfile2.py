@@ -19,7 +19,7 @@ from pathlib import Path
 def upload_new_file(jid, bz_gov_id, filename, columnId):
     cookies = {
         'authenticatecenterjsessionid': jid,
-        'bz_govc_SHIROJSESSIONID': bz_gov_id,
+        conf.jiyuehua_bzgov_shriojid: bz_gov_id,
     }
 
     headers = {
