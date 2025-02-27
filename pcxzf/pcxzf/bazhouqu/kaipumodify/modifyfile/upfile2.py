@@ -72,10 +72,10 @@ def download_file(url, local_filename):
 
 
 def modify_file_xls(file_path, unique_replacements_list):
-    # 打开xls文件
+
+        # 原处理逻辑
     workbook_xls = xlrd.open_workbook(file_path, formatting_info=True)
     workbook_copy = copy(workbook_xls)
-
 
     # 遍历所有的sheet
     for sheet_index in range(workbook_xls.nsheets):
@@ -149,37 +149,46 @@ def modify_file_docx(file_path, unique_replacements_list):
     print(f"文件 '{file_path}' 已成功修改并保存")
 
 
-
-
 def modify_file(filename, item):
+    modified_flag = 0  # 新增标志位 (0=未修改文件名，1=已修改)
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, 'downloadfile', filename)
+    original_ext = os.path.splitext(file_path)[1].lower()  # 获取原始小写后缀
 
-    file_path = os.path.join(script_dir, 'downloadfile',filename)
+    # 处理.xls文件的真实格式验证
+    if original_ext == '.xls':
+        real_format = check_real_format(file_path)
 
+        # 当实际格式为xlsx时的处理
+        if real_format == 'xlsx':
+            new_path = file_path.rsplit('.', 1)[0] + '.xlsx'
+            os.rename(file_path, new_path)  # 重命名文件
+            file_path = new_path  # 更新后续操作用的新路径
+            original_ext = '.xlsx'  # 更新当前处理的后缀
+            modified_flag = 1
+    # 后续的统一处理逻辑
     _, file_extension = os.path.splitext(file_path)
+    file_extension = file_extension.lower()
 
     unique_replacements = {}
     for i in item:
         key = (i['sensitiveWords'], i['recommendUpdate'])
-        if key not in unique_replacements:
-            unique_replacements[key] = i
+        unique_replacements.setdefault(key, i)
 
-    # 将字典转换为列表
     unique_replacements_list = list(unique_replacements.values())
 
-    if file_extension == '.xls':
-        modify_file_xls(file_path, unique_replacements_list)
-    elif file_extension == '.xlsx':
-        modify_file_xlsx(file_path, unique_replacements_list)
-    elif  file_extension == '.docx':
-        modify_file_docx(file_path, unique_replacements_list)
-    elif file_extension == '.doc' :
-        modify_file_doc(file_path, unique_replacements_list)
-        return 1
-    elif file_extension == '.pdf' or file_extension == 'PDF':
-        modify_file_pdf(file_path, unique_replacements_list)
-    return 0
+    format_handlers = {
+        '.xls': lambda: modify_file_xls(file_path, unique_replacements_list),
+        '.xlsx': lambda: modify_file_xlsx(file_path, unique_replacements_list),
+        '.docx': lambda: modify_file_docx(file_path, unique_replacements_list),
+        '.doc': lambda: modify_file_doc(file_path, unique_replacements_list) or 1,
+        '.pdf': lambda: modify_file_pdf(file_path, unique_replacements_list)
+    }
 
+    handler_result = format_handlers.get(file_extension.lower(), lambda: 0)()
+
+    # 最终返回逻辑：文件名被修改 或 处理函数返回1 时返回1
+    return 1 if modified_flag else handler_result
 
 def generate_splits(old_text):
     """生成所有两段式拆分组合（包含完整未拆分情况）"""
@@ -570,12 +579,25 @@ def find_and_replace_text2(input_file, output_file, old_text, new_text):
     doc.save(output_file, garbage=4, deflate=True, clean=True)
 
 
+def check_real_format(file_path):
+    with open(file_path, "rb") as f:
+        header = f.read(4)
+        # .xls 的标准文件头
+        if header in [b'\xD0\xCF\x11\xE0', b'\x09\x08\x10\x00']:
+            return 'xls'
+        # .xlsx 的文件头是 PK 头（ZIP压缩格式）
+        elif header == b'PK\x03\x04':
+            return 'xlsx'
+        else:
+            return 'unknown'
+
+
+
 if __name__ == "__main__":
-    input_file = r"G:\project\python\pcxzf\pcxzf\bazhouqu\kaipumodify\modifyfile\downloadfile\20180904150156-752201\20180904150156-752201_101.pdf"
-    output_file = r"G:\project\python\pcxzf\pcxzf\bazhouqu\kaipumodify\modifyfile\downloadfile\20180904150156-752201\modified_output.pdf"
+    input_file = r"G:\project\python\pcxzf\pcxzf\bazhouqu\kaipumodify\modifyfile\downloadfile\rBUtIWe-ipyAL7dEAAAs1JQVr5o421.xls"
+    # output_file = r"G:\project\python\pcxzf\pcxzf\bazhouqu\kaipumodify\modifyfile\downloadfile\20180904150156-752201\modified_output.pdf"
 
-    # 示例替换参数（需要您自行修改）
-    old_text = "中华人民共和国国家发展改革委员会"
-    new_text = "中华人民共和国国家发展和改革委员会"
+    real_format = check_real_format(input_file)
+    print(f"文件真实格式: {real_format}")
 
-    find_and_replace_text2(input_file, output_file, old_text, new_text)
+

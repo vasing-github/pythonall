@@ -12,6 +12,8 @@ import requests
 from bs4 import BeautifulSoup
 from collections import defaultdict
 import two_argument_article
+import xlrd
+from xlrd import XLRDError
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 获取项目的根目录
 project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
@@ -739,9 +741,22 @@ def cuo_excel_word(cuomin, item):
     # 获取最后一个数字
     last_number = numbers[-1] if numbers else None
 
-    is_doc = upfile2.modify_file(filename, item)
+    try:
+        is_doc = upfile2.modify_file(filename, item)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"文件 [{filename}] 不存在")  # 明确提示路径问题
+    except PermissionError:
+        raise PermissionError(f"无权访问文件 [{filename}]")  # 权限问题专项提示
+    except (xlrd.XLRDError, xlwt.ExcelFormulaParserError) as e:
+        # Excel格式/公式等特定错误
+        raise ValueError(f"文件 [{filename}] 格式解析失败: {str(e)}") from e
+    except Exception as e:
+        # 兜底未知错误
+        raise RuntimeError(f"处理文件 [{filename}] 时发生未知错误") from e
+
     if is_doc:
-        path_excel = path_excel+'x'
+        # path_excel = path_excel+'x'
+        filename = filename+'x'
     if "oldfiles" in url: #这里表示是老文件，没法调用替换接口，要先上传一个新文件，再把内容中附件路径改了
         deal_oldfiles(numbers,filename,url)
     else:
