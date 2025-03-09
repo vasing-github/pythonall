@@ -867,7 +867,7 @@ def dealcuo():
 
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
                 try:
-                    # cuo_hudong(cuomin, item)
+                    cuo_hudong(cuomin, item)
                     pass
                 except Exception as e:
                     print(f"An error occurred: {e}")
