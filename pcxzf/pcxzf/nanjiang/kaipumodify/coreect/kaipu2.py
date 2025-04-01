@@ -6,6 +6,11 @@ import sys
 import time
 from datetime import datetime, timedelta
 from io import BytesIO
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 获取项目的根目录
+project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir, os.pardir, os.pardir))
+# 将项目根目录添加到 sys.path
+sys.path.append(project_root)
 import one_argument_article
 import hudongcontent
 import requests
@@ -13,12 +18,9 @@ from bs4 import BeautifulSoup
 from collections import defaultdict
 import two_argument_article
 import xlrd
+import xlwt
 from xlrd import XLRDError
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# 获取项目的根目录
-project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
-# 将项目根目录添加到 sys.path
-sys.path.append(project_root)
+
 from nanjiang.kaipumodify.cfg import dealtext
 from nanjiang.kaipumodify.cfg import conf
 import nanjiang.kaipumodify.cfg.text as text
@@ -529,20 +531,69 @@ def add_to_correct(correctlist, correctids, cuomin):
     kaipucorrect(correctids)
 
 
-def cuo_1_argument(numbers, cuomin, item):
-    res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
+def delete_jingtai(url):
+   
+    cookies = {
+        'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E7%BB%9F%E8%AE%A1%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%B4%A2%E6%94%BF%E5%B1%80%2C%E5%B7%B4%E4%B8%AD%E6%97%A5%E6%8A%A5%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%87%AA%E7%84%B6%E8%B5%84%E6%BA%90%E5%92%8C%E8%A7%84%E5%88%92%E5%B1%80',
+        'authenticatecenterjsessionid': jid,
+        conf.jiyuehua_bzgov_shriojid: bz_gov_id,
+    }
 
+    headers = {
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Connection': 'keep-alive',
+        # 'Referer': 'http://10.15.3.133:83/index;JSESSIONID=a7a728a5-5bdc-477a-9d4a-da1ced03e00d?s=1743383091189&siteId=',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0',
+        'X-Requested-With': 'XMLHttpRequest',
+        # 'Cookie': 'historyCookie=%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E7%BB%9F%E8%AE%A1%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%B4%A2%E6%94%BF%E5%B1%80%2C%E5%B7%B4%E4%B8%AD%E6%97%A5%E6%8A%A5%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%87%AA%E7%84%B6%E8%B5%84%E6%BA%90%E5%92%8C%E8%A7%84%E5%88%92%E5%B1%80; authenticatecenterjsessionid=YTc0MTQ2OTMtMWVlYy00ODQ5LWEyYWYtYzdjZjA3M2M0Yzgz; bz_govc_SHIROJSESSIONID=c828dedf-a396-430f-a431-4155182c8e54',
+    }
+
+    params = {
+        'IsAjax': '1',
+        'dataType': 'JSON',
+        '_': '1743383193823',
+        'staticPageUrl': url,
+    }
+
+    response = requests.get(
+        'http://10.15.3.133:'+conf.jiyuehua_port+'/content/deleteStaticPage',
+        params=params,
+        cookies=cookies,
+        headers=headers,
+        verify=False,
+    )
+    print(response.text)
+
+def cuo_1_argument(numbers, cuomin, item):
+    # 获取文章内容
+    res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
+    
+    # 如果session过期，重新获取并重试
     if res['status'] == -9:
         get_new_bzid_jid()
         res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
+    
+    # 检查文章数据是否存在且作者不为空
+    if not res.get('data') or not res['data'].get('article') or not res['data']['article'].get('author'):
+        delete_jingtai(cuomin['url'])
+        handle_failure(cuomin, item)
+        return
+        
+    # 保存修改后的文章
     res_save = one_argument_article.savearticnews(res, item, bz_gov_id, jid)
     print(res_save)
+    
+    # 根据保存结果处理
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
     else:
-        add_2_excel_kaipu(item)
-        for cuomin in item:
-            make_xlsx(cuomin, conf.send_modified)
+        handle_failure(cuomin, item)
+
+def handle_failure(cuomin, item):
+    add_2_excel_kaipu(item)
+    for cuomin in item:
+        make_xlsx(cuomin, conf.send_modified)
 
 
 def cuo_2_aruments(numbers, cuomin, item):
@@ -867,8 +918,8 @@ def dealcuo():
 
             elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
                 try:
-                    # cuo_hudong(cuomin, item)
-                    pass
+                    cuo_hudong(cuomin, item)
+                   
                 except Exception as e:
                     print(f"An error occurred: {e}")
 

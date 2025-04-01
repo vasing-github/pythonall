@@ -168,26 +168,63 @@ def savearticnews2(content, wrong_words, right,bz_id,jid):
 
     return response.json()
 
-def muti_argument_replace(content,item, str):
+def deal_new_right_words(wrong, right):
+    replacements = []
+    
+    if '疑似时间错误' in right:
+        # 使用列表存储需要替换的时间词
+        time_words = ['上午', '下午', '晚上', '早上', '晚']
+        for word in time_words:
+            if word in wrong:
+                right = wrong.replace(word, '')
+                break
+        print("real right", right)
+        replacements.append((wrong, right))
+    # 处理"两会"的情况
+    elif '注意区分是全国两会还是地方两会' in right:
+        right = '地方"两会"'
+        print("real right", right)
+        replacements.append((wrong, right))
+    
+    elif '涉及到' in wrong:
+        right = '涉及'
+        print("real right", right)
+        replacements.append((wrong, right))
+    else:
+        # 检查right是否包含wrong
+        if wrong in right:
+            # 添加原始替换对
+            replacements.append((wrong, right))
+            # 添加新的替换对
+            new_wrong = right.replace(wrong, right)
+            replacements.append((new_wrong, right))
+        else:
+            replacements.append((wrong, right))
+            
+    return replacements
 
+
+def muti_argument_replace(content, item, str):
     # 遍历列表并替换
     if content and content.get('data') and content['data'].get('article') and content['data']['article'].get(str):
         new_argu = content['data']['article'][str]
         for replacement in item:
             wrong = replacement['sensitiveWords']
-            right = replacement['recommendUpdate'].split('|')[0]
-            new_argu = new_argu.replace(wrong, right)
+            replacements = deal_new_right_words(wrong, replacement['recommendUpdate'].split('|')[0])
+            for wrong_word, right_word in replacements:
+                new_argu = new_argu.replace(wrong_word, right_word)
     else:
         return None
 
     return new_argu
 
-def repalce_content(content,item):
+def repalce_content(content, item):
     new_argu = content['data']['content']
     for replacement in item:
         wrong = replacement['sensitiveWords']
-        right = replacement['recommendUpdate'].split('|')[0]
-        new_argu = new_argu.replace(wrong, right)
+        replacements = deal_new_right_words(wrong, replacement['recommendUpdate'].split('|')[0])
+        for wrong_word, right_word in replacements:
+            new_argu = new_argu.replace(wrong_word, right_word)
     return new_argu
 
 
@@ -318,4 +355,5 @@ def modify(id, wrong, right):
 
 
 if __name__ == '__main__':
-    test()
+    print(deal_new_right_words("十九届","党的十九届"))
+    print(deal_new_right_words("晚上14","疑似时间错误"))

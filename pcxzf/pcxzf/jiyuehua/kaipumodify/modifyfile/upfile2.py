@@ -72,8 +72,7 @@ def download_file(url, local_filename):
 
 
 def modify_file_xls(file_path, unique_replacements_list):
-
-        # 原处理逻辑
+    # 原处理逻辑
     workbook_xls = xlrd.open_workbook(file_path, formatting_info=True)
     workbook_copy = copy(workbook_xls)
 
@@ -88,12 +87,10 @@ def modify_file_xls(file_path, unique_replacements_list):
                 cell_value = sheet_xls.cell_value(row, col)
 
                 for i in unique_replacements_list:
-
                     if isinstance(cell_value, str) and i["sensitiveWords"] in cell_value:
                         new_value = cell_value.replace(i["sensitiveWords"], i["recommendUpdate"])
                         sheet_copy.write(row, col, new_value)
-                        print(
-                            f"Sheet '{sheet_xls.name}' 中的单元格 '{row + 1},{col + 1}' 的值已从 '{cell_value}' 替换为 '{new_value}'")
+                        print(f"Sheet '{sheet_xls.name}' 中的单元格 '{row + 1},{col + 1}' 的值已从 '{cell_value}' 替换为 '{new_value}'")
 
     # 保存修改后的xls文件
     workbook_copy.save(file_path)
@@ -170,10 +167,16 @@ def modify_file(filename, item):
     _, file_extension = os.path.splitext(file_path)
     file_extension = file_extension.lower()
 
+    # 预处理替换内容
     unique_replacements = {}
     for i in item:
-        key = (i['sensitiveWords'], i['recommendUpdate'])
-        unique_replacements.setdefault(key, i)
+        wrong = i['sensitiveWords']
+        l = deal_new_right_words(wrong,i['recommendUpdate'].split('|')[0])
+            
+        # 使用处理后的right值
+        for wrong_word, right_word in l:
+            key = (wrong_word, right_word)
+            unique_replacements.setdefault(key, {'sensitiveWords': wrong_word, 'recommendUpdate': right_word})
 
     unique_replacements_list = list(unique_replacements.values())
 
@@ -189,6 +192,42 @@ def modify_file(filename, item):
 
     # 最终返回逻辑：文件名被修改 或 处理函数返回1 时返回1
     return 1 if modified_flag else handler_result
+
+def deal_new_right_words(wrong, right):
+    replacements = []
+    
+    if '疑似时间错误' in right:
+        # 使用列表存储需要替换的时间词
+        time_words = ['上午', '下午', '晚上', '早上', '晚']
+        for word in time_words:
+            if word in wrong:
+                right = wrong.replace(word, '')
+                break
+        print("real right", right)
+        replacements.append((wrong, right))
+    # 处理"两会"的情况
+    elif '注意区分是全国两会还是地方两会' in right:
+        right = '地方"两会"'
+        print("real right", right)
+        replacements.append((wrong, right))
+    
+    elif '涉及到' in wrong:
+        right = '涉及'
+        print("real right", right)
+        replacements.append((wrong, right))
+    else:
+        # 检查right是否包含wrong
+        if wrong in right:
+            # 添加原始替换对
+            replacements.append((wrong, right))
+            # 添加新的替换对
+            new_wrong = right.replace(wrong, right)
+            replacements.append((new_wrong, right))
+        else:
+            replacements.append((wrong, right))
+            
+    return replacements
+
 
 def generate_splits(old_text):
     """生成所有两段式拆分组合（包含完整未拆分情况）"""

@@ -375,12 +375,48 @@ def correct_string2(content, wrong_list, correct):
         content = content.replace(wrong, correct)
     return content
 
+def deal_new_right_words(wrong, right):
+    replacements = []
+    
+    if '疑似时间错误' in right:
+        # 使用列表存储需要替换的时间词
+        time_words = ['上午', '下午', '晚上', '早上', '晚']
+        for word in time_words:
+            if word in wrong:
+                right = wrong.replace(word, '')
+                break
+        print("real right", right)
+        replacements.append((wrong, right))
+    # 处理"两会"的情况
+    elif '注意区分是全国两会还是地方两会' in right:
+        right = '地方"两会"'
+        print("real right", right)
+        replacements.append((wrong, right))
+    
+    elif '涉及到' in wrong:
+        right = '涉及'
+        print("real right", right)
+        replacements.append((wrong, right))
+    else:
+        # 检查right是否包含wrong
+        if wrong in right:
+            # 添加原始替换对
+            replacements.append((wrong, right))
+            # 添加新的替换对
+            new_wrong = right.replace(wrong, right)
+            replacements.append((new_wrong, right))
+        else:
+            replacements.append((wrong, right))
+            
+    return replacements
+
 
 def correct_string(content, item):
     for replacement in item:
         wrong = replacement['sensitiveWords']
-        right = replacement['recommendUpdate'].split('|')[0]
-        content = content.replace(wrong, right)
+        l = deal_new_right_words(wrong,replacement['recommendUpdate'].split('|')[0])
+        for wrong_word, right_word in l:
+            content = content.replace(wrong_word, right_word)
 
     return content
 
@@ -391,4 +427,4 @@ def modify(organId, contentId, wrong, right):
 
 
 if __name__ == '__main__':
-    pass
+    print(deal_new_right_words("十九届","党的十九届"))
