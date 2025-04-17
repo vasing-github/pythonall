@@ -575,9 +575,11 @@ def cuo_1_argument(numbers, cuomin, item):
         res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
     
     # 检查文章数据是否存在且作者不为空
-    if not res.get('data') or not res['data'].get('article') or not res['data']['article'].get('author'):
-        delete_jingtai(cuomin['url'])
-        handle_failure(cuomin, item)
+    if (res.get('data') is None) or \
+       (res.get('data', {}).get('article') is None) or \
+       (res.get('data', {}).get('article', {}).get('author') is None):
+        # delete_jingtai(cuomin['url'])
+        # handle_failure(cuomin, item)
         return
         
     # 保存修改后的文章
