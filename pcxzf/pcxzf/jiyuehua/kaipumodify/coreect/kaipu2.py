@@ -99,6 +99,69 @@ def get_cuomin_list():
     return response.json()['data']['records']
 
 
+def get_like_havnt_coreect_list():
+    cookies = {
+        'HWWAFSESID': '49d6373a41e52c2bd8',
+        'HWWAFSESTIME': '1716168884097',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Authorization': 'Bearer ' + token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'HWWAFSESID=49d6373a41e52c2bd8; HWWAFSESTIME=1716168884097',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+    'page': {
+        'size': 100,
+        'current': 1,
+    },
+    'check': 1,
+    'dataState': True,
+    'dateType': 1,
+    'codeType': 1,
+    'custCode': conf.kaipu_area,
+    'startDate': startDate_str,
+    'endDate': endDate_str,
+    'rectifyStatus': 1,
+    'searchBox': '',
+    'siteInfo': '',
+    'checkReviewType': 3,
+    'distSign': 0,
+    'questionLevel': '',
+    'labelIds': [],
+    'resultType': '',
+    'pageType': '',
+    'recommendUpdateList': [],
+    'url': '',
+    'searchUrlType': 1,
+    'sensitiveWordFuzzy': False,
+    'protectCode': conf.kaipu_area,
+    'custLevel': '1',
+    'unitLevel': 3,
+    'isHandoff': 1,
+}
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteSensitiveDetail/listPageByDto',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+    print(response.text)
+    return response.json()['data']['records']
+
 def get_secrit():
     cookies = {
         'Path': '/',
@@ -890,46 +953,49 @@ def deal_cuomin_list(list_cuomin):
     result_dict = dict(result_dict)
     return  result_dict
 
+def start_modify(list_cuomin):
 
+
+    result_dic = deal_cuomin_list(list_cuomin)
+    for url, item in result_dic.items():
+
+        cuomin = item[0]
+        print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
+        print(url)
+        if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin[
+            'column'] != '互动交流':  # 表示是文章类型
+
+            numbers = extract_numbers(url)
+            # 将提取出的数字转换为整数
+            numbers = [int(num) for num in numbers]
+            # 判断 URL 类型并返回结果
+            if len(numbers) == 1:
+                cuo_1_argument(numbers, cuomin, item)
+            elif len(numbers) == 2:
+                cuo_2_aruments(numbers, cuomin, item)
+            else:
+                print("未知情况")
+                send_nosee()
+
+        elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
+            try:
+                cuo_hudong(cuomin, item)
+
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+        elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6" or cuomin['pageType'] == "9":  # 表格类错误
+            cuo_excel_word(cuomin, item)
+        else:
+            send_excel_correct(cuomin['url'])
+        print("\n")
 
 def dealcuo():
     kaipu_waitrefix = start_search()
     if kaipu_waitrefix != 0:
-
         list_cuomin = get_cuomin_list()
+        start_modify(list_cuomin)
 
-        result_dic = deal_cuomin_list(list_cuomin)
-        for url , item in result_dic.items():
-
-            cuomin = item[0]
-            print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
-            print(url)
-            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
-
-                numbers = extract_numbers(url)
-                # 将提取出的数字转换为整数
-                numbers = [int(num) for num in numbers]
-                # 判断 URL 类型并返回结果
-                if len(numbers) == 1:
-                    cuo_1_argument(numbers, cuomin, item)
-                elif len(numbers) == 2:
-                    cuo_2_aruments(numbers, cuomin, item)
-                else:
-                    print("未知情况")
-                    send_nosee()
-
-            elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
-                try:
-                    cuo_hudong(cuomin, item)
-                   
-                except Exception as e:
-                    print(f"An error occurred: {e}")
-
-            elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6" or cuomin['pageType'] == "9":  # 表格类错误
-                cuo_excel_word(cuomin, item)
-            else:
-                send_excel_correct(cuomin['url'])
-            print("\n")
     send_all()
 
 def send_all():
@@ -1320,6 +1386,9 @@ if __name__ == '__main__':
     print(f"当前文件: {__file__}")
     dealcuo()
     deal_secrit()
+
+    # 这是修改疑似未整改
+    # start_modify(get_like_havnt_coreect_list())
 
 
 

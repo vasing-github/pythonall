@@ -6,6 +6,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 from io import BytesIO
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 获取项目的根目录
 project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir, os.pardir, os.pardir))
@@ -27,8 +28,6 @@ import nanjiang.kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from nanjiang.kaipumodify.modifyfile import upfile2
-
-
 
 token = text.token
 
@@ -83,6 +82,70 @@ def get_cuomin_list():
         'resultType': '',
         'pageType': '',
         'recommendUpdateList': [],
+        'protectCode': conf.kaipu_area,
+        'custLevel': '1',
+        'unitLevel': 3,
+        'isHandoff': 1,
+    }
+
+    response = requests.post(
+        'https://datais.ucap.com.cn/cloud-website-web/websiteSensitiveDetail/listPageByDto',
+        cookies=cookies,
+        headers=headers,
+        json=json_data,
+    )
+    # print(response.text)
+    return response.json()['data']['records']
+
+
+def get_like_havnt_coreect_list():
+    cookies = {
+        'HWWAFSESID': '49d6373a41e52c2bd8',
+        'HWWAFSESTIME': '1716168884097',
+    }
+
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        'Authorization': 'Bearer ' + token,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        # 'Cookie': 'HWWAFSESID=49d6373a41e52c2bd8; HWWAFSESTIME=1716168884097',
+        'Origin': 'https://datais.ucap.com.cn',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+    }
+
+    json_data = {
+        'page': {
+            'size': 100,
+            'current': 2,
+        },
+        'check': 1,
+        'dataState': True,
+        'dateType': 1,
+        'codeType': 1,
+        'custCode': conf.kaipu_area,
+        'startDate': startDate_str,
+        'endDate': endDate_str,
+        'rectifyStatus': 1,
+        'searchBox': '',
+        'siteInfo': '',
+        'checkReviewType': 3,
+        'distSign': 0,
+        'questionLevel': '',
+        'labelIds': [],
+        'resultType': '',
+        'pageType': '',
+        'recommendUpdateList': [],
+        'url': '',
+        'searchUrlType': 1,
+        'sensitiveWordFuzzy': False,
         'protectCode': conf.kaipu_area,
         'custLevel': '1',
         'unitLevel': 3,
@@ -524,6 +587,7 @@ def add_2_excel_kaipu(item):
         __kaipu_cuo_list.append(cuomin['id'])
     kaipucorrect(__kaipu_cuo_list)
 
+
 def add_to_correct(correctlist, correctids, cuomin):
     correctids.append(cuomin['id'])
     correctlist.append((cuomin['sensitiveWords'], cuomin['recommendUpdate'], cuomin['snapshotNew'], cuomin['url'],
@@ -532,7 +596,6 @@ def add_to_correct(correctlist, correctids, cuomin):
 
 
 def delete_jingtai(url):
-   
     cookies = {
         'historyCookie': '%E5%B9%B3%E6%98%8C%E5%8E%BF%E5%8D%8E%E6%96%87%E5%85%AC%E5%85%B1%E4%BA%A4%E9%80%9A%E8%BF%90%E8%BE%93%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E7%BB%9F%E8%AE%A1%E5%B1%80%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%B4%A2%E6%94%BF%E5%B1%80%2C%E5%B7%B4%E4%B8%AD%E6%97%A5%E6%8A%A5%2C%E4%B8%AD%E5%9B%BD%E6%94%BF%E5%BA%9C%E7%BD%91%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%8A%9E%E5%85%AC%E5%AE%A4%2C%E5%8E%BF%E8%9E%8D%E5%AA%92%E4%BD%93%E4%B8%AD%E5%BF%83%2C%E5%B9%B3%E6%98%8C%E5%8E%BF%E8%87%AA%E7%84%B6%E8%B5%84%E6%BA%90%E5%92%8C%E8%A7%84%E5%88%92%E5%B1%80',
         'authenticatecenterjsessionid': jid,
@@ -557,7 +620,7 @@ def delete_jingtai(url):
     }
 
     response = requests.get(
-        'http://10.15.3.133:'+conf.jiyuehua_port+'/content/deleteStaticPage',
+        'http://10.15.3.133:' + conf.jiyuehua_port + '/content/deleteStaticPage',
         params=params,
         cookies=cookies,
         headers=headers,
@@ -565,32 +628,34 @@ def delete_jingtai(url):
     )
     print(response.text)
 
+
 def cuo_1_argument(numbers, cuomin, item):
     # 获取文章内容
     res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
-    
+
     # 如果session过期，重新获取并重试
     if res['status'] == -9:
         get_new_bzid_jid()
         res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
-    
+
     # 检查文章数据是否存在且作者不为空
     if (res.get('data') is None) or \
-       (res.get('data', {}).get('article') is None) or \
-       (res.get('data', {}).get('article', {}).get('author') is None):
+            (res.get('data', {}).get('article') is None) or \
+            (res.get('data', {}).get('article', {}).get('author') is None):
         # delete_jingtai(cuomin['url'])
         # handle_failure(cuomin, item)
         return
-        
+
     # 保存修改后的文章
     res_save = one_argument_article.savearticnews(res, item, bz_gov_id, jid)
     print(res_save)
-    
+
     # 根据保存结果处理
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
     else:
         handle_failure(cuomin, item)
+
 
 def handle_failure(cuomin, item):
     add_2_excel_kaipu(item)
@@ -599,12 +664,11 @@ def handle_failure(cuomin, item):
 
 
 def cuo_2_aruments(numbers, cuomin, item):
-
     res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
     if res['status'] == -9:
         get_new_bzid_jid()
         res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-    res_save = two_argument_article.saveorupdate(res, item,bz_gov_id, jid)
+    res_save = two_argument_article.saveorupdate(res, item, bz_gov_id, jid)
 
     if res_save['status'] == 0:
         send_nopage(cuomin['url'])
@@ -623,6 +687,7 @@ def cuo_hudong(cuomin, item):
     add_2_excel_kaipu(item)
     for cuomin in item:
         make_xlsx(cuomin, conf.send_modified)
+
 
 def extract_numbers(url):
     # 用斜杠截取 URL
@@ -689,8 +754,6 @@ def send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommen
     print(response.text)
 
 
-
-
 def count_today_rows(xlsx_name):
     """
     统计今天新增的Excel行数
@@ -741,21 +804,27 @@ def count_today_rows(xlsx_name):
         return 0
 
 
-def make_xlsx(cuomin,xlsx_name):
+def make_xlsx(cuomin, xlsx_name):
     relative_path = os.path.join(current_dir, '..', 'modifyfile', 'sendfile', xlsx_name)
     current_time = datetime.now()  # 格式化时间，精确到分钟
     formatted_time = current_time.strftime("%Y-%m-%d %H:%M")
     wb = load_workbook(relative_path)
     ws = wb.active
     row = ws.max_row
-    ws.append([formatted_time,cuomin['url'],cuomin['snapshotNew'],cuomin['sensitiveWords'],cuomin['recommendUpdate'],cuomin['articleTitle'],cuomin['parentUrl'],cuomin['parentTitle']])
+    ws.append(
+        [formatted_time, cuomin['url'], cuomin['snapshotNew'], cuomin['sensitiveWords'], cuomin['recommendUpdate'],
+         cuomin['articleTitle'], cuomin['parentUrl'], cuomin['parentTitle']])
     wb.save(relative_path)
+
+
 def remove_protocol(url):
     # 如果URL为空或None，直接返回
     if not url:
         return url
     # 分割协议和后面的部分，取最后一部分（即去除协议）
     return url.split('://', 1)[-1]
+
+
 def cuo_excel_word(cuomin, item):
     articleTitle = cuomin['articleTitle']
     parent_url = cuomin['parentUrl']
@@ -769,8 +838,9 @@ def cuo_excel_word(cuomin, item):
         url = conf.jiyuehua_httpstart + url
 
     print(f'匹配的href: {url}')
-    if url is None or remove_protocol(url) != remove_protocol(cuomin.get('url')):  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
-        make_xlsx(cuomin,conf.send_gongdan_xlsx)
+    if url is None or remove_protocol(url) != remove_protocol(
+            cuomin.get('url')):  # 父页面中匹配不到附件地址，说明这是缓存的附件，不是页面中真实展示的附件，提交工单删除缓存附件
+        make_xlsx(cuomin, conf.send_gongdan_xlsx)
         add_2_excel_kaipu(item)
         return
     # 截取最后一个斜杠后的文件名
@@ -809,9 +879,9 @@ def cuo_excel_word(cuomin, item):
 
     if is_doc:
         # path_excel = path_excel+'x'
-        filename = filename+'x'
-    if "oldfiles" in url: #这里表示是老文件，没法调用替换接口，要先上传一个新文件，再把内容中附件路径改了
-        deal_oldfiles(numbers,filename,url)
+        filename = filename + 'x'
+    if "oldfiles" in url:  # 这里表示是老文件，没法调用替换接口，要先上传一个新文件，再把内容中附件路径改了
+        deal_oldfiles(numbers, filename, url)
     else:
         res = upfile2.uploadfile(jid, bz_gov_id, filename, path_excel, parentTitle, articleTitle, last_number)
 
@@ -825,14 +895,13 @@ def cuo_excel_word(cuomin, item):
             print("==============================================\n")
             return
 
-
     send_excel_modify_success(parent_url, articleTitle, sensitiveWords, recommendUpdate)
     add_2_excel_kaipu(item)
     for cuomin in item:
         make_xlsx(cuomin, conf.send_modified)
 
 
-def deal_oldfiles(numbers,filename,url):
+def deal_oldfiles(numbers, filename, url):
     columnId = ''
     if len(numbers) == 1:
         res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
@@ -842,7 +911,7 @@ def deal_oldfiles(numbers,filename,url):
         columnId = res['data']['article']['columnId']
         new_file_url = upfile2.upload_new_file(jid, bz_gov_id, filename, columnId)
 
-        res_save = one_argument_article.savearticnews(res, get_item_argument(url,new_file_url), bz_gov_id, jid)
+        res_save = one_argument_article.savearticnews(res, get_item_argument(url, new_file_url), bz_gov_id, jid)
     elif len(numbers) == 2:
         res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
         if res['status'] == -9:
@@ -851,9 +920,10 @@ def deal_oldfiles(numbers,filename,url):
 
         new_file_url = upfile2.upload_new_file(jid, bz_gov_id, filename, '0')
 
-        res_save = two_argument_article.saveorupdate(res, get_item_argument(url,new_file_url), bz_gov_id, jid)
+        res_save = two_argument_article.saveorupdate(res, get_item_argument(url, new_file_url), bz_gov_id, jid)
 
-def get_item_argument(url,new_file_url):
+
+def get_item_argument(url, new_file_url):
     item = [
         {
             "sensitiveWords": extract_url_path(url),  # 必须字段，原始敏感词
@@ -861,6 +931,8 @@ def get_item_argument(url,new_file_url):
         }
     ]
     return item
+
+
 def extract_url_path(url):
     """
     从URL中提取以/oldfiles开头的路径部分
@@ -877,6 +949,7 @@ def extract_url_path(url):
     else:
         raise ValueError("URL中未找到/oldfiles开头的路径")
 
+
 def deal_cuomin_list(list_cuomin):
     # 创建一个默认字典，值为列表
     result_dict = defaultdict(list)
@@ -888,62 +961,67 @@ def deal_cuomin_list(list_cuomin):
 
     # 将默认字典转换为普通字典
     result_dict = dict(result_dict)
-    return  result_dict
+    return result_dict
 
+
+def start_modify(list_cuomin):
+    result_dic = deal_cuomin_list(list_cuomin)
+    for url, item in result_dic.items():
+
+        cuomin = item[0]
+        print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
+        print(url)
+        if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin[
+            'column'] != '互动交流':  # 表示是文章类型
+
+            numbers = extract_numbers(url)
+            # 将提取出的数字转换为整数
+            numbers = [int(num) for num in numbers]
+            # 判断 URL 类型并返回结果
+            if len(numbers) == 1:
+                cuo_1_argument(numbers, cuomin, item)
+            elif len(numbers) == 2:
+                cuo_2_aruments(numbers, cuomin, item)
+            else:
+                print("未知情况")
+                send_nosee()
+
+        elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
+            try:
+                cuo_hudong(cuomin, item)
+
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+        elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6" or cuomin['pageType'] == "9":  # 表格类错误
+            cuo_excel_word(cuomin, item)
+        else:
+            send_excel_correct(cuomin['url'])
+        print("\n")
 
 
 def dealcuo():
     kaipu_waitrefix = start_search()
     if kaipu_waitrefix != 0:
-
         list_cuomin = get_cuomin_list()
+        start_modify(list_cuomin)
 
-        result_dic = deal_cuomin_list(list_cuomin)
-        for url , item in result_dic.items():
-
-            cuomin = item[0]
-            print(cuomin['sensitiveWords'], cuomin['recommendUpdate'])
-            print(url)
-            if cuomin['pageType'] == "3" and cuomin['column'] != '县长信箱' and cuomin['column'] != '书记信箱' and cuomin['column'] != '互动交流':  # 表示是文章类型
-
-                numbers = extract_numbers(url)
-                # 将提取出的数字转换为整数
-                numbers = [int(num) for num in numbers]
-                # 判断 URL 类型并返回结果
-                if len(numbers) == 1:
-                    cuo_1_argument(numbers, cuomin, item)
-                elif len(numbers) == 2:
-                    cuo_2_aruments(numbers, cuomin, item)
-                else:
-                    print("未知情况")
-                    send_nosee()
-
-            elif cuomin['column'] == '互动交流' or cuomin['column'] == '县长信箱' or cuomin['column'] == '书记信箱':
-                try:
-                    cuo_hudong(cuomin, item)
-                   
-                except Exception as e:
-                    print(f"An error occurred: {e}")
-
-            elif cuomin['pageType'] == "7" or cuomin['pageType'] == "6" or cuomin['pageType'] == "9":  # 表格类错误
-                cuo_excel_word(cuomin, item)
-            else:
-                send_excel_correct(cuomin['url'])
-            print("\n")
     send_all()
+
 
 def send_all():
     remaining = start_search()
     gongdan = count_today_rows(conf.send_gongdan_xlsx)
     modify = count_today_rows(conf.send_modified)
 
-    _all = remaining+gongdan+modify
+    _all = remaining + gongdan + modify
 
-    send_card(remaining,gongdan,modify,_all)
+    send_card(remaining, gongdan, modify, _all)
     if gongdan != 0:
         send_excel(conf.send_gongdan_xlsx)
     if modify != 0:
         send_excel(conf.send_modified)
+
 
 def send_excel(xlsxname):
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -988,7 +1066,8 @@ def send_excel(xlsxname):
     else:
         print("No media_id in response")
 
-def send_card(remaining,gongdan,modify,_all):
+
+def send_card(remaining, gongdan, modify, _all):
     tittle = '网站自动改错成功'
     desc_color = 3
 
@@ -1045,6 +1124,8 @@ def send_card(remaining,gongdan,modify,_all):
 
     # 输出响应结果
     print(response.text)
+
+
 def send_nosee():
     data = {
         "msgtype": "markdown",
@@ -1315,11 +1396,14 @@ def deal_secrit():
 
 
 if __name__ == '__main__':
+    print(f"Python 版本: {sys.version}")
+    print(f"Python 路径: {sys.executable}")
+    print(f"当前文件: {__file__}")
     dealcuo()
     deal_secrit()
 
-
-
+    # 这是修改疑似未整改
+    # start_modify(get_like_havnt_coreect_list())
 
     # res = getcontent.getcontent('6603801', '10686931', bz_gov_id, jid)
     # if res['status'] == -9:
