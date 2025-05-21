@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import shutil
 
 from datetime import datetime
 from nanjiang.kaipumodify.cfg import conf
@@ -358,20 +359,38 @@ def smart_replace(page, old_text, new_text):
         )
 
 def modify_file_pdf(file_path, unique_replacements_list):
+    # 打开PDF文档
     doc = fitz.open(file_path)
+    
+    # 执行文本替换
     for page in doc:
         for replacement in unique_replacements_list:
             sensitive_word = replacement["sensitiveWords"]
             new_word = replacement["recommendUpdate"]
-            smart_replace(page,sensitive_word,new_word)
+            smart_replace(page, sensitive_word, new_word)
+    
+    # 创建临时文件路径
     temp_file = file_path.replace(".pdf", "_temp.pdf")
-    doc.save(temp_file, garbage=4, deflate=True)
-    doc.close()
-
-    # 用临时文件替换原文件
-    os.replace(temp_file, file_path)
-    print("\n✅ 所有页面处理完成")
-    print(f"💾 正在保存修改到: {file_path}")
+    
+    # 保存文件，添加错误处理
+    try:
+        # 使用高压缩选项保存
+        doc.save(
+            temp_file, 
+            garbage=4,         # 最大级别的垃圾回收
+            deflate=True,      # 压缩文本和图像
+            clean=True,        # 清理和优化PDF结构
+            linear=True        # 线性化PDF，优化网络访问
+        )
+        print(f"已成功保存修改后的文件: {temp_file}")
+        os.remove(file_path)               # 删除原始文件
+        shutil.move(temp_file, file_path)  # 将临时文件重命名为原始文件名
+        print(f"已用修改后的版本替换原始文件: {file_path}")
+    except Exception as e:
+        print(f"保存文件时出错: {e}")
+    finally:
+        # 确保关闭文档
+        doc.close()
 
 def modify_file_doc(file_path_old, unique_replacements_list):
     try:

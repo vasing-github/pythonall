@@ -27,7 +27,7 @@ import jiyuehua.kaipumodify.cfg.text as text
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from jiyuehua.kaipumodify.modifyfile import upfile2
-
+import getcontent2
 
 
 token = text.token
@@ -1342,11 +1342,11 @@ def deal_secrit_artic(se, wrong, right_words):
     numbers = [int(num) for num in numbers]
     # 判断 URL 类型并返回结果
     if len(numbers) == 1:
-        res = getcontent2.getcontent(numbers[0], bz_gov_id, jid)
-        res_save = getcontent2.savearticnews(res, wrong, right_words, bz_gov_id, jid)
+        res = one_argument_article.getcontent(numbers[0], bz_gov_id, jid)
+        res_save = one_argument_article.savearticnews_for_yinsi(res, wrong, right_words, bz_gov_id, jid)
     elif len(numbers) == 2:
-        res = getcontent.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
-        res_save = getcontent.saveorupdate(res, wrong, right_words, bz_gov_id, jid)
+        res = two_argument_article.getcontent(numbers[0], numbers[1], bz_gov_id, jid)
+        res_save = two_argument_article.saveorupdate_for_yinsi(res, wrong, right_words, bz_gov_id, jid)
     else:
         print("未知情况")
         send_add_code()

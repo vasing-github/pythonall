@@ -3,6 +3,10 @@ import conf
 import datetime
 import openpyxl
 import collections
+import os
+import sys
+import tempfile
+import platform
 
 
 def get_pcyw():
@@ -164,8 +168,135 @@ def deal_res(response, news_list,pcyw_list):
     # 第一页测试结束这里改为真
 
     return True
-if __name__ == '__main__':
 
-    startMain()
+def test_excel_writing():
+    """
+    测试Excel文件写入功能，检查各种可能的问题
+    """
+    print("\n===== Excel写入测试开始 =====")
+    print(f"当前时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Python版本: {sys.version}")
+    print(f"操作系统: {platform.platform()}")
+    print(f"当前工作目录: {os.getcwd()}")
+    try:
+        print(f"当前用户: {os.getlogin()}")
+    except Exception as e:
+        print(f"获取用户名失败: {e}")
+    
+    # 测试1: 在当前目录写入
+    print("\n测试1: 在当前目录写入")
+    current_dir_file = "test_current_dir.xlsx"
+    try:
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.append(["测试", "数据"])
+        ws.append(["当前目录", "写入测试"])
+        print(f"尝试保存到当前目录: {os.path.abspath(current_dir_file)}")
+        wb.save(current_dir_file)
+        if os.path.exists(current_dir_file):
+            print(f"✅ 成功: 文件已保存到当前目录，大小: {os.path.getsize(current_dir_file)} 字节")
+        else:
+            print("❌ 失败: 文件未找到，但无异常抛出")
+    except Exception as e:
+        print(f"❌ 异常: {e}")
+    
+    # 测试2: 在临时目录写入
+    print("\n测试2: 在临时目录写入")
+    temp_dir = tempfile.gettempdir()
+    temp_file = os.path.join(temp_dir, "test_temp_dir.xlsx")
+    try:
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.append(["测试", "数据"])
+        ws.append(["临时目录", "写入测试"])
+        print(f"尝试保存到临时目录: {temp_file}")
+        wb.save(temp_file)
+        if os.path.exists(temp_file):
+            print(f"✅ 成功: 文件已保存到临时目录，大小: {os.path.getsize(temp_file)} 字节")
+        else:
+            print("❌ 失败: 文件未找到，但无异常抛出")
+    except Exception as e:
+        print(f"❌ 异常: {e}")
+    
+    # 测试3: 在用户目录写入
+    print("\n测试3: 在用户目录写入")
+    user_dir = os.path.expanduser("~")
+    user_file = os.path.join(user_dir, "test_user_dir.xlsx")
+    try:
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.append(["测试", "数据"])
+        ws.append(["用户目录", "写入测试"])
+        print(f"尝试保存到用户目录: {user_file}")
+        wb.save(user_file)
+        if os.path.exists(user_file):
+            print(f"✅ 成功: 文件已保存到用户目录，大小: {os.path.getsize(user_file)} 字节")
+        else:
+            print("❌ 失败: 文件未找到，但无异常抛出")
+    except Exception as e:
+        print(f"❌ 异常: {e}")
+    
+    # 测试4: 检查文件是否被占用
+    print("\n测试4: 检查文件占用情况")
+    occupied_file = "test_occupied.xlsx"
+    try:
+        # 创建文件
+        wb1 = openpyxl.Workbook()
+        wb1.save(occupied_file)
+        print(f"创建文件: {occupied_file}")
+        
+        # 尝试打开并保持文件句柄
+        with open(occupied_file, "rb") as f:
+            print("文件已打开并保持句柄")
+            
+            # 尝试在文件被打开的情况下重新写入
+            try:
+                wb2 = openpyxl.Workbook()
+                print("尝试写入被占用的文件...")
+                wb2.save(occupied_file)
+                print("✅ 成功: 即使文件被打开，依然可以写入")
+            except Exception as e:
+                print(f"❌ 预期的异常: {e}")
+        
+        # 清理
+        if os.path.exists(occupied_file):
+            os.remove(occupied_file)
+            print(f"测试文件已清理: {occupied_file}")
+    except Exception as e:
+        print(f"测试过程中出现异常: {e}")
+    
+    # 测试5: 总结你的代码中的情况
+    print("\n测试5: 模拟你的make_excel方法")
+    sample_data = [
+        ("标题1", "内容1", "来源1"),
+        ("标题2", "内容2", "来源2"),
+        ("标题3", "内容3", "来源1")
+    ]
+    test_file = "test_make_excel.xlsx"
+    try:
+        print(f"调用make_excel函数，保存到: {os.path.abspath(test_file)}")
+        make_excel(sample_data, test_file)
+        if os.path.exists(test_file):
+            print(f"✅ 成功: make_excel函数正常工作，文件大小: {os.path.getsize(test_file)} 字节")
+        else:
+            print("❌ 失败: make_excel未能创建文件")
+    except Exception as e:
+        print(f"❌ make_excel函数异常: {e}")
+    
+    print("\n===== Excel写入测试结束 =====")
+    print("如果看到多个'成功'消息，但你的实际代码仍然不工作，可能是:")
+    print("1. 文件路径问题: 你的代码可能保存到了其他位置")
+    print("2. 权限问题: 不同运行环境的权限不同")
+    print("3. 文件占用: 目标文件可能被其他程序占用")
+    print(f"测试文件保存在以下位置:")
+    print(f"- 当前目录: {os.path.abspath(current_dir_file)}")
+    print(f"- 临时目录: {temp_file}")
+    print(f"- 用户目录: {user_file}")
+    print(f"- 模拟测试: {os.path.abspath(test_file)}")
+    
+
+if __name__ == '__main__':
+    test_excel_writing()
+    # 其他代码...
 
 

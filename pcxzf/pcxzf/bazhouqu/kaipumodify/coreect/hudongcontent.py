@@ -38,7 +38,7 @@ def get_message_id(url):
     print("Message ID:", message_id)
 
     shuji_el = soup.find("a", title="书记信箱")
-    xianzhang_el = soup.find("a", title="县长信箱")
+    xianzhang_el = soup.find("a", title="县长信箱") or soup.find("a", title="区长信箱")
 
     # Extract the text
     if shuji_el:

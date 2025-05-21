@@ -6,6 +6,8 @@ import sys
 import time
 from datetime import datetime, timedelta
 from io import BytesIO
+import fitz
+import shutil
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 获取项目的根目录
